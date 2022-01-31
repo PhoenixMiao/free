@@ -8,20 +8,20 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Id;
 
-public class Post {
+public class SearchTerm {
     @Id
     @ApiModelProperty("id")
     private Long id;
 
-    @ApiModelProperty("发布者id")
+    @ApiModelProperty("用户Id")
     private Long userId;
 
-    @ApiModelProperty("正文")
-    private String content;
+    @ApiModelProperty("点击量")
+    private int hits;
 
-    @ApiModelProperty("图片")
-    private String pic;
+    @ApiModelProperty("历史搜索名")
+    private String historyName;
 
-    @ApiModelProperty("发布时间")
-    private String createTime;
+    @ApiModelProperty("生命期")
+    private int lifeSpan;
 }

@@ -8,20 +8,17 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Id;
 
-public class Post {
+public class Record {
     @Id
     @ApiModelProperty("id")
     private Long id;
 
-    @ApiModelProperty("发布者id")
+    @ApiModelProperty("用户id")
     private Long userId;
 
-    @ApiModelProperty("正文")
-    private String content;
+    @ApiModelProperty("记录时间")
+    private String recordTime;
 
-    @ApiModelProperty("图片")
-    private String pic;
-
-    @ApiModelProperty("发布时间")
-    private String createTime;
+    @ApiModelProperty("状态")
+    private int status;
 }

@@ -7,30 +7,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Id;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @ApiModel("ExerciseClockIn 运动打卡")
-public class ExerciseClockIn {
-    @Id
-    @ApiModelProperty("id")
-    private Long id;
-
-    @ApiModelProperty("用户id")
-    private Long userId;
-
-    @ApiModelProperty("记录时间")
-    private String recordTime;
-
-    @ApiModelProperty("文字描述")
-    private String content;
-
-    @ApiModelProperty("图片")
-    private String pic;
-
+public class ExerciseClockIn extends ClockIn{
     @ApiModelProperty("总计消耗卡路里")
     private double currentCalories;
 

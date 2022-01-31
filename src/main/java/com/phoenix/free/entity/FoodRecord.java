@@ -7,26 +7,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Id;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @ApiModel("FoodRecord 饮食记录")
-public class FoodRecord {
-    @Id
-    @ApiModelProperty("id")
-    private Long id;
-
-    @ApiModelProperty("用户id")
-    private Long userId;
-
+public class FoodRecord extends Record{
     @ApiModelProperty("本周坚持时间")
     private String persistenceTime;
-
-    @ApiModelProperty("记录时间")
-    private String recordTime;
 
     @ApiModelProperty("目标热量")
     private double targetHeat;
@@ -60,7 +48,4 @@ public class FoodRecord {
 
     @ApiModelProperty("总纤维素")
     private double totalCellulose;
-
-    @ApiModelProperty("状态")
-    private int status;
 }

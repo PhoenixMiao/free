@@ -7,24 +7,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Id;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @ApiModel("DrinkRecord 饮水记录")
-public class DrinkRecord {
-    @Id
-    @ApiModelProperty("id")
-    private Long id;
-
-    @ApiModelProperty("用户id")
-    private Long userId;
-
-    @ApiModelProperty("记录时间")
-    private String recordTime;
-
+public class DrinkRecord extends Record{
     @ApiModelProperty("目标饮水量")
     private int amount;
 
@@ -33,7 +21,4 @@ public class DrinkRecord {
 
     @ApiModelProperty("用户水杯大小")
     private int bottleSize;
-
-    @ApiModelProperty("状态")
-    private int status;
 }

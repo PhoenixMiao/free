@@ -7,26 +7,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Id;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @ApiModel("ExerciseRecord 运动记录")
-public class ExerciseRecord {
-    @Id
-    @ApiModelProperty("id")
-    private Long id;
-
-    @ApiModelProperty("用户id")
-    private Long userId;
-
+public class ExerciseRecord extends Record{
     @ApiModelProperty("本周坚持时间")
     private String persistenceTime;
-
-    @ApiModelProperty("记录时间")
-    private String recordTime;
 
     @ApiModelProperty("目标消耗卡路里")
     private double calories;
@@ -39,7 +27,4 @@ public class ExerciseRecord {
 
     @ApiModelProperty("步数")
     private int currentPath;
-
-    @ApiModelProperty("状态")
-    private int status;
 }
