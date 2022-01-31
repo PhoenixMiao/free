@@ -21,30 +21,30 @@ public class User implements Serializable {
 
     private String sessionId;
     private String openId;
-    private String createTime;
     private String unionId;
     private String sessionKey;
+    private String createTime;
 
-    @ApiModelProperty("真实姓名")
-    private String realname;
+    @ApiModelProperty("昵称")
+    private String nickName;
 
-    @ApiModelProperty("用户名")
-    private String username;
+    @ApiModelProperty("性别")
+    private int gender;
 
-    @ApiModelProperty("密码")
-    private String password;
+    @ApiModelProperty("年龄")
+    private int age;
 
-    @ApiModelProperty("年级")
-    private String grade;
+    @ApiModelProperty("手机号")
+    private int phone;
 
-    @ApiModelProperty("专业")
-    private String major;
+    @ApiModelProperty("头像")
+    private String portrait;
 
-    @ApiModelProperty("擅长领域")
-    private String specialize;
+    @ApiModelProperty("管理员表示符")
+    private int isAdmin;
 
-    @ApiModelProperty("联系方式")
-    private String contactInformation;
+    @ApiModelProperty("学校")
+    private String school;
 
     @ApiModelProperty("个人简介")
     private String introduction;
