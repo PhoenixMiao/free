@@ -3,6 +3,8 @@ package com.phoenix.free.service.Impl;
 import com.phoenix.free.common.CommonConstants;
 import com.phoenix.free.common.CommonErrorCode;
 import com.phoenix.free.config.YmlConfig;
+import com.phoenix.free.controller.request.UpdateUserByIdRequest;
+import com.phoenix.free.controller.response.UserResponse;
 import com.phoenix.free.dto.SessionData;
 import com.phoenix.free.dto.WxSession;
 import com.phoenix.free.entity.User;
@@ -69,6 +71,24 @@ public class UserServiceImpl implements UserService {
         userMapper.insert(user);
 
         return new SessionData(user);
+    }
+
+    public UserResponse getUserById(Long id) {
+        return userMapper.getUserById(id);
+    }
+
+    public void updateUserById(UpdateUserByIdRequest updateUserByIdRequest, Long id) {
+        userMapper.updateUserById(
+                updateUserByIdRequest.getNickname(),
+                updateUserByIdRequest.getGender(),
+                updateUserByIdRequest.getAge(),
+                updateUserByIdRequest.getPhone(),
+                updateUserByIdRequest.getPortrait(),
+                updateUserByIdRequest.getIsAdmin(),
+                updateUserByIdRequest.getSchool(),
+                updateUserByIdRequest.getIntroduction(),
+                id
+        );
     }
 
 

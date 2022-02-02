@@ -1,4 +1,4 @@
-package com.phoenix.free.entity;
+package com.phoenix.free.controller.response;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -6,25 +6,16 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import javax.persistence.Id;
-import java.io.Serializable;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@ApiModel("User 用户")
-public class User implements Serializable {
-    @Id
-    @ApiModelProperty("用户id")
-    private Long id;
-
-    private String sessionId;
-    private String openId;
-    private String unionId;
-    private String sessionKey;
-    private String createTime;
-
+@ApiModel("GetUserByIdResponse 获取用户信息")
+public class UserResponse {
+    /**
+     * {@link com.phoenix.free.entity.User}
+     */
     @ApiModelProperty("昵称")
     private String nickname;
 
