@@ -66,4 +66,16 @@ public class FoodInfoController {
         return "删除成功";
     }
 
+    @Auth
+    @GetMapping("/deleteFoodByName/{name}")
+    @ApiOperation(value = "按名称删除食物",response = String.class)
+    @ApiImplicitParam(name = "name", value = "name", required = true, paramType = "path")
+    public Object deleteFoodByName(@NotBlank @PathVariable("name") String name){
+
+        //TODO 用户具有管理员权限才能从数据库中删除食物信息
+
+        foodInfoService.deleteFoodByName(name);
+        return "删除成功";
+    }
+
 }
