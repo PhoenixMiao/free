@@ -20,10 +20,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @ConditionalOnExpression("${dev.enable:true}")//当enable为true时才选择加载该配置类
 public class Swagger2Config {
 
-    private static final String GROUP_NAME = "yiqikang";
-    private static final String BASE_PACKAGE = "com.phoenix.yiqikang.controller";
-    private static final String TITLE = "yiqikang API Documentation";
-    private static final String DESCRIPTION = "yiqikang接口文档";
+    private static final String GROUP_NAME = "Free";
+    private static final String BASE_PACKAGE = "com.phoenix.free.controller";
+    private static final String TITLE = "Free API Documentation";
+    private static final String DESCRIPTION = "Free接口文档";
 
     @Bean
     public Docket createTestApi() {
