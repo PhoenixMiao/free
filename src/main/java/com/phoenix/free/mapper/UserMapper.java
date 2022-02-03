@@ -3,12 +3,12 @@ package com.phoenix.free.mapper;
 import com.phoenix.free.MyMapper;
 import com.phoenix.free.controller.response.UserResponse;
 import com.phoenix.free.entity.User;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
-import org.springframework.stereotype.Repository;
 
-@Repository
+@Mapper
 public interface UserMapper extends MyMapper<User> {
     @Select("SELECT nickname,gender,age,phone,portrait,isAdmin,school,introduction FROM user WHERE id=#{id};")
     UserResponse getUserById(@Param("id")Long id);

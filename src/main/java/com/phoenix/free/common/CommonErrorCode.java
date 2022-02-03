@@ -56,6 +56,10 @@ public enum CommonErrorCode {
     UNSIGNED_USER(1011,"未注册用户","请前往注册"),
     INVALID_PHONE(1012,"无效手机号","请输入正确的手机号"),
 
+
+
+    DUPLICATE_DATABASE_INFORMATION(3001,"重复的数据库信息","信息添加失败，请重试"),
+
     ;
 
     /**

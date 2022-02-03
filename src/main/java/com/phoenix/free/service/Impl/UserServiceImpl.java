@@ -38,7 +38,9 @@ public class UserServiceImpl implements UserService {
         //shadow test
         if(CommonConstants.SHADOW_TEST.equals(code)){
             sessionUtils.setSessionId(CommonConstants.SHADOW_TEST);
-            return new SessionData();
+            return new SessionData(User.builder()
+                    .isAdmin(1)
+                    .build());
         }
 
         WxSession wxSession = Optional.ofNullable(
