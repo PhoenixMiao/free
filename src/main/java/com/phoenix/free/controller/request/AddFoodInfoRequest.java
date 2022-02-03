@@ -39,7 +39,7 @@ public class AddFoodInfoRequest {
     private double protein;
 
     @ApiModelProperty("纤维素")
-    private double  cellulose;
+    private double cellulose;
 
     @ApiModelProperty("状态")
     private String state;
