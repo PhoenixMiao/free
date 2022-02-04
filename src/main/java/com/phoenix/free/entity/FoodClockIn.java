@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,5 +31,5 @@ public class FoodClockIn extends ClockIn{
     private double totalCellulose;
 
     @ApiModelProperty("详细的食物")
-    private String foodList;
+    private List<Food> foodList;
 }

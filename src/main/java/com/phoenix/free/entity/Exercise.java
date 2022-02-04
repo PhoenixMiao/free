@@ -19,14 +19,8 @@ public class Exercise {
     @ApiModelProperty("id")
     private Long id;
 
-    @ApiModelProperty("名称")
-    private String name;
-
-    @ApiModelProperty("分类")
-    private int category;
-
-    @ApiModelProperty("消耗比")
-    private double ratio;
+    @ApiModelProperty("运动信息")
+    private ExerciseInfo exerciseInfo;
 
     @ApiModelProperty("运动量")
     private int exerciseAmount;
