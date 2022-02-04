@@ -25,7 +25,7 @@ public class ExerciseInfoController {
     private SessionUtils sessionUtils;
 
     @Auth
-    @PostMapping("/ExerciseInfo")
+    @PostMapping("/addExerciseInfo")
     @ApiOperation(value = "添加新运动信息",response = String.class)
     public Object addExerciseInfo(@NotNull @Valid @RequestBody AddExerciseInfoRequest addExerciseInfoRequest){
         Long id = sessionUtils.getUserId();
