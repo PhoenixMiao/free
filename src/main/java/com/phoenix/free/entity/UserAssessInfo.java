@@ -13,7 +13,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ApiModel("UserHealthInfo 用户健康信息")
+@ApiModel("UserAssessInfo 用户健康评估信息")
 public class UserAssessInfo {
     @Id
     @ApiModelProperty("id")
