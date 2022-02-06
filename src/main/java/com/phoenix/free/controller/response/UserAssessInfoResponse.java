@@ -1,5 +1,6 @@
-package com.phoenix.free.entity;
+package com.phoenix.free.controller.response;
 
+import com.phoenix.free.entity.UserAssessInfo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -7,26 +8,21 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Id;
-
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@ApiModel("Assess 评估信息")
-public class Assess {
-    @Id
-    @ApiModelProperty("id")
-    private Long id;
-
-    @ApiModelProperty("用户id")
-    private Long userId;
+@ApiModel("GetUserAssessInfoResponse 获取用户评估信息")
+public class UserAssessInfoResponse {
+    /**
+     * {@link UserAssessInfo}
+     */
 
     @ApiModelProperty("身高")
-    private int height;
+    private double height;
 
     @ApiModelProperty("体重")
-    private int weight;
+    private double weight;
 
     @ApiModelProperty("目标")
     private String target;
