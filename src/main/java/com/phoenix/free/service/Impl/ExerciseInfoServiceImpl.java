@@ -24,6 +24,7 @@ public class ExerciseInfoServiceImpl implements ExerciseInfoService {
         ExerciseInfo exerciseInfo = ExerciseInfo.builder()
                 .name(addExerciseInfoRequest.getName())
                 .category(addExerciseInfoRequest.getCategory())
+                .ratio(addExerciseInfoRequest.getRatio())
                 .build();
         return exerciseInfoMapper.insertExerciseInfo(exerciseInfo);
     }

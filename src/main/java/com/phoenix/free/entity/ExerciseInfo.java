@@ -24,4 +24,7 @@ public class ExerciseInfo {
 
     @ApiModelProperty("分类")
     private int category;
+
+    @ApiModelProperty("消耗比")
+    private double ratio;
 }
