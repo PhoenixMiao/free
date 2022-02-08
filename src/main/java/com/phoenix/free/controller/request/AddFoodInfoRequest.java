@@ -1,5 +1,6 @@
 package com.phoenix.free.controller.request;
 
+import com.phoenix.free.entity.FoodInfo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -14,7 +15,7 @@ import lombok.NoArgsConstructor;
 @ApiModel("AddFoodInfoRequest 添加食物信息")
 public class AddFoodInfoRequest {
     /**
-     * {@link com.phoenix.free.entity.Food}
+     * {@link FoodInfo}
      */
 
     @ApiModelProperty("名称")

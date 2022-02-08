@@ -28,9 +28,7 @@ public class UserController {
     @ApiOperation(value = "登录",response = SessionData.class)
     @ApiImplicitParam(name = "code", value = "code", required = true, paramType = "path")
     public Object login(@NotBlank @PathVariable("code") String code){
-
         return userService.login(code);
-
     }
 
     @Auth

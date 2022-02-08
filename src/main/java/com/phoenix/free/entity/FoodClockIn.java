@@ -31,5 +31,5 @@ public class FoodClockIn extends ClockIn{
     private double totalCellulose;
 
     @ApiModelProperty("详细的食物")
-    private List<Food> foodList;
+    private List<FoodInfo> foodList;
 }

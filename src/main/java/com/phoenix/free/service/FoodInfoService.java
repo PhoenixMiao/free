@@ -1,14 +1,14 @@
 package com.phoenix.free.service;
 
 import com.phoenix.free.controller.request.AddFoodInfoRequest;
-import com.phoenix.free.entity.Food;
+import com.phoenix.free.entity.FoodInfo;
 
 public interface FoodInfoService {
 
-    Food getFoodById(Long id);
-    Food getFoodByName(String name);
+    FoodInfo getFoodInfoById(Long id);
+    FoodInfo getFoodInfoByName(String name);
 
     int addFoodInfo(AddFoodInfoRequest addFoodInfoRequest);
-    void deleteFoodById(Long id);
-    void deleteFoodByName(String name);
+    void deleteFoodInfoById(Long id);
+    void deleteFoodInfoByName(String name);
 }

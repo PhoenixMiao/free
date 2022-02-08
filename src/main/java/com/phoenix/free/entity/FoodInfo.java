@@ -13,8 +13,8 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ApiModel("Food 食物")
-public class Food {
+@ApiModel("FoodInfo 食物信息")
+public class FoodInfo {
     @Id
     @ApiModelProperty("id")
     private Long id;
