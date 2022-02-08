@@ -19,5 +19,5 @@ public class ExerciseClockIn extends ClockIn{
     private double currentCalories;
 
     @ApiModelProperty("详细的运动")
-    private List<Exercise> exerciseList;
+    private Long exerciseInfoId;
 }
