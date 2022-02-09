@@ -2,17 +2,11 @@ package com.phoenix.free.entity;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.util.List;
+import lombok.experimental.SuperBuilder;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@SuperBuilder
 @ApiModel("ExerciseClockIn 运动打卡")
 public class ExerciseClockIn extends ClockIn{
     @ApiModelProperty("总计消耗卡路里")

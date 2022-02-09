@@ -1,9 +1,11 @@
 package com.phoenix.free.entity;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Id;
 
+@SuperBuilder
 public class SearchTerm {
     @Id
     @ApiModelProperty("id")

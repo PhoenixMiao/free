@@ -2,19 +2,13 @@ package com.phoenix.free.entity;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import javax.persistence.Id;
+import lombok.experimental.SuperBuilder;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@ApiModel("AddPost 添加搭档帖子")
-public class AddPost {
+@SuperBuilder
+@ApiModel("AddPartnerPost 添加搭档帖子")
+public class AddPartnerPost extends Post {
     @ApiModelProperty("帖子id")
     private Long postId;
 
