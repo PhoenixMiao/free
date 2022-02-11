@@ -1,8 +1,8 @@
 package com.phoenix.free.controller;
 
 import com.phoenix.free.annotation.Auth;
-import com.phoenix.free.controller.request.FoodClockInRequest;
-import com.phoenix.free.service.FoodClockInService;
+import com.phoenix.free.controller.request.ExerciseClockInRequest;
+import com.phoenix.free.service.ExerciseClockInService;
 import com.phoenix.free.util.SessionUtils;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,20 +14,20 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 @RestController
-public class FoodClockInController {
+public class ExerciseClockInController {
     @Autowired
-    private FoodClockInService foodClockInService;
+    private ExerciseClockInService exerciseClockInService;
 
     @Autowired
     private SessionUtils sessionUtils;
 
     @Auth
-    @PostMapping("/foodClockIn")
-    @ApiOperation(value = "饮食打卡",response = String.class)
-    public Object addFoodClockIn(@NotNull @Valid @RequestBody FoodClockInRequest foodClockInRequest){
+    @PostMapping("/exerciseClockIn")
+    @ApiOperation(value = "运动打卡",response = String.class)
+    public Object addExerciseClockIn(@NotNull @Valid @RequestBody ExerciseClockInRequest exerciseClockInRequest){
         Long id = sessionUtils.getUserId();
 
-        foodClockInService.addFoodClockIn(foodClockInRequest, id);
+        exerciseClockInService.addExerciseClockIn(exerciseClockInRequest, id);
         return "打卡成功";
     }
 }

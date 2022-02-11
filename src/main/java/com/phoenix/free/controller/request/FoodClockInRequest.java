@@ -1,6 +1,5 @@
 package com.phoenix.free.controller.request;
 
-import com.phoenix.free.entity.FoodInfo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
