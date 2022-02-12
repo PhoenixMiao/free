@@ -26,8 +26,8 @@ public class ExerciseClockInRequest {
     @ApiModelProperty("图片")
     private String pic;
 
-    @ApiModelProperty("总计消耗卡路里")
-    private double currentCalories;
+    @ApiModelProperty("运动量")
+    private double amount;
 
     @ApiModelProperty("详细的运动")
     private Long exerciseInfoId;

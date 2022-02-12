@@ -23,7 +23,7 @@ public class Exercise {
     private ExerciseInfo exerciseInfo;
 
     @ApiModelProperty("运动量")
-    private int exerciseAmount;
+    private double exerciseAmount;
 
     @ApiModelProperty("消耗量")
     private double consume;
