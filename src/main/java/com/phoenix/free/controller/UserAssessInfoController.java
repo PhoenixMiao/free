@@ -28,7 +28,7 @@ public class UserAssessInfoController {
     @ApiOperation(value = "查看当前用户评估信息",response = UserAssessInfoResponse.class)
     public Object getUserAssessInfo(){
         Long id = sessionUtils.getUserId();
-        return userAssessInfoService.getAssessByUserId(id);
+        return userAssessInfoService.getAssessByUserId(0L);
     }
 
     @Auth
@@ -36,7 +36,8 @@ public class UserAssessInfoController {
     @ApiOperation(value = "更新当前用户评估信息",response = String.class)
     public Object updateUserAssessInfo(@NotNull @Valid @RequestBody UpdateUserAssessInfoRequest updateUserAssessInfoRequest){
         Long id = sessionUtils.getUserId();
-        userAssessInfoService.updateAssessByUserId(updateUserAssessInfoRequest, id);
+        updateUserAssessInfoRequest.setUserId(id);
+        userAssessInfoService.updateAssessByUserId(updateUserAssessInfoRequest);
         return "操作成功";
     }
 }

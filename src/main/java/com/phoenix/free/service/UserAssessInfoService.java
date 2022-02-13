@@ -5,7 +5,7 @@ import com.phoenix.free.controller.response.UserAssessInfoResponse;
 
 public interface UserAssessInfoService {
 
-    void updateAssessByUserId(UpdateUserAssessInfoRequest updateUserAssessInfoRequest, Long userId);
+    void updateAssessByUserId(UpdateUserAssessInfoRequest updateUserAssessInfoRequest);
     void generateNewAssessInfo();
     UserAssessInfoResponse getAssessByUserId(Long userId);
 }

@@ -13,9 +13,10 @@ public class UserAssessInfoServiceImpl implements UserAssessInfoService {
     @Autowired
     private UserAssessInfoMapper userAssessInfoMapper;
 
-    public void updateAssessByUserId(UpdateUserAssessInfoRequest updateUserAssessInfoRequest, Long userId) {
-        if(getAssessByUserId(userId) == null){
-            generateNewAssessInfo();
+    public void updateAssessByUserId(UpdateUserAssessInfoRequest updateUserAssessInfoRequest) {
+        if(userAssessInfoMapper.getAssessByUserId(updateUserAssessInfoRequest.getUserId()) == null){
+            //generateNewAssessInfo();
+            userAssessInfoMapper.insertAssessInfo(updateUserAssessInfoRequest);
             return ;
         }
         userAssessInfoMapper.updateAssessByUserId(
@@ -23,7 +24,7 @@ public class UserAssessInfoServiceImpl implements UserAssessInfoService {
                 updateUserAssessInfoRequest.getWeight(),
                 updateUserAssessInfoRequest.getTarget(),
                 updateUserAssessInfoRequest.getCondition(),
-                userId
+                updateUserAssessInfoRequest.getUserId()
         );
     }
 

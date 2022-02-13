@@ -31,7 +31,7 @@ public class UserHealthInfoServiceImpl implements UserHealthInfoService {
         UserHealthInfoResponse response = UserHealthInfoResponse.builder()
                 .height(assessInfo.getHeight())
                 .weight(assessInfo.getWeight())
-                .BMI(assessInfo.getWeight() / (assessInfo.getHeight() * assessInfo.getHeight()))
+                .bmi(assessInfo.getWeight() / (assessInfo.getHeight() * assessInfo.getHeight()))
                 .target(assessInfo.getTarget())
                 .calories(calculateCaloriesOfOneDay(userId))
                 .build();

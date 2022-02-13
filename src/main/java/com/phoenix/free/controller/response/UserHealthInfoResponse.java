@@ -20,7 +20,7 @@ public class UserHealthInfoResponse {
     private double weight;
 
     @ApiModelProperty("BMI指数")
-    private double BMI;
+    private double bmi;
 
     @ApiModelProperty("目标")
     private String target;

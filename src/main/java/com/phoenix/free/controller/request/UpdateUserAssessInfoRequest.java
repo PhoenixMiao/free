@@ -17,6 +17,8 @@ public class UpdateUserAssessInfoRequest {
     /**
      * {@link UserAssessInfo}
      */
+    @ApiModelProperty("用户id")
+    private Long userId;
 
     @ApiModelProperty("身高")
     private double height;

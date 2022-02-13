@@ -15,7 +15,15 @@ public interface ExerciseClockInMapper extends MyMapper<ExerciseClockIn> {
     @Select("SELECT * FROM exercise_clock_in WHERE id=#{id};")
     ExerciseClockIn getExerciseClockInById(@Param("id") Long id);
 
-    @ResultType(List.class)
+    @Results(
+            id = "exerciseClockInList",value = {
+            @Result(property="userId", column="userId"),
+            @Result(property="recordTime", column="recordTime"),
+            @Result(property="content", column="content"),
+            @Result(property="pic", column="pic"),
+            @Result(property="currentCalories", column="currentCalories"),
+            @Result(property="exerciseInfoId", column="exerciseInfoId")
+    })
     @Select("SELECT * FROM exercise_clock_in WHERE userId=#{userId};")
     List<ExerciseClockIn> getExerciseClockInByUserId(@Param("userId") Long userId);
 }
