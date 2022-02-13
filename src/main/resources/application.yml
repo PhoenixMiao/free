@@ -1,8 +1,8 @@
 server:
-  port: 8084
+  port: 8082
   tomcat:
     uri-encoding: UTF-8
-  domain: https://www.ecnuers.cn
+  #domain: https://www.ecnuers.cn
 
 spring:
 #  http:

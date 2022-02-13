@@ -28,31 +28,46 @@ public class SessionData implements Serializable {
      */
     @ApiModelProperty("用户id")
     private Long id;
-    @ApiModelProperty("注册时间")
-    private String create_time;
+
+    @ApiModelProperty("创建时间")
+    private String createTime;
+
     @ApiModelProperty("昵称")
     private String nickname;
+
     @ApiModelProperty("性别")
-    private Integer gender;
+    private int gender;
+
+    @ApiModelProperty("年龄")
+    private int age;
+
+    @ApiModelProperty("手机号")
+    private int phone;
+
     @ApiModelProperty("头像")
     private String portrait;
 
+    @ApiModelProperty("管理员表示符")
+    private int isAdmin;
+
+    @ApiModelProperty("学校")
+    private String school;
+
+    @ApiModelProperty("个人简介")
+    private String introduction;
+
+
     public SessionData(User user){
         AssertUtil.notNull(user, CommonErrorCode.USER_NOT_EXIST);
-//        if(user == null){
-//            create_time = TimeUtil.getCurrentTimestamp();
-//            nickname = "小镇用户";
-//            gender = 0;
-//            campus = CampusEnum.ZHONG_BEI.getName();
-//            signature = "ta很懒，还没有签名哦~";
-//            schoolAuth = 0;
-//            return;
-//        }
-
-//        id = user.getId();
-//        create_time = user.getCreate_time();
-//        nickname = user.getNickname();
-//        gender = user.getGender();
-//        portrait = user.getPortrait();
+        id = user.getId();
+        createTime = user.getCreateTime();
+        nickname = user.getNickname();
+        gender = user.getGender();
+        portrait = user.getPortrait();
+        age = user.getAge();
+        phone = user.getPhone();
+        school = user.getSchool();
+        introduction = user.getIntroduction();
+        isAdmin = user.getIsAdmin();
     }
 }

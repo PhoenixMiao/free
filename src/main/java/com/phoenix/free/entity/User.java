@@ -19,10 +19,19 @@ public class User implements Serializable {
     @ApiModelProperty("用户id")
     private Long id;
 
+    @ApiModelProperty("会话id")
     private String sessionId;
+
+    @ApiModelProperty("用户唯一标识")
     private String openId;
+
+    @ApiModelProperty("unionid")
     private String unionId;
+
+    @ApiModelProperty("会话密钥")
     private String sessionKey;
+
+    @ApiModelProperty("创建时间")
     private String createTime;
 
     @ApiModelProperty("昵称")
