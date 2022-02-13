@@ -15,7 +15,19 @@ public interface FoodClockInMapper extends MyMapper<FoodClockIn> {
     @Select("SELECT * FROM food_clock_in WHERE id=#{id};")
     FoodClockIn getFoodClockInById(@Param("id") Long id);
 
-    @ResultType(List.class)
+    @Results(
+            id = "foodClockInList",value = {
+            @Result(property="userId", column="userId"),
+            @Result(property="recordTime", column="recordTime"),
+            @Result(property="content", column="content"),
+            @Result(property="pic", column="pic"),
+            @Result(property="totalHeat", column="totalHeat"),
+            @Result(property="totalSugar", column="totalSugar"),
+            @Result(property="totalFat", column="totalFat"),
+            @Result(property="totalProtein", column="totalProtein"),
+            @Result(property="totalCellulose", column="totalCellulose"),
+            @Result(property="foodInfoId", column="foodInfoId")
+    })
     @Select("SELECT * FROM food_clock_in WHERE userId=#{userId};")
     List<FoodClockIn> getFoodClockInByUserId(@Param("userId") Long userId);
 }
