@@ -1,7 +1,6 @@
 package com.phoenix.free.mapper;
 
 import com.phoenix.free.MyMapper;
-import com.phoenix.free.entity.FoodClockIn;
 import com.phoenix.free.entity.FoodInfo;
 import org.apache.ibatis.annotations.*;
 
