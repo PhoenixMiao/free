@@ -1,6 +1,8 @@
 package com.phoenix.free.util;
 
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 /*
  * 由于为了以后使用方便,所有方法的返回类型都设为了 java.util.Date 请在使用时根据自己的需要进行日期格式化处理,如:
@@ -320,5 +322,44 @@ public class DatesUtil {
         list.add(begincal.getTime());
         return list;
     }
- 
+
+    /* 日期/时间格式为String类型的情况 */
+    // 比较两个String格式的日期
+    public static int compareDate(String date1, String date2) {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            Date dt1 = df.parse(date1);
+            Date dt2 = df.parse(date2);
+            if (dt1.getTime() > dt2.getTime()) {
+                return 1;
+            } else if (dt1.getTime() < dt2.getTime()) {
+                return -1;
+            } else {
+                return 0;
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return 0;
+    }
+
+    //比较两个String格式的日期之间相差的天数
+    public static int daysBetween(String date1,String date2){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
+        long time1 = 0;
+        long time2 = 0;
+
+        try{
+            cal.setTime(sdf.parse(date1));
+            time1 = cal.getTimeInMillis();
+            cal.setTime(sdf.parse(date2));
+            time2 = cal.getTimeInMillis();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        long between_days = (time2 - time1) / (1000 * 3600 * 24);
+
+        return Integer.parseInt(String.valueOf(between_days));
+    }
 }

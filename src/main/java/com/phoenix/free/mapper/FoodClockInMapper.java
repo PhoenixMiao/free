@@ -4,6 +4,8 @@ import com.phoenix.free.MyMapper;
 import com.phoenix.free.entity.FoodClockIn;
 import org.apache.ibatis.annotations.*;
 
+import java.util.List;
+
 @Mapper
 public interface FoodClockInMapper extends MyMapper<FoodClockIn> {
     @Insert("INSERT INTO food_clock_in(userId,recordTime,content,pic,totalHeat,totalSugar,totalFat,totalProtein,totalCellulose,foodInfoId) VALUES (#{userId},#{recordTime},#{content},#{pic},#{totalHeat},#{totalSugar},#{totalFat},#{totalProtein},#{totalCellulose},#{foodInfoId}); ")
@@ -13,7 +15,7 @@ public interface FoodClockInMapper extends MyMapper<FoodClockIn> {
     @Select("SELECT * FROM food_clock_in WHERE id=#{id};")
     FoodClockIn getFoodClockInById(@Param("id") Long id);
 
-    @ResultType(FoodClockIn.class)
+    @ResultType(List.class)
     @Select("SELECT * FROM food_clock_in WHERE userId=#{userId};")
-    FoodClockIn getFoodClockInByUserId(@Param("userId") Long userId);
+    List<FoodClockIn> getFoodClockInByUserId(@Param("userId") Long userId);
 }

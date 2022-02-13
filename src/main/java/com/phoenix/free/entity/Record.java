@@ -1,10 +1,12 @@
 package com.phoenix.free.entity;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Id;
 
+@Data
 @SuperBuilder
 public class Record {
     @Id

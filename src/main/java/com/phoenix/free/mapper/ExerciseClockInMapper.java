@@ -4,6 +4,8 @@ import com.phoenix.free.MyMapper;
 import com.phoenix.free.entity.ExerciseClockIn;
 import org.apache.ibatis.annotations.*;
 
+import java.util.List;
+
 @Mapper
 public interface ExerciseClockInMapper extends MyMapper<ExerciseClockIn> {
     @Insert("INSERT INTO exercise_clock_in(userId,recordTime,content,pic,currentCalories,exerciseInfoId) VALUES (#{userId},#{recordTime},#{content},#{pic},#{currentCalories},#{exerciseInfoId}); ")
@@ -13,7 +15,7 @@ public interface ExerciseClockInMapper extends MyMapper<ExerciseClockIn> {
     @Select("SELECT * FROM exercise_clock_in WHERE id=#{id};")
     ExerciseClockIn getExerciseClockInById(@Param("id") Long id);
 
-    @ResultType(ExerciseClockIn.class)
+    @ResultType(List.class)
     @Select("SELECT * FROM exercise_clock_in WHERE userId=#{userId};")
-    ExerciseClockIn getExerciseClockInByUserId(@Param("userId") Long userId);
+    List<ExerciseClockIn> getExerciseClockInByUserId(@Param("userId") Long userId);
 }

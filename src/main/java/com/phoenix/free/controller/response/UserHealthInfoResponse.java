@@ -1,6 +1,5 @@
 package com.phoenix.free.controller.response;
 
-import com.phoenix.free.entity.UserAssessInfo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -12,21 +11,24 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("UserAssessInfoResponse 获取用户评估信息")
-public class UserAssessInfoResponse {
-    /**
-     * {@link UserAssessInfo}
-     */
-
+@ApiModel("UserHealthInfoResponse 获取用户健康信息（用于填充健康空间内容）")
+public class UserHealthInfoResponse {
     @ApiModelProperty("身高")
     private double height;
 
     @ApiModelProperty("体重")
     private double weight;
 
+    @ApiModelProperty("BMI指数")
+    private double BMI;
+
     @ApiModelProperty("目标")
     private String target;
 
-    @ApiModelProperty("健康状况")
-    private String condition;
+    @ApiModelProperty("今日消耗的卡路里")
+    private double calories;
+
+    @ApiModelProperty("今日步数")
+    private int stepCount;
+
 }

@@ -8,6 +8,8 @@ import com.phoenix.free.service.ExerciseClockInService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ExerciseClockInServiceImpl implements ExerciseClockInService {
     @Autowired
@@ -34,7 +36,7 @@ public class ExerciseClockInServiceImpl implements ExerciseClockInService {
         return exerciseClockInMapper.getExerciseClockInById(id);
     }
 
-    public ExerciseClockIn getExerciseClockInByUserId(Long userId) {
+    public List<ExerciseClockIn> getExerciseClockInByUserId(Long userId) {
         return exerciseClockInMapper.getExerciseClockInByUserId(userId);
     }
 }

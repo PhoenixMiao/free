@@ -7,6 +7,8 @@ import com.phoenix.free.service.FoodClockInService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class FoodClockInServiceImpl implements FoodClockInService {
     @Autowired
@@ -33,7 +35,7 @@ public class FoodClockInServiceImpl implements FoodClockInService {
         return foodClockInMapper.getFoodClockInById(id);
     }
 
-    public FoodClockIn getFoodClockInByUserId(Long userId) {
+    public List<FoodClockIn> getFoodClockInByUserId(Long userId) {
         return foodClockInMapper.getFoodClockInByUserId(userId);
     }
 }
