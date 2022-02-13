@@ -1,2 +1,0 @@
-2022-02-02 16:27:06.602 [main] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.phoenix.free]' package. Please check your configuration.
-2022-02-02 16:42:47.863 [main] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.phoenix.free]' package. Please check your configuration.
