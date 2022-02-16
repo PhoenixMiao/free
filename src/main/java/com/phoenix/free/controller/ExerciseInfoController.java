@@ -5,11 +5,13 @@ import com.phoenix.free.common.CommonErrorCode;
 import com.phoenix.free.controller.request.AddExerciseInfoRequest;
 import com.phoenix.free.entity.ExerciseInfo;
 import com.phoenix.free.service.ExerciseInfoService;
+import com.phoenix.free.service.UserService;
 import com.phoenix.free.util.AssertUtil;
 import com.phoenix.free.util.SessionUtils;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,13 +26,16 @@ public class ExerciseInfoController {
     @Autowired
     private SessionUtils sessionUtils;
 
+    @Autowired
+    private UserService userService;
+
     @Auth
     @PostMapping("/addExerciseInfo")
     @ApiOperation(value = "添加新运动信息",response = String.class)
     public Object addExerciseInfo(@NotNull @Valid @RequestBody AddExerciseInfoRequest addExerciseInfoRequest){
         Long id = sessionUtils.getUserId();
 
-        //TODO 用户具有管理员权限才能向数据库中添加运动信息
+        AssertUtil.isTrue((1 == userService.getUserById(id).getIsAdmin()), CommonErrorCode.UNAUTHORIZED_OPERATION, "需要管理员权限");
 
         AssertUtil.isNull(exerciseInfoService.getExerciseInfoByName(addExerciseInfoRequest.getName()), CommonErrorCode.DUPLICATE_DATABASE_INFORMATION,"请勿重复添加运动信息");
         exerciseInfoService.addExerciseInfo(addExerciseInfoRequest);
@@ -58,8 +63,9 @@ public class ExerciseInfoController {
     @ApiOperation(value = "按编号删除运动信息",response = String.class)
     @ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
     public Object deleteExerciseInfoById(@NotBlank @PathVariable("id") Long id){
+        Long userId = sessionUtils.getUserId();
 
-        //TODO 用户具有管理员权限才能从数据库中删除运动信息
+        AssertUtil.isTrue((1 == userService.getUserById(userId).getIsAdmin()), CommonErrorCode.UNAUTHORIZED_OPERATION, "需要管理员权限");
 
         exerciseInfoService.deleteExerciseInfoById(id);
         return "删除成功";
@@ -70,8 +76,9 @@ public class ExerciseInfoController {
     @ApiOperation(value = "按名称删除运动信息",response = String.class)
     @ApiImplicitParam(name = "name", value = "name", required = true, paramType = "path")
     public Object deleteExerciseInfoByName(@NotBlank @PathVariable("name") String name){
+        Long userId = sessionUtils.getUserId();
 
-        //TODO 用户具有管理员权限才能从数据库中删除运动信息
+        AssertUtil.isTrue((1 == userService.getUserById(userId).getIsAdmin()), CommonErrorCode.UNAUTHORIZED_OPERATION, "需要管理员权限");
 
         exerciseInfoService.deleteExerciseInfoByName(name);
         return "删除成功";
