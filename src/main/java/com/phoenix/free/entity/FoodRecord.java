@@ -17,7 +17,7 @@ public class FoodRecord extends Record{
     private String persistenceTime;
 
     @ApiModelProperty("目标热量")
-    private double targetHeat;
+    private double targetEnergy;
 
     @ApiModelProperty("目标糖分")
     private double targetSugar;

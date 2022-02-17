@@ -27,7 +27,7 @@ public class FoodClockInRequest {
     private String pic;
 
     @ApiModelProperty("总热量")
-    private double totalHeat;
+    private double totalEnergy;
 
     @ApiModelProperty("总糖分")
     private double totalSugar;

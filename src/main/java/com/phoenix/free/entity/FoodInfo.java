@@ -29,7 +29,7 @@ public class FoodInfo {
     private int category;
 
     @ApiModelProperty("热量")
-    private double heat;
+    private double energy;
 
     @ApiModelProperty("糖分")
     private double sugar;

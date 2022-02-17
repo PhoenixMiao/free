@@ -3,6 +3,7 @@ package com.phoenix.free.controller;
 import com.phoenix.free.annotation.Auth;
 import com.phoenix.free.controller.response.UserAssessInfoResponse;
 import com.phoenix.free.controller.response.UserHealthInfoResponse;
+import com.phoenix.free.controller.response.WeeklyHealthInfoResponse;
 import com.phoenix.free.service.UserHealthInfoService;
 import com.phoenix.free.util.SessionUtils;
 import io.swagger.annotations.ApiOperation;
@@ -21,8 +22,16 @@ public class UserHealthInfoController {
     @Auth
     @GetMapping("/healthInfo")
     @ApiOperation(value = "查看当前用户健康信息",response = UserHealthInfoResponse.class)
-    public Object getUserAssessInfo(){
+    public Object getUserHealthInfo(){
         Long id = sessionUtils.getUserId();
         return userHealthInfoService.getUserHealthInfo(id);
+    }
+
+    @Auth
+    @GetMapping("/weeklyHealthInfo")
+    @ApiOperation(value = "查看当前用户本周健康信息",response = WeeklyHealthInfoResponse.class)
+    public Object getUserWeeklyHealthInfo(){
+        Long id = sessionUtils.getUserId();
+        return userHealthInfoService.getWeeklyHealthInfo(id);
     }
 }
