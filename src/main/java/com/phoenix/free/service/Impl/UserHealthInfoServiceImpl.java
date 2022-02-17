@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -45,10 +46,12 @@ public class UserHealthInfoServiceImpl implements UserHealthInfoService {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String beginDay = simpleDateFormat.format(DatesUtil.getBeginDayOfWeek());
 
-        List<ExerciseClockIn> exerciseClockInList;
+        List<ExerciseClockIn> exerciseClockInList,weeklyExerciseClockInList;
         exerciseClockInList = exerciseClockInMapper.getExerciseClockInByUserId(userId);
-        List<FoodClockIn> foodClockInList;
+        weeklyExerciseClockInList = new ArrayList<ExerciseClockIn>();
+        List<FoodClockIn> foodClockInList,weeklyFoodClockInList;
         foodClockInList = foodClockInMapper.getFoodClockInByUserId(userId);
+        weeklyFoodClockInList = new ArrayList<FoodClockIn>();
         int exerciseClockInDays = 0;
         int foodClockInDays = 0;
         //TODO 计算运动时长（不同种运动如何相加？） double totalAmount = 0;
@@ -60,17 +63,15 @@ public class UserHealthInfoServiceImpl implements UserHealthInfoService {
         double totalCelluloseIngestion = 0;
 
         for(ExerciseClockIn e : exerciseClockInList) {
-            if(0 > DatesUtil.daysBetween(beginDay, e.getRecordTime()))
-                exerciseClockInList.remove(e);
-            else {
+            if(0 <= DatesUtil.daysBetween(beginDay, e.getRecordTime())){
+                weeklyExerciseClockInList.add(e);
                 exerciseClockInDays += 1;
                 totalConsumption += e.getCurrentCalories();
             }
         }
         for(FoodClockIn f : foodClockInList) {
-            if(0 > DatesUtil.daysBetween(beginDay, f.getRecordTime()))
-                foodClockInList.remove(f);
-            else {
+            if(0 <= DatesUtil.daysBetween(beginDay, f.getRecordTime())) {
+                weeklyFoodClockInList.add(f);
                 foodClockInDays += 1;
                 totalEnergyIngestion += f.getTotalEnergy();
                 totalSugarIngestion += f.getTotalSugar();
@@ -81,8 +82,8 @@ public class UserHealthInfoServiceImpl implements UserHealthInfoService {
         }
 
         WeeklyHealthInfoResponse response = WeeklyHealthInfoResponse.builder()
-                .exerciseClockInList(exerciseClockInList)
-                .foodClockInList(foodClockInList)
+                .exerciseClockInList(weeklyExerciseClockInList)
+                .foodClockInList(weeklyFoodClockInList)
                 .exerciseClockInDays(exerciseClockInDays)
                 .foodClockInDays(foodClockInDays)
                 .totalConsumption(totalConsumption)
