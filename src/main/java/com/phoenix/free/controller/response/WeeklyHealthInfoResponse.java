@@ -23,10 +23,10 @@ public class WeeklyHealthInfoResponse {
     @ApiModelProperty("一周饮食打卡列表")
     private List<FoodClockIn> foodClockInList;
 
-    @ApiModelProperty("坚持运动打卡天数")
+    @ApiModelProperty("坚持运动打卡天数（本周）")
     private int exerciseClockInDays;
 
-    @ApiModelProperty("坚持饮食打卡天数")
+    @ApiModelProperty("坚持饮食打卡天数（本周）")
     private int foodClockInDays;
 
     @ApiModelProperty("总计运动时长")
