@@ -35,7 +35,7 @@ public class FoodRecord extends Record{
     private double targetWater;
 
     @ApiModelProperty("总热量")
-    private double totalHeat;
+    private double totalEnergy;
 
     @ApiModelProperty("总糖分")
     private double totalSugar;

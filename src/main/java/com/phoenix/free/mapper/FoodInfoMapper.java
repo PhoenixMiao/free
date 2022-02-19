@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface FoodInfoMapper extends MyMapper<FoodInfo> {
-    @Insert("INSERT INTO food(name,category,heat,sugar,fat,protein,cellulose,state) VALUES (#{name},#{category},#{heat},#{sugar},#{fat},#{protein},#{cellulose},#{state}); ")
+    @Insert("INSERT INTO food(name,category,energy,sugar,fat,protein,cellulose,state) VALUES (#{name},#{category},#{energy},#{sugar},#{fat},#{protein},#{cellulose},#{state}); ")
     int insertFoodInfo(FoodInfo food);
 
     @Delete("DELETE FROM food WHERE id=#{id};")
