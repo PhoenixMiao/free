@@ -26,6 +26,9 @@ public class ExerciseClockInRequest {
     @ApiModelProperty("图片")
     private String pic;
 
+    @ApiModelProperty("运动时间")
+    private int time;
+
     @ApiModelProperty("运动量")
     private double amount;
 

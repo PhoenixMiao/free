@@ -30,7 +30,7 @@ public class WeeklyHealthInfoResponse {
     private int foodClockInDays;
 
     @ApiModelProperty("总计运动时长")
-    private double totalAmount;
+    private double totalTime;
 
     @ApiModelProperty("总计消耗热量")
     private double totalConsumption;

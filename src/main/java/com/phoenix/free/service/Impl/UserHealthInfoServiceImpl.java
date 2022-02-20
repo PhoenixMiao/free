@@ -55,7 +55,7 @@ public class UserHealthInfoServiceImpl implements UserHealthInfoService {
         weeklyFoodClockInList = new ArrayList<FoodClockIn>();
         int exerciseClockInDays = 0;
         int foodClockInDays = 0;
-        //TODO 计算运动时长（不同种运动如何相加？） double totalAmount = 0;
+        int totalTime = 0;
         double totalConsumption = 0;
         double totalEnergyIngestion = 0;
         double totalSugarIngestion = 0;
@@ -67,6 +67,7 @@ public class UserHealthInfoServiceImpl implements UserHealthInfoService {
             if(0 <= DatesUtil.daysBetween(beginDay, e.getRecordTime())){
                 weeklyExerciseClockInList.add(e);
                 exerciseClockInDays += 1;
+                totalTime += e.getTime();
                 totalConsumption += e.getCurrentCalories();
             }
         }
@@ -87,6 +88,7 @@ public class UserHealthInfoServiceImpl implements UserHealthInfoService {
                 .foodClockInList(weeklyFoodClockInList)
                 .exerciseClockInDays(exerciseClockInDays)
                 .foodClockInDays(foodClockInDays)
+                .totalTime(totalTime)
                 .totalConsumption(totalConsumption)
                 .totalEnergyIngestion(totalEnergyIngestion)
                 .totalSugarIngestion(totalSugarIngestion)
@@ -110,6 +112,7 @@ public class UserHealthInfoServiceImpl implements UserHealthInfoService {
         dailyFoodClockInList = new ArrayList<FoodClockIn>();
         int exerciseClockInDays = 0;
         int foodClockInDays = 0;
+        int totalTime = 0;
         double totalConsumption = 0;
         double totalEnergyIngestion = 0;
         double totalSugarIngestion = 0;
@@ -121,6 +124,7 @@ public class UserHealthInfoServiceImpl implements UserHealthInfoService {
             exerciseClockInDays += 1;
             if(0 == DatesUtil.daysBetween(today, e.getRecordTime())){
                 dailyExerciseClockInList.add(e);
+                totalTime += e.getTime();
                 totalConsumption += e.getCurrentCalories();
             }
         }
@@ -143,6 +147,7 @@ public class UserHealthInfoServiceImpl implements UserHealthInfoService {
                 .foodClockInDays(foodClockInDays)
                 .exerciseClockInList(dailyExerciseClockInList)
                 .foodClockInList(dailyFoodClockInList)
+                .totalTime(totalTime)
                 .totalConsumption(totalConsumption)
                 .totalEnergyIngestion(totalEnergyIngestion)
                 .totalSugarIngestion(totalSugarIngestion)
@@ -154,7 +159,6 @@ public class UserHealthInfoServiceImpl implements UserHealthInfoService {
         return response;
     }
 
-    //计算一日卡路里
     private double calculateCaloriesOfOneDay(Long userId){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String today = simpleDateFormat.format(DatesUtil.getDayBegin());

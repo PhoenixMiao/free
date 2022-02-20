@@ -13,6 +13,9 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @ApiModel("ExerciseClockIn 运动打卡")
 public class ExerciseClockIn extends ClockIn{
+    @ApiModelProperty("运动时间")
+    private int time;
+
     @ApiModelProperty("总计消耗卡路里")
     private double currentCalories;
 

@@ -26,6 +26,7 @@ public class ExerciseClockInServiceImpl implements ExerciseClockInService {
                 .recordTime(exerciseClockInRequest.getRecordTime())
                 .content(exerciseClockInRequest.getContent())
                 .pic(exerciseClockInRequest.getPic())
+                .time(exerciseClockInRequest.getTime())
                 .currentCalories(currentCalories)
                 .exerciseInfoId(exerciseClockInRequest.getExerciseInfoId())
                 .build();

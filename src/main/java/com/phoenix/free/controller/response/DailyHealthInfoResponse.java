@@ -32,6 +32,9 @@ public class DailyHealthInfoResponse {
     @ApiModelProperty("今日步数")
     private int stepCount;
 
+    @ApiModelProperty("今日运动时长")
+    private int totalTime;
+
     @ApiModelProperty("今日消耗热量")
     private double totalConsumption;
 
