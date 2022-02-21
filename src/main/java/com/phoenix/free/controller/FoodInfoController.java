@@ -17,6 +17,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+@RequestMapping("/foodInfo")
 @RestController
 public class FoodInfoController {
     @Autowired
@@ -29,7 +30,7 @@ public class FoodInfoController {
     private UserService userService;
 
     @Auth
-    @PostMapping("/addFoodInfo")
+    @PostMapping("/add")
     @ApiOperation(value = "添加新食物信息",response = String.class)
     public Object addFoodInfo(@NotNull @Valid @RequestBody AddFoodInfoRequest addFoodInfoRequest){
         Long id = sessionUtils.getUserId();
@@ -42,7 +43,7 @@ public class FoodInfoController {
     }
 
     @Auth
-    @GetMapping("/getFoodInfoById/{id}")
+    @GetMapping("/get/id={id}")
     @ApiOperation(value = "按编号查找食物信息",response = FoodInfo.class)
     @ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
     public Object getFoodInfoById(@NotBlank @PathVariable("id") Long id){
@@ -50,7 +51,7 @@ public class FoodInfoController {
     }
 
     @Auth
-    @GetMapping("/getFoodInfoByName/{name}")
+    @GetMapping("/get/name={name}")
     @ApiOperation(value = "按名称查找食物信息",response = FoodInfo.class)
     @ApiImplicitParam(name = "name", value = "name", required = true, paramType = "path")
     public Object getFoodInfoById(@NotBlank @PathVariable("name") String name){
@@ -58,7 +59,7 @@ public class FoodInfoController {
     }
 
     @Auth
-    @GetMapping("/deleteFoodInfoById/{id}")
+    @GetMapping("/delete/id={id}")
     @ApiOperation(value = "按编号删除食物信息",response = String.class)
     @ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
     public Object deleteFoodInfoById(@NotBlank @PathVariable("id") Long id){
@@ -71,7 +72,7 @@ public class FoodInfoController {
     }
 
     @Auth
-    @GetMapping("/deleteFoodInfoByName/{name}")
+    @GetMapping("/delete/name={name}")
     @ApiOperation(value = "按名称删除食物信息",response = String.class)
     @ApiImplicitParam(name = "name", value = "name", required = true, paramType = "path")
     public Object deleteFoodInfoByName(@NotBlank @PathVariable("name") String name){

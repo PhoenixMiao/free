@@ -18,6 +18,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+@RequestMapping("/exerciseInfo")
 @RestController
 public class ExerciseInfoController {
     @Autowired
@@ -30,7 +31,7 @@ public class ExerciseInfoController {
     private UserService userService;
 
     @Auth
-    @PostMapping("/addExerciseInfo")
+    @PostMapping("/add")
     @ApiOperation(value = "添加新运动信息",response = String.class)
     public Object addExerciseInfo(@NotNull @Valid @RequestBody AddExerciseInfoRequest addExerciseInfoRequest){
         Long id = sessionUtils.getUserId();
@@ -43,7 +44,7 @@ public class ExerciseInfoController {
     }
 
     @Auth
-    @GetMapping("/getExerciseInfoById/{id}")
+    @GetMapping("/get/id={id}")
     @ApiOperation(value = "按编号查找运动信息",response = ExerciseInfo.class)
     @ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
     public Object getExerciseInfoById(@NotBlank @PathVariable("id") Long id){
@@ -51,7 +52,7 @@ public class ExerciseInfoController {
     }
 
     @Auth
-    @GetMapping("/getExerciseInfoByName/{name}")
+    @GetMapping("/get/name={name}")
     @ApiOperation(value = "按名称查找运动信息",response = ExerciseInfo.class)
     @ApiImplicitParam(name = "name", value = "name", required = true, paramType = "path")
     public Object getExerciseInfoById(@NotBlank @PathVariable("name") String name){
@@ -59,7 +60,7 @@ public class ExerciseInfoController {
     }
 
     @Auth
-    @GetMapping("/deleteExerciseInfoById/{id}")
+    @GetMapping("/delete/id={id}")
     @ApiOperation(value = "按编号删除运动信息",response = String.class)
     @ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
     public Object deleteExerciseInfoById(@NotBlank @PathVariable("id") Long id){
@@ -72,7 +73,7 @@ public class ExerciseInfoController {
     }
 
     @Auth
-    @GetMapping("/deleteExerciseInfoByName/{name}")
+    @GetMapping("/delete/name={name}")
     @ApiOperation(value = "按名称删除运动信息",response = String.class)
     @ApiImplicitParam(name = "name", value = "name", required = true, paramType = "path")
     public Object deleteExerciseInfoByName(@NotBlank @PathVariable("name") String name){
