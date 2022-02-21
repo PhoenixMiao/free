@@ -59,6 +59,7 @@ public enum CommonErrorCode {
 
 
     DUPLICATE_DATABASE_INFORMATION(3001,"重复的数据库信息","信息添加失败，请重试"),
+    UNAUTHORIZED_OPERATION(3002,"用户越权操作","操作失败，需要管理员权限")
 
     ;
 

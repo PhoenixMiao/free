@@ -5,6 +5,7 @@ import com.phoenix.free.common.CommonErrorCode;
 import com.phoenix.free.controller.request.AddFoodInfoRequest;
 import com.phoenix.free.entity.FoodInfo;
 import com.phoenix.free.service.FoodInfoService;
+import com.phoenix.free.service.UserService;
 import com.phoenix.free.util.AssertUtil;
 import com.phoenix.free.util.SessionUtils;
 import io.swagger.annotations.ApiImplicitParam;
@@ -16,6 +17,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+@RequestMapping("/foodInfo")
 @RestController
 public class FoodInfoController {
     @Autowired
@@ -24,13 +26,16 @@ public class FoodInfoController {
     @Autowired
     private SessionUtils sessionUtils;
 
+    @Autowired
+    private UserService userService;
+
     @Auth
-    @PostMapping("/addFoodInfo")
+    @PostMapping("/add")
     @ApiOperation(value = "添加新食物信息",response = String.class)
     public Object addFoodInfo(@NotNull @Valid @RequestBody AddFoodInfoRequest addFoodInfoRequest){
         Long id = sessionUtils.getUserId();
 
-        //TODO 用户具有管理员权限才能向数据库中添加食物
+        AssertUtil.isTrue((1 == userService.getUserById(id).getIsAdmin()), CommonErrorCode.UNAUTHORIZED_OPERATION, "需要管理员权限");
 
         AssertUtil.isNull(foodInfoService.getFoodInfoByName(addFoodInfoRequest.getName()), CommonErrorCode.DUPLICATE_DATABASE_INFORMATION,"请勿重复添加食物信息");
         foodInfoService.addFoodInfo(addFoodInfoRequest);
@@ -38,7 +43,7 @@ public class FoodInfoController {
     }
 
     @Auth
-    @GetMapping("/getFoodInfoById/{id}")
+    @GetMapping("/get/id={id}")
     @ApiOperation(value = "按编号查找食物信息",response = FoodInfo.class)
     @ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
     public Object getFoodInfoById(@NotBlank @PathVariable("id") Long id){
@@ -46,7 +51,7 @@ public class FoodInfoController {
     }
 
     @Auth
-    @GetMapping("/getFoodInfoByName/{name}")
+    @GetMapping("/get/name={name}")
     @ApiOperation(value = "按名称查找食物信息",response = FoodInfo.class)
     @ApiImplicitParam(name = "name", value = "name", required = true, paramType = "path")
     public Object getFoodInfoById(@NotBlank @PathVariable("name") String name){
@@ -54,24 +59,26 @@ public class FoodInfoController {
     }
 
     @Auth
-    @GetMapping("/deleteFoodInfoById/{id}")
+    @GetMapping("/delete/id={id}")
     @ApiOperation(value = "按编号删除食物信息",response = String.class)
     @ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
     public Object deleteFoodInfoById(@NotBlank @PathVariable("id") Long id){
+        Long userId = sessionUtils.getUserId();
 
-        //TODO 用户具有管理员权限才能从数据库中删除食物信息
+        AssertUtil.isTrue((1 == userService.getUserById(userId).getIsAdmin()), CommonErrorCode.UNAUTHORIZED_OPERATION, "需要管理员权限");
 
         foodInfoService.deleteFoodInfoById(id);
         return "删除成功";
     }
 
     @Auth
-    @GetMapping("/deleteFoodInfoByName/{name}")
+    @GetMapping("/delete/name={name}")
     @ApiOperation(value = "按名称删除食物信息",response = String.class)
     @ApiImplicitParam(name = "name", value = "name", required = true, paramType = "path")
     public Object deleteFoodInfoByName(@NotBlank @PathVariable("name") String name){
+        Long userId = sessionUtils.getUserId();
 
-        //TODO 用户具有管理员权限才能从数据库中删除食物信息
+        AssertUtil.isTrue((1 == userService.getUserById(userId).getIsAdmin()), CommonErrorCode.UNAUTHORIZED_OPERATION, "需要管理员权限");
 
         foodInfoService.deleteFoodInfoByName(name);
         return "删除成功";

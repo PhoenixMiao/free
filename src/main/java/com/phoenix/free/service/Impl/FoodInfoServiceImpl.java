@@ -25,7 +25,7 @@ public class FoodInfoServiceImpl implements FoodInfoService {
                 .name(addFoodInfoRequest.getName())
                 .category(addFoodInfoRequest.getCategory())
                 .pic(addFoodInfoRequest.getPic())
-                .heat(addFoodInfoRequest.getHeat())
+                .energy(addFoodInfoRequest.getEnergy())
                 .fat(addFoodInfoRequest.getFat())
                 .sugar(addFoodInfoRequest.getSugar())
                 .protein(addFoodInfoRequest.getProtein())

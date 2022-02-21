@@ -14,7 +14,7 @@ import lombok.experimental.SuperBuilder;
 @ApiModel("FoodClockIn 饮食打卡")
 public class FoodClockIn extends ClockIn{
     @ApiModelProperty("总热量")
-    private double totalHeat;
+    private double totalEnergy;
 
     @ApiModelProperty("总糖分")
     private double totalSugar;

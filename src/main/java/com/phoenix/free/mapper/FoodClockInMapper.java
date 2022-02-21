@@ -8,7 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface FoodClockInMapper extends MyMapper<FoodClockIn> {
-    @Insert("INSERT INTO food_clock_in(userId,recordTime,content,pic,totalHeat,totalSugar,totalFat,totalProtein,totalCellulose,foodInfoId) VALUES (#{userId},#{recordTime},#{content},#{pic},#{totalHeat},#{totalSugar},#{totalFat},#{totalProtein},#{totalCellulose},#{foodInfoId}); ")
+    @Insert("INSERT INTO food_clock_in(userId,recordTime,content,pic,totalEnergy,totalSugar,totalFat,totalProtein,totalCellulose,foodInfoId) VALUES (#{userId},#{recordTime},#{content},#{pic},#{totalEnergy},#{totalSugar},#{totalFat},#{totalProtein},#{totalCellulose},#{foodInfoId}); ")
     int insertFoodClockIn(FoodClockIn foodClockIn);
 
     @ResultType(FoodClockIn.class)
@@ -21,7 +21,7 @@ public interface FoodClockInMapper extends MyMapper<FoodClockIn> {
             @Result(property="recordTime", column="recordTime"),
             @Result(property="content", column="content"),
             @Result(property="pic", column="pic"),
-            @Result(property="totalHeat", column="totalHeat"),
+            @Result(property="totalEnergy", column="totalEnergy"),
             @Result(property="totalSugar", column="totalSugar"),
             @Result(property="totalFat", column="totalFat"),
             @Result(property="totalProtein", column="totalProtein"),

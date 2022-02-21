@@ -20,7 +20,7 @@ public class FoodClockInServiceImpl implements FoodClockInService {
                 .recordTime(foodClockInRequest.getRecordTime())
                 .content(foodClockInRequest.getContent())
                 .pic(foodClockInRequest.getPic())
-                .totalHeat(foodClockInRequest.getTotalHeat())
+                .totalEnergy(foodClockInRequest.getTotalEnergy())
                 .totalSugar(foodClockInRequest.getTotalSugar())
                 .totalFat(foodClockInRequest.getTotalFat())
                 .totalProtein(foodClockInRequest.getTotalProtein())

@@ -8,7 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface ExerciseClockInMapper extends MyMapper<ExerciseClockIn> {
-    @Insert("INSERT INTO exercise_clock_in(userId,recordTime,content,pic,currentCalories,exerciseInfoId) VALUES (#{userId},#{recordTime},#{content},#{pic},#{currentCalories},#{exerciseInfoId}); ")
+    @Insert("INSERT INTO exercise_clock_in(userId,recordTime,content,pic,time,currentCalories,exerciseInfoId) VALUES (#{userId},#{recordTime},#{content},#{pic},#{time},#{currentCalories},#{exerciseInfoId}); ")
     int insertExerciseClockIn(ExerciseClockIn exerciseClockIn);
 
     @ResultType(ExerciseClockIn.class)
@@ -21,6 +21,7 @@ public interface ExerciseClockInMapper extends MyMapper<ExerciseClockIn> {
             @Result(property="recordTime", column="recordTime"),
             @Result(property="content", column="content"),
             @Result(property="pic", column="pic"),
+            @Result(property="time", column="time"),
             @Result(property="currentCalories", column="currentCalories"),
             @Result(property="exerciseInfoId", column="exerciseInfoId")
     })

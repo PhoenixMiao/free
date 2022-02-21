@@ -41,7 +41,7 @@ public class UserController {
     }
 
     @Auth
-    @PostMapping("/info")
+    @PostMapping("/updateInfo")
     @ApiOperation(value = "更新当前用户信息",response = String.class)
     public Object updateUserById(@NotNull @Valid @RequestBody UpdateUserByIdRequest updateUserByIdRequest){
         Long id = sessionUtils.getUserId();
