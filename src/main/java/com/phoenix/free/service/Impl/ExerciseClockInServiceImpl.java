@@ -21,7 +21,7 @@ public class ExerciseClockInServiceImpl implements ExerciseClockInService {
     private ExerciseInfoMapper exerciseInfoMapper;
 
     public int addExerciseClockIn(ExerciseClockInRequest exerciseClockInRequest, Long userId) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String now = simpleDateFormat.format(new Date());
 
         double currentCalories;

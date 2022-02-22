@@ -17,7 +17,7 @@ public class FoodClockInServiceImpl implements FoodClockInService {
     private FoodClockInMapper foodClockInMapper;
 
     public int addFoodClockIn(FoodClockInRequest foodClockInRequest, Long userId) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String now = simpleDateFormat.format(new Date());
 
         FoodClockIn foodClockIn = FoodClockIn.builder()

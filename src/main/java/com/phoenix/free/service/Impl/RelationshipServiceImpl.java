@@ -21,7 +21,7 @@ public class RelationshipServiceImpl implements RelationshipService {
     public int addNewRelationship(Long userId1, Long userId2) {
         AssertUtil.isTrue(relationshipMapper.getExactRelationship(userId1, userId2) == null, CommonErrorCode.DUPLICATE_DATABASE_INFORMATION, "请勿重复添加搭档关系");
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String now = simpleDateFormat.format(new Date());
 
         Relationship relationship = Relationship.builder()
