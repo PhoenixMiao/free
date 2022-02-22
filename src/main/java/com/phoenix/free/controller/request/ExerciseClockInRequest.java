@@ -17,9 +17,6 @@ public class ExerciseClockInRequest {
      * {@link com.phoenix.free.entity.ExerciseClockIn}
      */
 
-    @ApiModelProperty("记录时间")
-    private String recordTime;
-
     @ApiModelProperty("文字描述")
     private String content;
 

@@ -17,9 +17,6 @@ public class FoodClockInRequest {
      * {@link com.phoenix.free.entity.FoodClockIn}
      */
 
-    @ApiModelProperty("记录时间")
-    private String recordTime;
-
     @ApiModelProperty("文字描述")
     private String content;
 

@@ -7,6 +7,8 @@ import com.phoenix.free.service.FoodClockInService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -15,9 +17,12 @@ public class FoodClockInServiceImpl implements FoodClockInService {
     private FoodClockInMapper foodClockInMapper;
 
     public int addFoodClockIn(FoodClockInRequest foodClockInRequest, Long userId) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String now = simpleDateFormat.format(new Date());
+
         FoodClockIn foodClockIn = FoodClockIn.builder()
                 .userId(userId)
-                .recordTime(foodClockInRequest.getRecordTime())
+                .recordTime(now)
                 .content(foodClockInRequest.getContent())
                 .pic(foodClockInRequest.getPic())
                 .totalEnergy(foodClockInRequest.getTotalEnergy())
