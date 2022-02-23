@@ -26,7 +26,7 @@ public class UserAssessInfoController {
     @ApiOperation(value = "查看当前用户评估信息",response = UserAssessInfoResponse.class)
     public Object getUserAssessInfo(){
         Long id = sessionUtils.getUserId();
-        return userAssessInfoService.getAssessByUserId(0L);
+        return userAssessInfoService.getAssessByUserId(id);
     }
 
     @Auth
