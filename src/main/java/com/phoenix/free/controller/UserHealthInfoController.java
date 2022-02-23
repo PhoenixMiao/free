@@ -27,7 +27,7 @@ public class UserHealthInfoController {
     @ApiOperation(value = "查看当前用户健康信息",response = UserHealthInfoResponse.class)
     public Object getUserHealthInfo(){
         Long id = sessionUtils.getUserId();
-        return userHealthInfoService.getUserHealthInfo(0L);
+        return userHealthInfoService.getUserHealthInfo(id);
     }
 
     @Auth
