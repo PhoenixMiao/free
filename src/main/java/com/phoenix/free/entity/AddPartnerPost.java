@@ -13,9 +13,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @ApiModel("AddPartnerPost 添加搭档帖子")
 public class AddPartnerPost extends Post {
-    @ApiModelProperty("帖子id")
-    private Long postId;
-
     @ApiModelProperty("被请求者id")
     private Long userId2;
 }
