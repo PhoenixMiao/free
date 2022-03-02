@@ -5,11 +5,13 @@ import com.phoenix.free.controller.request.AddPartnerMessageRequest;
 import com.phoenix.free.controller.response.UserAssessInfoResponse;
 import com.phoenix.free.service.AddPartnerMessageService;
 import com.phoenix.free.util.SessionUtils;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -31,9 +33,10 @@ public class AddPartnerMessageController {
     }
 
     @Auth
-    @GetMapping("/refuse")
+    @GetMapping("/refuse/id={id}")
     @ApiOperation(value = "拒绝搭档申请",response = String.class)
-    public Object refuseAddPartnerMessage(Long id){
+    @ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
+    public Object refuseAddPartnerMessage(@NotBlank @PathVariable("id") Long id){
         addPartnerMessageService.deleteAddPartnerMessage(id);
         return "已拒绝申请";
     }
