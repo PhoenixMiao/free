@@ -45,6 +45,8 @@ public class AddPartnerMessageController {
     @PostMapping("/send")
     @ApiOperation(value = "发送搭档申请",response = String.class)
     public Object sendAddPartnerMessage(@NotNull @Valid @RequestBody AddPartnerMessageRequest addPartnerMessageRequest){
+        Long id = sessionUtils.getUserId();
+        addPartnerMessageRequest.setUserId(id);
         addPartnerMessageService.sendAddPartnerMessage(addPartnerMessageRequest);
         return "已发送申请";
     }
