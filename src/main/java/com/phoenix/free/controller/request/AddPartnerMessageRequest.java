@@ -1,6 +1,6 @@
 package com.phoenix.free.controller.request;
 
-import com.phoenix.free.entity.FoodInfo;
+import com.phoenix.free.entity.AddPartnerMessage;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -13,9 +13,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel("AddPartnerPostRequest 发送好友申请")
-public class AddPartnerPostRequest {
+public class AddPartnerMessageRequest {
     /**
-     * {@link com.phoenix.free.entity.AddPartnerPost}
+     * {@link AddPartnerMessage}
      */
 
     @ApiModelProperty("发布者id")

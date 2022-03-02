@@ -11,8 +11,8 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-@ApiModel("AddPartnerPost 添加搭档帖子")
-public class AddPartnerPost extends Post {
+@ApiModel("AddPartnerMessage 添加搭档申请")
+public class AddPartnerMessage extends Post {
     @ApiModelProperty("被请求者id")
     private Long userId2;
 }
