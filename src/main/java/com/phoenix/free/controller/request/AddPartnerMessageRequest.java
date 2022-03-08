@@ -18,7 +18,7 @@ public class AddPartnerMessageRequest {
      * {@link AddPartnerMessage}
      */
 
-    @ApiModelProperty("发布者id")
+    @ApiModelProperty("发布者id(默认是当前用户)")
     private Long userId;
 
     @ApiModelProperty("正文")
