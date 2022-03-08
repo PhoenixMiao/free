@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("AddPartnerPostRequest 发送好友申请")
+@ApiModel("AddPartnerMessageRequest 发送好友申请")
 public class AddPartnerMessageRequest {
     /**
      * {@link AddPartnerMessage}
