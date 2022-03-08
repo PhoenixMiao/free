@@ -33,8 +33,8 @@ public class AddPartnerMessageController {
     }
 
     @Auth
-    @GetMapping("/refuse/id={id}")
-    @ApiOperation(value = "拒绝搭档申请",response = String.class)
+    @GetMapping("/delete/id={id}")
+    @ApiOperation(value = "删除（当前用户收到的）一条搭档申请",response = String.class)
     @ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
     public Object refuseAddPartnerMessage(@NotBlank @PathVariable("id") Long id){
         addPartnerMessageService.deleteAddPartnerMessage(id);
