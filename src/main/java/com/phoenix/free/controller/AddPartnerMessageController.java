@@ -3,6 +3,7 @@ package com.phoenix.free.controller;
 import com.phoenix.free.annotation.Auth;
 import com.phoenix.free.controller.request.AddPartnerMessageRequest;
 import com.phoenix.free.controller.response.UserAssessInfoResponse;
+import com.phoenix.free.entity.AddPartnerMessage;
 import com.phoenix.free.service.AddPartnerMessageService;
 import com.phoenix.free.util.SessionUtils;
 import io.swagger.annotations.ApiImplicitParam;
@@ -37,8 +38,16 @@ public class AddPartnerMessageController {
     @ApiOperation(value = "删除（当前用户收到的）一条搭档申请",response = String.class)
     @ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
     public Object refuseAddPartnerMessage(@NotBlank @PathVariable("id") Long id){
-        addPartnerMessageService.deleteAddPartnerMessage(id);
-        return "已拒绝申请";
+        Long userId = sessionUtils.getUserId();
+        List<AddPartnerMessage> list = addPartnerMessageService.getAddPartnerMessageByUserId(userId);
+        for(AddPartnerMessage m : list){
+            if(m.getId().equals(id)){
+                addPartnerMessageService.deleteAddPartnerMessage(id);
+                return "已拒绝申请";
+            }
+        }
+
+        return "没有找到申请";
     }
 
     @Auth
