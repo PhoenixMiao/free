@@ -1,5 +1,6 @@
 package com.phoenix.free.controller.request;
 
+import com.phoenix.free.entity.FoodClockIn;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -14,7 +15,7 @@ import lombok.NoArgsConstructor;
 @ApiModel("FoodClockInRequest 饮食打卡")
 public class FoodClockInRequest {
     /**
-     * {@link com.phoenix.free.entity.FoodClockIn}
+     * {@link FoodClockIn}
      */
 
     @ApiModelProperty("文字描述")

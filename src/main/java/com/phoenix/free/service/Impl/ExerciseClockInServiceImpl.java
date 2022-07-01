@@ -3,7 +3,7 @@ package com.phoenix.free.service.Impl;
 import com.phoenix.free.controller.request.ExerciseClockInRequest;
 import com.phoenix.free.entity.ExerciseClockIn;
 import com.phoenix.free.mapper.ExerciseClockInMapper;
-import com.phoenix.free.mapper.ExerciseInfoMapper;
+import com.phoenix.free.mapper.ExerciseMapper;
 import com.phoenix.free.service.ExerciseClockInService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,14 +18,14 @@ public class ExerciseClockInServiceImpl implements ExerciseClockInService {
     private ExerciseClockInMapper exerciseClockInMapper;
 
     @Autowired
-    private ExerciseInfoMapper exerciseInfoMapper;
+    private ExerciseMapper exerciseMapper;
 
     public int addExerciseClockIn(ExerciseClockInRequest exerciseClockInRequest, Long userId) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String now = simpleDateFormat.format(new Date());
 
         double currentCalories;
-        currentCalories = exerciseInfoMapper.getExerciseById(exerciseClockInRequest.getExerciseInfoId()).getRatio() * exerciseClockInRequest.getAmount();
+        currentCalories = exerciseMapper.getExerciseById(exerciseClockInRequest.getExerciseInfoId()).getRatio() * exerciseClockInRequest.getAmount();
         ExerciseClockIn exerciseClockIn = ExerciseClockIn.builder()
                 .userId(userId)
                 .recordTime(now)

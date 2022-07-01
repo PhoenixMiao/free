@@ -1,6 +1,6 @@
 package com.phoenix.free.controller.request;
 
-import com.phoenix.free.entity.UserAssessInfo;
+import com.phoenix.free.entity.Assess;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @ApiModel("UpdateUserAssessInfoRequest 更新(新增）用户评估信息")
 public class UpdateUserAssessInfoRequest {
     /**
-     * {@link UserAssessInfo}
+     * {@link Assess}
      */
     @ApiModelProperty("用户id")
     private Long userId;

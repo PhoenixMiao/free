@@ -29,6 +29,9 @@ public class SessionData implements Serializable {
     @ApiModelProperty("用户id")
     private Long id;
 
+    @ApiModelProperty("会话id")
+    private String sessionId;
+
     @ApiModelProperty("创建时间")
     private String createTime;
 
@@ -47,14 +50,14 @@ public class SessionData implements Serializable {
     @ApiModelProperty("头像")
     private String portrait;
 
-    @ApiModelProperty("管理员表示符")
-    private int isAdmin;
-
     @ApiModelProperty("学校")
     private String school;
 
     @ApiModelProperty("个人简介")
     private String introduction;
+
+    @ApiModelProperty("用户类型")
+    private Integer type;
 
 
     public SessionData(User user){
@@ -68,6 +71,7 @@ public class SessionData implements Serializable {
         phone = user.getPhone();
         school = user.getSchool();
         introduction = user.getIntroduction();
-        isAdmin = user.getIsAdmin();
+        sessionId = user.getSessionId();
+        type = user.getType();
     }
 }

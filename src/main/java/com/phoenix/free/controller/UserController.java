@@ -1,21 +1,29 @@
 package com.phoenix.free.controller;
 
 import com.phoenix.free.annotation.Auth;
+import com.phoenix.free.common.CommonException;
+import com.phoenix.free.common.Result;
 import com.phoenix.free.controller.request.UpdateUserByIdRequest;
-import com.phoenix.free.controller.response.UserResponse;
 import com.phoenix.free.dto.SessionData;
+import com.phoenix.free.entity.User;
 import com.phoenix.free.service.UserService;
 import com.phoenix.free.util.SessionUtils;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+@Api("用户相关操作")
 @RestController
+@RequestMapping("/user")
+@Validated
 public class UserController {
 
     @Autowired
@@ -27,25 +35,58 @@ public class UserController {
     @GetMapping("/login/{code}")
     @ApiOperation(value = "登录",response = SessionData.class)
     @ApiImplicitParam(name = "code", value = "code", required = true, paramType = "path")
-    public Object login(@NotBlank @PathVariable("code") String code){
-        return userService.login(code);
+    public Result login(@NotBlank @PathVariable("code") String code){
+        try{
+            return Result.success(userService.login(code));
+        }catch (CommonException e){
+            return Result.result(e.getCommonErrorCode());
+        }
+
     }
 
     @Auth
-    @GetMapping("/info")
-    @ApiOperation(value = "查看当前用户信息",response = UserResponse.class)
-    public Object getUserByIdResponse(){
-        Long id = sessionUtils.getUserId();
-        UserResponse userResponse = userService.getUserById(id);
-        return userResponse;
+    @GetMapping("")
+    @ApiOperation(value = "查看任意用户信息",response = User.class)
+    @ApiImplicitParam(name = "userId", value = "用户id", required = true, paramType = "query", dataType = "Long")
+    public Result getUserByIdResponse(@NotNull @RequestParam("userId")Long userId){
+        try{
+            return Result.success(userService.getUserById(userId));
+        }catch (CommonException e){
+            throw new CommonException(e.getCommonErrorCode());
+        }
     }
 
     @Auth
-    @PostMapping("/updateInfo")
+    @GetMapping("/whoami")
+    @ApiOperation(value = "查看登录用户信息",response = User.class)
+    public Result whoami(){
+        try{
+            return Result.success(sessionUtils.getSessionData());
+        }catch (CommonException e){
+            return Result.result(e.getCommonErrorCode());
+        }
+    }
+
+    @Auth
+    @PostMapping("/update")
     @ApiOperation(value = "更新当前用户信息",response = String.class)
-    public Object updateUserById(@NotNull @Valid @RequestBody UpdateUserByIdRequest updateUserByIdRequest){
-        Long id = sessionUtils.getUserId();
-        userService.updateUserById(updateUserByIdRequest,id);
-        return "操作成功";
+    public Result updateUserById(@NotNull @Valid @RequestBody UpdateUserByIdRequest updateUserByIdRequest){
+        try {
+            return Result.success(userService.updateUserById(updateUserByIdRequest,sessionUtils.getUserId()));
+        }catch (CommonException e){
+            return Result.result(e.getCommonErrorCode());
+        }
+    }
+
+    @Auth
+    @PostMapping(value = "/upload", produces = "application/json")
+    @ApiOperation(value = "上传用户头像")
+    public Object uploadPortrait(MultipartFile file) {
+        try{
+            return Result.success(userService.uploadPortrait(sessionUtils.getUserId(), file));
+        }catch (CommonException e){
+            return Result.result(e.getCommonErrorCode());
+        }
+
     }
 }

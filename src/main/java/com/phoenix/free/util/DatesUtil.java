@@ -1,7 +1,9 @@
 package com.phoenix.free.util;
 
+import org.springframework.stereotype.Component;
+
 import java.sql.Timestamp;
-import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 /*
@@ -226,6 +228,21 @@ public class DatesUtil {
         long date2ms = endDate.getTime();
         return date2ms - date1ms;
     }
+
+    // 两个日期相减得到的小时数
+    public static int hourDiff(String date1, String date2) {
+        SimpleDateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            Date parse1 = mDateFormat.parse(date1);
+            Date parse2 = mDateFormat.parse(date2);
+            long date1ms = parse1.getTime();
+            long date2ms = parse2.getTime();
+            return (int)(Math.round(date2ms - date1ms)/36000000.0);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
  
     // 获取两个日期中的最大日期
     public static Date max(Date beginDate, Date endDate) {
@@ -323,26 +340,6 @@ public class DatesUtil {
         return list;
     }
 
-    /* 日期/时间格式为String类型的情况 */
-    // 比较两个String格式的日期
-    public static int compareDate(String date1, String date2) {
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        try {
-            Date dt1 = df.parse(date1);
-            Date dt2 = df.parse(date2);
-            if (dt1.getTime() > dt2.getTime()) {
-                return 1;
-            } else if (dt1.getTime() < dt2.getTime()) {
-                return -1;
-            } else {
-                return 0;
-            }
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-        return 0;
-    }
-
     //比较两个String格式的日期之间相差的天数
     public static int daysBetween(String date1,String date2){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -362,4 +359,5 @@ public class DatesUtil {
 
         return Integer.parseInt(String.valueOf(between_days));
     }
+ 
 }

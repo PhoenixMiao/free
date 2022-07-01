@@ -38,29 +38,26 @@ public enum CommonErrorCode {
     //微信退款
 
 
-
     USER_NOT_EXIST(2001,"用户不存在","用户不存在"),
     SYSTEM_ERROR(2002,"系统错误","系统错误，请重试"),
     INVALID_SESSION(2006,"会话丢失","登录已失效，请重新登录"),
     SCHOOL_UNAUTHORIZED(2007,"未通过学校认证","尚未进行校园认证，请先认证"),
     INVALID_PICTURE_TYPE(2008,"无效的图片类型（必须是goods或advice）","图片上传出错，请重试"),
-
-
-
-
-
-    TEL_USED_ERROR(1007,"手机号已注册","请前往登录"),
-    VERIFY_FAILED(1008,"验证失败","请重试"),
-    LOGIN_FAILED(1009,"登录失败","用户名或密码错误"),
-    PARAMS_INVALID(1010,"存在有误的参数","请重试"),
-    UNSIGNED_USER(1011,"未注册用户","请前往注册"),
-    INVALID_PHONE(1012,"无效手机号","请输入正确的手机号"),
-
-
-
-    DUPLICATE_DATABASE_INFORMATION(3001,"重复的数据库信息","信息添加失败，请重试"),
-    UNAUTHORIZED_OPERATION(3002,"用户越权操作","操作失败，需要管理员权限")
-
+    TEL_USED_ERROR(2009,"手机号已注册","请前往登录"),
+    VERIFY_FAILED(2010,"验证失败","请重试"),
+    LOGIN_FAILED(2011,"登录失败","用户名或密码错误"),
+    PARAMS_INVALID(2012,"存在有误的参数","请重试"),
+    UNSIGNED_USER(2013,"未注册用户","请前往注册"),
+    INVALID_PHONE(2014,"无效手机号","请输入正确的手机号"),
+    UPDATE_FAIL(2015,"更新失败，出现竞态条件","请稍后重试"),
+    USER_NOT_ADMIN(2016,"用户非管理员","用户非管理员"),
+    NEED_SESSION_ID(2017,"未传入sessionId","请传入会话id"),
+    LOGIN_HAS_OVERDUE(2018,"登录已过期","登录已过期"),
+    SESSION_IS_INVALID(2019,"该session数据库里没有","请在header里key为session处对应有效的sessionId"),
+    DUPLICATE_DATABASE_INFORMATION(2020,"重复的数据库信息","信息添加失败，请重试"),
+    UPLOAD_FILE_FAIL(2021,"上传文件失败","请检查网络状况后稍后重试"),
+    FILENAME_CAN_NOT_BE_NULL(2022,"文件名不能为空","请取一个有后缀的文件名"),
+    EXECUTION_FAIL(2023,"方法执行错误","请稍后重试"),
     ;
 
     /**

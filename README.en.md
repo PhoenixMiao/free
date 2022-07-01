@@ -1,7 +1,7 @@
-# FREE
+# paperSystem
 
 #### Description
-{**When you're done, you can delete the content in this README and update the file with details for others getting started with your repository**}
+大二下数据库实践大作业：论文管理查询系统
 
 #### Software Architecture
 Software architecture description
