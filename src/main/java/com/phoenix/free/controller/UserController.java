@@ -44,7 +44,7 @@ public class UserController {
 
     }
 
-    @Auth
+//    @Auth
     @GetMapping("")
     @ApiOperation(value = "查看任意用户信息",response = User.class)
     @ApiImplicitParam(name = "userId", value = "用户id", required = true, paramType = "query", dataType = "Long")
@@ -56,7 +56,7 @@ public class UserController {
         }
     }
 
-    @Auth
+//    @Auth
     @GetMapping("/whoami")
     @ApiOperation(value = "查看登录用户信息",response = User.class)
     public Result whoami(){
