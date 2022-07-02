@@ -2,14 +2,15 @@ package com.phoenix.free.util;
 
 import com.phoenix.free.common.CommonErrorCode;
 import com.phoenix.free.common.CommonException;
+import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Collection;
 import java.util.Map;
 
 /**
- * @author phoenix
- * @version 2022/1/19 19:21
+ * @author yannis
+ * @version 2020/7/23 0:51
  */
 public class AssertUtil {
 
@@ -38,10 +39,6 @@ public class AssertUtil {
 
     public static void equals(Object obj1, Object obj2, CommonErrorCode resultCode, Object obj) {
         isTrue(obj1 == null ? obj2 == null : obj1.equals(obj2), resultCode, obj);
-    }
-
-    public static void equals(Object obj1, Object obj2, CommonErrorCode resultCode) {
-        isTrue(obj1 == null ? obj2 == null : obj1.equals(obj2), resultCode);
     }
 
     public static void notEquals(Object obj1, Object obj2, CommonErrorCode resultCode, Object obj) {
@@ -108,6 +105,10 @@ public class AssertUtil {
         isTrue(object != null, resultCode, null);
     }
 
+    public static void isNull(Object object, CommonErrorCode resultCode) {
+        isTrue(object == null, resultCode, null);
+    }
+
     public static void notEmpty(Collection collection, CommonErrorCode resultCode, Object obj) {
         isTrue(!CollectionUtils.isEmpty(collection), resultCode, obj);
     }
@@ -142,4 +143,5 @@ public class AssertUtil {
             return true;
         }
     }
+
 }

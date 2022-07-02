@@ -1,5 +1,6 @@
 package com.phoenix.free.entity;
 
+import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -13,21 +14,24 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ApiModel("Exercise 运动")
+@ApiModel("ExerciseInfo 运动信息")
 public class Exercise {
     @Id
+    @TableId(value = "id", type = IdType.AUTO)
     @ApiModelProperty("id")
     private Long id;
 
-    @ApiModelProperty("运动信息")
-    private ExerciseInfo exerciseInfo;
+    @ApiModelProperty("名称")
+    private String name;
 
-    @ApiModelProperty("运动量")
-    private double exerciseAmount;
+    @ApiModelProperty("分类")
+    private int category;
 
-    @ApiModelProperty("消耗量")
-    private double consume;
+    @ApiModelProperty("消耗比")
+    private double ratio;
 
-    @ApiModelProperty("状态")
-    private int state;
+    @Version
+    @TableField(fill = FieldFill.INSERT)
+    @ApiModelProperty("收藏乐观锁组件")
+    private Integer version;
 }

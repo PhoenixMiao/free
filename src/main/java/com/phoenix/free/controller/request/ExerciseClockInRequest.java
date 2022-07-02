@@ -1,5 +1,6 @@
 package com.phoenix.free.controller.request;
 
+import com.phoenix.free.entity.ExerciseClockIn;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -14,7 +15,7 @@ import lombok.NoArgsConstructor;
 @ApiModel("ExerciseClockInRequest 运动打卡")
 public class ExerciseClockInRequest {
     /**
-     * {@link com.phoenix.free.entity.ExerciseClockIn}
+     * {@link ExerciseClockIn}
      */
 
     @ApiModelProperty("文字描述")

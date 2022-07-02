@@ -1,13 +1,13 @@
 package com.phoenix.free.mapper;
 
-import com.phoenix.free.MyMapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.phoenix.free.entity.Relationship;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
 @Mapper
-public interface RelationshipMapper extends MyMapper<Relationship> {
+public interface RelationshipMapper extends BaseMapper<Relationship> {
     @Insert("INSERT INTO relationship(userId1,userId2,recordTime) VALUES (#{userId1},#{userId2},#{recordTime}); ")
     int insertRelationship(Relationship relationship);
 

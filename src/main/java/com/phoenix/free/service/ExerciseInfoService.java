@@ -1,12 +1,12 @@
 package com.phoenix.free.service;
 
 import com.phoenix.free.controller.request.AddExerciseInfoRequest;
-import com.phoenix.free.entity.ExerciseInfo;
+import com.phoenix.free.entity.Exercise;
 
 public interface ExerciseInfoService {
 
-    ExerciseInfo getExerciseInfoById(Long id);
-    ExerciseInfo getExerciseInfoByName(String name);
+    Exercise getExerciseInfoById(Long id);
+    Exercise getExerciseInfoByName(String name);
 
     int addExerciseInfo(AddExerciseInfoRequest addExerciseInfoRequest);
     void deleteExerciseInfoById(Long id);

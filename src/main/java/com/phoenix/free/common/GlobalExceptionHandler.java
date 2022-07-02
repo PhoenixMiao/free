@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
     @Autowired
     private SessionUtils sessionUtil;
 
-    @ExceptionHandler(value = Exception.class)
+    @ExceptionHandler(value = CommonException.class)
     public Result defaultErrorHandler(HttpServletRequest request, Exception e) {
 
         SessionData sessionData = sessionUtil.getSessionData();
