@@ -1,5 +1,6 @@
 package com.phoenix.free.service.Impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.phoenix.free.controller.request.AddFoodInfoRequest;
 import com.phoenix.free.entity.Food;
 import com.phoenix.free.mapper.FoodMapper;
@@ -13,11 +14,16 @@ public class FoodInfoServiceImpl implements FoodInfoService {
     private FoodMapper foodMapper;
 
     public Food getFoodInfoById(Long id) {
-        return foodMapper.getFoodInfoById(id);
+        return foodMapper.selectById(id);
     }
 
     public Food getFoodInfoByName(String name) {
-        return foodMapper.getFoodInfoByName(name);
+        QueryWrapper<Food> wrapper = new QueryWrapper<>();
+        wrapper.select("*")
+                .eq("name", name);
+
+        //return foodMapper.getFoodInfoByName(name);
+        return foodMapper.selectOne(wrapper);
     }
 
     public int addFoodInfo(AddFoodInfoRequest addFoodInfoRequest) {
@@ -32,14 +38,18 @@ public class FoodInfoServiceImpl implements FoodInfoService {
                 .cellulose(addFoodInfoRequest.getCellulose())
                 .state(addFoodInfoRequest.getState())
                 .build();
-        return foodMapper.insertFoodInfo(food);
+        return foodMapper.insert(food);
     }
 
-    public void deleteFoodInfoById(Long id) {
-        foodMapper.deleteFoodInfoById(id);
+    public int deleteFoodInfoById(Long id) {
+        QueryWrapper<Food> wrapper = new QueryWrapper<>();
+        wrapper.eq("id", id);
+        return foodMapper.delete(wrapper);
     }
 
-    public void deleteFoodInfoByName(String name) {
-        foodMapper.deleteFoodInfoByName(name);
+    public int deleteFoodInfoByName(String name) {
+        QueryWrapper<Food> wrapper = new QueryWrapper<>();
+        wrapper.eq("name", name);
+        return foodMapper.delete(wrapper);
     }
 }

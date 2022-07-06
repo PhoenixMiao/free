@@ -6,6 +6,7 @@ import com.phoenix.free.common.Result;
 import com.phoenix.free.controller.request.UpdateUserByIdRequest;
 import com.phoenix.free.dto.SessionData;
 import com.phoenix.free.entity.User;
+import com.phoenix.free.service.Impl.UserServiceImpl;
 import com.phoenix.free.service.UserService;
 import com.phoenix.free.util.SessionUtils;
 import io.swagger.annotations.Api;
@@ -35,7 +36,7 @@ public class UserController {
     @GetMapping("/login/{code}")
     @ApiOperation(value = "登录",response = SessionData.class)
     @ApiImplicitParam(name = "code", value = "code", required = true, paramType = "path")
-    public Result login(@NotBlank @PathVariable("code") String code){
+    public Object login(@NotBlank @PathVariable("code") String code){
         try{
             return Result.success(userService.login(code));
         }catch (CommonException e){
@@ -48,7 +49,7 @@ public class UserController {
     @GetMapping("")
     @ApiOperation(value = "查看任意用户信息",response = User.class)
     @ApiImplicitParam(name = "userId", value = "用户id", required = true, paramType = "query", dataType = "Long")
-    public Result getUserByIdResponse(@NotNull @RequestParam("userId")Long userId){
+    public Object getUserByIdResponse(@NotNull @RequestParam("userId")Long userId){
         try{
             return Result.success(userService.getUserById(userId));
         }catch (CommonException e){
@@ -59,7 +60,7 @@ public class UserController {
 //    @Auth
     @GetMapping("/whoami")
     @ApiOperation(value = "查看登录用户信息",response = User.class)
-    public Result whoami(){
+    public Object whoami(){
         try{
             return Result.success(sessionUtils.getSessionData());
         }catch (CommonException e){
@@ -70,7 +71,7 @@ public class UserController {
     @Auth
     @PostMapping("/update")
     @ApiOperation(value = "更新当前用户信息",response = String.class)
-    public Result updateUserById(@NotNull @Valid @RequestBody UpdateUserByIdRequest updateUserByIdRequest){
+    public Object updateUserById(@NotNull @Valid @RequestBody UpdateUserByIdRequest updateUserByIdRequest){
         try {
             return Result.success(userService.updateUserById(updateUserByIdRequest,sessionUtils.getUserId()));
         }catch (CommonException e){

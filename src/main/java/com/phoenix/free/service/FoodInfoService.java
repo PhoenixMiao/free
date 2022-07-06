@@ -9,7 +9,7 @@ public interface FoodInfoService {
     Food getFoodInfoByName(String name);
 
     int addFoodInfo(AddFoodInfoRequest addFoodInfoRequest);
-    void deleteFoodInfoById(Long id);
-    void deleteFoodInfoByName(String name);
+    int deleteFoodInfoById(Long id);
+    int deleteFoodInfoByName(String name);
 
 }

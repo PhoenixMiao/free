@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication(scanBasePackages = {"com.phoenix.free"})
 @EnableCaching
 @EnableScheduling
-@MapperScan("com.phoenix.free")
+@MapperScan("com.phoenix.free.mapper")
 public class FreeApplication {
 
     public static void main(String[] args) {
