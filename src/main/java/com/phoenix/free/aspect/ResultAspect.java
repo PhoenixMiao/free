@@ -1,7 +1,5 @@
 package com.phoenix.free.aspect;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.phoenix.free.common.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -21,7 +19,7 @@ public class ResultAspect {
             if(Objects.isNull(object) || !object.getClass().equals(Result.class)){
                 object = Result.success(object);
             }
-            return JSON.toJSONString(object, SerializerFeature.WriteMapNullValue);
+            return object;
     }
 }
 

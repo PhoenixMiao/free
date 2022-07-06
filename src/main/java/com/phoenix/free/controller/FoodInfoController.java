@@ -33,15 +33,11 @@ public class FoodInfoController {
     @Autowired
     private UserService userService;
 
-    //@Admin
+    @Admin
     @PostMapping("/add")
     @ApiOperation(value = "添加新食物信息",response = String.class)
     public Object addFoodInfo(@NotNull @Valid @RequestBody AddFoodInfoRequest addFoodInfoRequest){
-        //AssertUtil.isNull(foodInfoService.getFoodInfoByName(addFoodInfoRequest.getName()), CommonErrorCode.DUPLICATE_DATABASE_INFORMATION,"请勿重复添加食物信息");
-        if(!Objects.isNull(foodInfoService.getFoodInfoByName(addFoodInfoRequest.getName()))){
-            throw new CommonException(CommonErrorCode.DUPLICATE_DATABASE_INFORMATION);
-            //return Result.fail(CommonErrorCode.DUPLICATE_DATABASE_INFORMATION, "请勿重复添加食物信息");
-        }
+        AssertUtil.isNull(foodInfoService.getFoodInfoByName(addFoodInfoRequest.getName()), CommonErrorCode.DUPLICATE_DATABASE_INFORMATION,"请勿重复添加食物信息");
         return Result.success(foodInfoService.addFoodInfo(addFoodInfoRequest));
     }
 
