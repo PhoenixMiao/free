@@ -33,7 +33,7 @@ public class FoodInfoController {
     @Autowired
     private UserService userService;
 
-    //@Admin
+    @Admin
     @PostMapping("/add")
     @ApiOperation(value = "添加新食物信息",response = String.class)
     public Object addFoodInfo(@NotNull @Valid @RequestBody AddFoodInfoRequest addFoodInfoRequest){
@@ -45,7 +45,7 @@ public class FoodInfoController {
         return Result.success(foodInfoService.addFoodInfo(addFoodInfoRequest));
     }
 
-//    @Auth
+    @Auth
     @GetMapping("/get/id={id}")
     @ApiOperation(value = "按编号查找食物信息",response = Food.class)
     @ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
@@ -53,7 +53,7 @@ public class FoodInfoController {
         return foodInfoService.getFoodInfoById(id);
     }
 
-//    @Auth
+    @Auth
     @GetMapping("/get/name={name}")
     @ApiOperation(value = "按名称查找食物信息",response = Food.class)
     @ApiImplicitParam(name = "name", value = "name", required = true, paramType = "path")
@@ -61,7 +61,7 @@ public class FoodInfoController {
         return foodInfoService.getFoodInfoByName(name);
     }
 
-    //@Admin
+    @Admin
     @GetMapping("/delete/id={id}")
     @ApiOperation(value = "按编号删除食物信息",response = String.class)
     @ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
@@ -69,7 +69,7 @@ public class FoodInfoController {
         return Result.success(foodInfoService.deleteFoodInfoById(id));
     }
 
-    //@Admin
+    @Admin
     @GetMapping("/delete/name={name}")
     @ApiOperation(value = "按名称删除食物信息",response = String.class)
     @ApiImplicitParam(name = "name", value = "name", required = true, paramType = "path")
