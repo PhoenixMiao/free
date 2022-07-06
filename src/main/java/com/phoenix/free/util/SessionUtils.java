@@ -1,9 +1,9 @@
 package com.phoenix.free.util;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.phoenix.free.common.CommonConstants;
-import com.phoenix.free.common.CommonErrorCode;
-import com.phoenix.free.common.CommonException;
 import com.phoenix.free.dto.SessionData;
+import com.phoenix.free.entity.User;
 import com.phoenix.free.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -40,31 +40,54 @@ public class SessionUtils {
                 .getId();
     }
 
+//    public Integer getUserType(){
+//        return Optional
+//                .ofNullable(getSessionData())
+//                .orElse(new SessionData())
+//                .getType();
+//    }
 
-    public SessionData getSessionData() throws CommonException{
+    public SessionData getSessionData(){
         String key = request.getHeader(CommonConstants.SESSION);
-        if(key == null) throw new CommonException(CommonErrorCode.NEED_SESSION_ID);
-        if(!redisUtil.hasKey(key)) throw new CommonException(CommonErrorCode.SESSION_IS_INVALID);
-        if(redisUtil.isExpire(key)){
-            redisUtil.del(key);
-            throw new CommonException(CommonErrorCode.LOGIN_HAS_OVERDUE);
+        if(key == null)return null;
+
+        SessionData sessionData = null;
+        try {
+            sessionData = (SessionData) redisUtil.get(key);
+        }catch (Exception e){
+            return getSessionDataFromDB(key);
         }
-
-        return (SessionData) redisUtil.get(key);
-
+        if(sessionData != null)return sessionData;
+        return getSessionDataFromDB(key);
     }
 
     public void setSessionId(String sessionId){
         response.setHeader(CommonConstants.SESSION,sessionId);
     }
 
-    public String generateSessionId() {
+    public String generateSessionId(){
         String sessionId = UUID.randomUUID().toString();
-        response.setHeader(CommonConstants.SESSION, sessionId);
+        response.setHeader(CommonConstants.SESSION,sessionId);
         return sessionId;
     }
 
-    public void ChangeContentType(){
-        response.setHeader("Content-Type","application/json");
+    //todo
+    public void invalidate(){
+        request.removeAttribute(CommonConstants.SESSION);
+    }
+
+    private SessionData getSessionDataFromDB(String key) {
+        SessionData sessionData;
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.eq("session_id",key);
+        User user = userMapper.selectOne(userQueryWrapper);
+        if(user != null){
+            sessionData = new SessionData(user);
+            redisUtil.set(key,sessionData);
+            return sessionData;
+        }else{
+            redisUtil.set(key,null,3600);
+            return null;
+        }
     }
 }
