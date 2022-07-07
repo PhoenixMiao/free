@@ -1,13 +1,13 @@
 package com.phoenix.free.mapper;
 
-import com.phoenix.free.MyMapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.phoenix.free.entity.ExerciseClockIn;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
 @Mapper
-public interface ExerciseClockInMapper extends MyMapper<ExerciseClockIn> {
+public interface ExerciseClockInMapper extends BaseMapper<ExerciseClockIn> {
     @Insert("INSERT INTO exercise_clock_in(userId,recordTime,content,pic,time,currentCalories,exerciseInfoId) VALUES (#{userId},#{recordTime},#{content},#{pic},#{time},#{currentCalories},#{exerciseInfoId}); ")
     int insertExerciseClockIn(ExerciseClockIn exerciseClockIn);
 

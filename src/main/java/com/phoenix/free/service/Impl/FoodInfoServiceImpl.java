@@ -1,8 +1,9 @@
 package com.phoenix.free.service.Impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.phoenix.free.controller.request.AddFoodInfoRequest;
-import com.phoenix.free.entity.FoodInfo;
-import com.phoenix.free.mapper.FoodInfoMapper;
+import com.phoenix.free.entity.Food;
+import com.phoenix.free.mapper.FoodMapper;
 import com.phoenix.free.service.FoodInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,18 +11,23 @@ import org.springframework.stereotype.Service;
 @Service
 public class FoodInfoServiceImpl implements FoodInfoService {
     @Autowired
-    private FoodInfoMapper foodInfoMapper;
+    private FoodMapper foodMapper;
 
-    public FoodInfo getFoodInfoById(Long id) {
-        return foodInfoMapper.getFoodInfoById(id);
+    public Food getFoodInfoById(Long id) {
+        return foodMapper.selectById(id);
     }
 
-    public FoodInfo getFoodInfoByName(String name) {
-        return foodInfoMapper.getFoodInfoByName(name);
+    public Food getFoodInfoByName(String name) {
+        QueryWrapper<Food> wrapper = new QueryWrapper<>();
+        wrapper.select("*")
+                .eq("name", name);
+
+        //return foodMapper.getFoodInfoByName(name);
+        return foodMapper.selectOne(wrapper);
     }
 
     public int addFoodInfo(AddFoodInfoRequest addFoodInfoRequest) {
-        FoodInfo food = FoodInfo.builder()
+        Food food = Food.builder()
                 .name(addFoodInfoRequest.getName())
                 .category(addFoodInfoRequest.getCategory())
                 .pic(addFoodInfoRequest.getPic())
@@ -32,14 +38,18 @@ public class FoodInfoServiceImpl implements FoodInfoService {
                 .cellulose(addFoodInfoRequest.getCellulose())
                 .state(addFoodInfoRequest.getState())
                 .build();
-        return foodInfoMapper.insertFoodInfo(food);
+        return foodMapper.insert(food);
     }
 
-    public void deleteFoodInfoById(Long id) {
-        foodInfoMapper.deleteFoodInfoById(id);
+    public int deleteFoodInfoById(Long id) {
+        QueryWrapper<Food> wrapper = new QueryWrapper<>();
+        wrapper.eq("id", id);
+        return foodMapper.delete(wrapper);
     }
 
-    public void deleteFoodInfoByName(String name) {
-        foodInfoMapper.deleteFoodInfoByName(name);
+    public int deleteFoodInfoByName(String name) {
+        QueryWrapper<Food> wrapper = new QueryWrapper<>();
+        wrapper.eq("name", name);
+        return foodMapper.delete(wrapper);
     }
 }

@@ -1,5 +1,6 @@
 package com.phoenix.free.entity;
 
+import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -16,6 +17,7 @@ import javax.persistence.Id;
 @ApiModel("Relationship 搭档关系")
 public class Relationship {
     @Id
+    @TableId(value = "id", type = IdType.AUTO)
     @ApiModelProperty("id")
     private Long id;
 
@@ -27,4 +29,9 @@ public class Relationship {
 
     @ApiModelProperty("确定时间")
     private String recordTime;
+
+    @Version
+    @TableField(fill = FieldFill.INSERT)
+    @ApiModelProperty("收藏乐观锁组件")
+    private Integer version;
 }

@@ -1,5 +1,6 @@
 package com.phoenix.free.util;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.phoenix.free.common.CommonConstants;
 import com.phoenix.free.dto.SessionData;
 import com.phoenix.free.entity.User;
@@ -12,9 +13,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 import java.util.UUID;
 
+
 /**
- * @author phoenix
- * @version 2022/1/19 19:21
+ * @author yannis
+ * @version 2020/8/1 18:38
  */
 @Component
 public class SessionUtils {
@@ -38,16 +40,22 @@ public class SessionUtils {
                 .getId();
     }
 
+//    public Integer getUserType(){
+//        return Optional
+//                .ofNullable(getSessionData())
+//                .orElse(new SessionData())
+//                .getType();
+//    }
+
     public SessionData getSessionData(){
         String key = request.getHeader(CommonConstants.SESSION);
         if(key == null)return null;
 
-        SessionData sessionData;
+        SessionData sessionData = null;
         try {
             sessionData = (SessionData) redisUtil.get(key);
         }catch (Exception e){
             return getSessionDataFromDB(key);
-
         }
         if(sessionData != null)return sessionData;
         return getSessionDataFromDB(key);
@@ -63,7 +71,6 @@ public class SessionUtils {
         return sessionId;
     }
 
-
     //todo
     public void invalidate(){
         request.removeAttribute(CommonConstants.SESSION);
@@ -71,7 +78,9 @@ public class SessionUtils {
 
     private SessionData getSessionDataFromDB(String key) {
         SessionData sessionData;
-        User user = userMapper.selectOne(User.builder().sessionId(key).build());
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.eq("session_id",key);
+        User user = userMapper.selectOne(userQueryWrapper);
         if(user != null){
             sessionData = new SessionData(user);
             redisUtil.set(key,sessionData);

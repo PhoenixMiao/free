@@ -5,10 +5,10 @@ import com.phoenix.free.controller.response.UserHealthInfoResponse;
 import com.phoenix.free.controller.response.WeeklyHealthInfoResponse;
 import com.phoenix.free.entity.ExerciseClockIn;
 import com.phoenix.free.entity.FoodClockIn;
-import com.phoenix.free.entity.UserAssessInfo;
+import com.phoenix.free.entity.Assess;
 import com.phoenix.free.mapper.ExerciseClockInMapper;
 import com.phoenix.free.mapper.FoodClockInMapper;
-import com.phoenix.free.mapper.UserAssessInfoMapper;
+import com.phoenix.free.mapper.AssessMapper;
 import com.phoenix.free.service.UserHealthInfoService;
 import com.phoenix.free.util.DatesUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import java.util.List;
 @Service
 public class UserHealthInfoServiceImpl implements UserHealthInfoService {
     @Autowired
-    private UserAssessInfoMapper userAssessInfoMapper;
+    private AssessMapper assessMapper;
 
     @Autowired
     private ExerciseClockInMapper exerciseClockInMapper;
@@ -30,7 +30,7 @@ public class UserHealthInfoServiceImpl implements UserHealthInfoService {
     private FoodClockInMapper foodClockInMapper;
 
     public UserHealthInfoResponse getUserHealthInfo(Long userId) {
-        UserAssessInfo assessInfo = userAssessInfoMapper.getAssessByUserId(userId);
+        Assess assessInfo = assessMapper.getAssessByUserId(userId);
         //TODO 查看步数
         UserHealthInfoResponse response = UserHealthInfoResponse.builder()
                 .height(assessInfo.getHeight())

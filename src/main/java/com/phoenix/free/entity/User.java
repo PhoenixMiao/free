@@ -1,5 +1,6 @@
 package com.phoenix.free.entity;
 
+import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -16,6 +17,7 @@ import java.io.Serializable;
 @ApiModel("User 用户")
 public class User implements Serializable {
     @Id
+    @TableId(value = "id", type = IdType.AUTO)
     @ApiModelProperty("用户id")
     private Long id;
 
@@ -49,12 +51,18 @@ public class User implements Serializable {
     @ApiModelProperty("头像")
     private String portrait;
 
-    @ApiModelProperty("管理员表示符")
-    private int isAdmin;
-
     @ApiModelProperty("学校")
     private String school;
 
     @ApiModelProperty("个人简介")
     private String introduction;
+
+    @ApiModelProperty("用户类型（0为普通用户，1为管理员）")
+    private Integer type;
+
+    @Version
+    @TableField(fill = FieldFill.INSERT)
+//    @TableField(exist = false)
+    @ApiModelProperty("收藏乐观锁组件")
+    private Integer version;
 }

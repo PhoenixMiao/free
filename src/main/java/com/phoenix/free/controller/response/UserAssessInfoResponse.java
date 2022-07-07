@@ -1,6 +1,6 @@
 package com.phoenix.free.controller.response;
 
-import com.phoenix.free.entity.UserAssessInfo;
+import com.phoenix.free.entity.Assess;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @ApiModel("UserAssessInfoResponse 获取用户评估信息")
 public class UserAssessInfoResponse {
     /**
-     * {@link UserAssessInfo}
+     * {@link Assess}
      */
 
     @ApiModelProperty("身高")

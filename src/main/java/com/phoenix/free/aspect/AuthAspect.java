@@ -29,9 +29,10 @@ public class AuthAspect {
     SessionUtils sessionUtil;
 
     @Around("@annotation(com.phoenix.free.annotation.Auth)")
-    public Object doAroundAdvice(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object doAroundAuth(ProceedingJoinPoint joinPoint) throws Throwable {
 
         SessionData sessionData = sessionUtil.getSessionData();
+
         AssertUtil.notNull(sessionData, CommonErrorCode.INVALID_SESSION);
 
         Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();

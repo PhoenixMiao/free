@@ -29,7 +29,7 @@ public class RedisUtils {
     public boolean expire(String key, long time) {
         try {
             if (time > 0) {
-                redisTemplate.expire(key, time, TimeUnit.SECONDS);
+                redisTemplate.expire(key, time, TimeUnit.MINUTES);
             }
             return true;
         } catch (Exception e) {
@@ -45,8 +45,13 @@ public class RedisUtils {
      * @return 时间(秒) 返回0代表为永久有效
      */
     public long getExpire(String key) {
-        return redisTemplate.getExpire(key, TimeUnit.SECONDS);
+        return redisTemplate.opsForValue().getOperations().getExpire(key);
     }
+
+    public boolean isExpire(String key){
+        return getExpire(key)>1?false:true;
+    }
+
 
     /**
      * 判断key是否存在
@@ -613,6 +618,24 @@ public class RedisUtils {
      */
     public Set<ZSetOperations.TypedTuple> getZSetRank(String key, long start, long end) {
         return redisTemplate.opsForZSet().reverseRangeWithScores(key, start, end);
+    }
+
+    //设置过期时间为时刻
+    public boolean tset(String key, Object value, Long timeMillis){
+
+        Long expire_time = timeMillis - System.currentTimeMillis();
+
+        try {
+            if (expire_time > 0) {
+                redisTemplate.opsForValue().set(key, value, expire_time, TimeUnit.MILLISECONDS);
+            } else {
+                set(key, value);
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 }

@@ -1,8 +1,8 @@
 package com.phoenix.free.service.Impl;
 
 import com.phoenix.free.controller.request.AddExerciseInfoRequest;
-import com.phoenix.free.entity.ExerciseInfo;
-import com.phoenix.free.mapper.ExerciseInfoMapper;
+import com.phoenix.free.entity.Exercise;
+import com.phoenix.free.mapper.ExerciseMapper;
 import com.phoenix.free.service.ExerciseInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,30 +10,30 @@ import org.springframework.stereotype.Service;
 @Service
 public class ExerciseInfoServiceImpl implements ExerciseInfoService {
     @Autowired
-    private ExerciseInfoMapper exerciseInfoMapper;
+    private ExerciseMapper exerciseMapper;
 
-    public ExerciseInfo getExerciseInfoById(Long id) {
-        return exerciseInfoMapper.getExerciseById(id);
+    public Exercise getExerciseInfoById(Long id) {
+        return exerciseMapper.getExerciseById(id);
     }
 
-    public ExerciseInfo getExerciseInfoByName(String name) {
-        return exerciseInfoMapper.getExerciseByName(name);
+    public Exercise getExerciseInfoByName(String name) {
+        return exerciseMapper.getExerciseByName(name);
     }
 
     public int addExerciseInfo(AddExerciseInfoRequest addExerciseInfoRequest) {
-        ExerciseInfo exerciseInfo = ExerciseInfo.builder()
+        Exercise exercise = Exercise.builder()
                 .name(addExerciseInfoRequest.getName())
                 .category(addExerciseInfoRequest.getCategory())
                 .ratio(addExerciseInfoRequest.getRatio())
                 .build();
-        return exerciseInfoMapper.insertExerciseInfo(exerciseInfo);
+        return exerciseMapper.insertExerciseInfo(exercise);
     }
 
     public void deleteExerciseInfoById(Long id) {
-        exerciseInfoMapper.deleteExerciseById(id);
+        exerciseMapper.deleteExerciseById(id);
     }
 
     public void deleteExerciseInfoByName(String name) {
-        exerciseInfoMapper.deleteExerciseByName(name);
+        exerciseMapper.deleteExerciseByName(name);
     }
 }

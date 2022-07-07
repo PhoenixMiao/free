@@ -2,8 +2,8 @@ package com.phoenix.free.service.Impl;
 
 import com.phoenix.free.controller.request.UpdateUserAssessInfoRequest;
 import com.phoenix.free.controller.response.UserAssessInfoResponse;
-import com.phoenix.free.entity.UserAssessInfo;
-import com.phoenix.free.mapper.UserAssessInfoMapper;
+import com.phoenix.free.entity.Assess;
+import com.phoenix.free.mapper.AssessMapper;
 import com.phoenix.free.service.UserAssessInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,15 +11,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserAssessInfoServiceImpl implements UserAssessInfoService {
     @Autowired
-    private UserAssessInfoMapper userAssessInfoMapper;
+    private AssessMapper assessMapper;
 
     public void updateAssessByUserId(UpdateUserAssessInfoRequest updateUserAssessInfoRequest) {
-        if(userAssessInfoMapper.getAssessByUserId(updateUserAssessInfoRequest.getUserId()) == null){
+        if(assessMapper.getAssessByUserId(updateUserAssessInfoRequest.getUserId()) == null){
             //generateNewAssessInfo();
-            userAssessInfoMapper.insertAssessInfo(updateUserAssessInfoRequest);
+            assessMapper.insertAssessInfo(updateUserAssessInfoRequest);
             return ;
         }
-        userAssessInfoMapper.updateAssessByUserId(
+        assessMapper.updateAssessByUserId(
                 updateUserAssessInfoRequest.getHeight(),
                 updateUserAssessInfoRequest.getWeight(),
                 updateUserAssessInfoRequest.getTarget(),
@@ -33,7 +33,7 @@ public class UserAssessInfoServiceImpl implements UserAssessInfoService {
     }
 
     public UserAssessInfoResponse getAssessByUserId(Long userId) {
-        UserAssessInfo info =  userAssessInfoMapper.getAssessByUserId(userId);
+        Assess info =  assessMapper.getAssessByUserId(userId);
         return UserAssessInfoResponse.builder()
                 .height(info.getHeight())
                 .weight(info.getWeight())

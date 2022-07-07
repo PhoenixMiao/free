@@ -49,7 +49,8 @@ public class Food {
     private String state;
 
     @Version
-    @TableField(fill = FieldFill.INSERT)
+//    @TableField(fill = FieldFill.INSERT)
+    @TableField(exist = false)
     @ApiModelProperty("收藏乐观锁组件")
     private Integer version;
 }

@@ -45,6 +45,16 @@ public class Result implements Serializable {
         return m;
     }
 
+    public static Result fail(CommonErrorCode commonErrorCode, String mess) {
+        Result m = new Result();
+        m.setCode(-1);
+        m.setCommonErrorCode(commonErrorCode);
+        m.setData(null);
+        m.setMsg(mess);
+
+        return m;
+    }
+
     public static Result result(CommonErrorCode commonErrorCode, Object data) {
         Result m = new Result();
         m.setCode(-1);

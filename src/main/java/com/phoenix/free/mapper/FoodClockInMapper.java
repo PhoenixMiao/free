@@ -1,13 +1,13 @@
 package com.phoenix.free.mapper;
 
-import com.phoenix.free.MyMapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.phoenix.free.entity.FoodClockIn;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
 @Mapper
-public interface FoodClockInMapper extends MyMapper<FoodClockIn> {
+public interface FoodClockInMapper extends BaseMapper<FoodClockIn> {
     @Insert("INSERT INTO food_clock_in(userId,recordTime,content,pic,totalEnergy,totalSugar,totalFat,totalProtein,totalCellulose,foodInfoId) VALUES (#{userId},#{recordTime},#{content},#{pic},#{totalEnergy},#{totalSugar},#{totalFat},#{totalProtein},#{totalCellulose},#{foodInfoId}); ")
     int insertFoodClockIn(FoodClockIn foodClockIn);
 

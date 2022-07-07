@@ -1,7 +1,10 @@
 package com.phoenix.free.util;
 
+import org.springframework.stereotype.Component;
+
 import java.util.regex.Pattern;
 
+@Component
 public class RegexUtil {
 
     public final static String PHONE_NUMBER = "^[1][3,4,5,7,8][0-9]{9}$";

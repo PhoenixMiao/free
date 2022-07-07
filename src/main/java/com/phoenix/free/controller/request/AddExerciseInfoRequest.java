@@ -1,6 +1,6 @@
 package com.phoenix.free.controller.request;
 
-import com.phoenix.free.entity.ExerciseInfo;
+import com.phoenix.free.entity.Exercise;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @ApiModel("AddExerciseInfoRequest 添加运动信息")
 public class AddExerciseInfoRequest {
     /**
-     * {@link ExerciseInfo}
+     * {@link Exercise}
      */
 
     @ApiModelProperty("名称")

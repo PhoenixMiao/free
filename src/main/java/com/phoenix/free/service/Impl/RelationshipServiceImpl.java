@@ -18,18 +18,25 @@ public class RelationshipServiceImpl implements RelationshipService {
     @Autowired
     private RelationshipMapper relationshipMapper;
 
-    public int addNewRelationship(Long userId1, Long userId2) {
+    public Long addNewRelationship(Long userId1, Long userId2) {
         AssertUtil.isTrue(relationshipMapper.getExactRelationship(userId1, userId2) == null, CommonErrorCode.DUPLICATE_DATABASE_INFORMATION, "请勿重复添加搭档关系");
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String now = simpleDateFormat.format(new Date());
-
         Relationship relationship = Relationship.builder()
                 .userId1(userId1)
                 .userId2(userId2)
                 .recordTime(now)
                 .build();
-        return relationshipMapper.insertRelationship(relationship);
+
+        relationshipMapper.insert(relationship);
+
+//        relationshipMapper.insert(Relationship.builder()
+//                .userId1(userId1)
+//                .userId2(userId2)
+//                .recordTime(now)
+//                .build());
+        return relationship.getId();
     }
 
     public void deleteRelationship(Long userId1, Long userId2) {

@@ -2,6 +2,7 @@ package com.phoenix.free.util;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import java.util.Map;
  * @author yannis
  * @version 2020/8/1 13:17
  */
+@Component
 public class JsonUtil {
 
     /**
