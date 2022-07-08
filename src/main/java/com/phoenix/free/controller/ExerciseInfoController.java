@@ -3,6 +3,7 @@ package com.phoenix.free.controller;
 import com.phoenix.free.annotation.Admin;
 import com.phoenix.free.annotation.Auth;
 import com.phoenix.free.common.CommonErrorCode;
+import com.phoenix.free.common.Result;
 import com.phoenix.free.controller.request.AddExerciseInfoRequest;
 import com.phoenix.free.entity.Exercise;
 import com.phoenix.free.service.ExerciseInfoService;
@@ -35,8 +36,7 @@ public class ExerciseInfoController {
     @ApiOperation(value = "添加新运动信息",response = String.class)
     public Object addExerciseInfo(@NotNull @Valid @RequestBody AddExerciseInfoRequest addExerciseInfoRequest){
         AssertUtil.isNull(exerciseInfoService.getExerciseInfoByName(addExerciseInfoRequest.getName()), CommonErrorCode.DUPLICATE_DATABASE_INFORMATION,"请勿重复添加运动信息");
-        exerciseInfoService.addExerciseInfo(addExerciseInfoRequest);
-        return "添加成功";
+        return Result.success(exerciseInfoService.addExerciseInfo(addExerciseInfoRequest));
     }
 
     @Auth
@@ -44,7 +44,7 @@ public class ExerciseInfoController {
     @ApiOperation(value = "按编号查找运动信息",response = Exercise.class)
     @ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
     public Object getExerciseInfoById(@NotBlank @PathVariable("id") Long id){
-        return exerciseInfoService.getExerciseInfoById(id);
+        return Result.success(exerciseInfoService.getExerciseInfoById(id));
     }
 
     @Auth
@@ -52,7 +52,7 @@ public class ExerciseInfoController {
     @ApiOperation(value = "按名称查找运动信息",response = Exercise.class)
     @ApiImplicitParam(name = "name", value = "name", required = true, paramType = "path")
     public Object getExerciseInfoById(@NotBlank @PathVariable("name") String name){
-        return exerciseInfoService.getExerciseInfoByName(name);
+        return Result.success(exerciseInfoService.getExerciseInfoByName(name));
     }
 
     @Admin
@@ -60,8 +60,7 @@ public class ExerciseInfoController {
     @ApiOperation(value = "按编号删除运动信息",response = String.class)
     @ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
     public Object deleteExerciseInfoById(@NotBlank @PathVariable("id") Long id){
-        exerciseInfoService.deleteExerciseInfoById(id);
-        return "删除成功";
+        return Result.success(exerciseInfoService.deleteExerciseInfoById(id));
     }
 
     @Admin
@@ -69,7 +68,6 @@ public class ExerciseInfoController {
     @ApiOperation(value = "按名称删除运动信息",response = String.class)
     @ApiImplicitParam(name = "name", value = "name", required = true, paramType = "path")
     public Object deleteExerciseInfoByName(@NotBlank @PathVariable("name") String name){
-        exerciseInfoService.deleteExerciseInfoByName(name);
-        return "删除成功";
+        return Result.success(exerciseInfoService.deleteExerciseInfoByName(name));
     }
 }

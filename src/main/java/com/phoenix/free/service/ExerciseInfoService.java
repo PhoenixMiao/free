@@ -9,6 +9,6 @@ public interface ExerciseInfoService {
     Exercise getExerciseInfoByName(String name);
 
     int addExerciseInfo(AddExerciseInfoRequest addExerciseInfoRequest);
-    void deleteExerciseInfoById(Long id);
-    void deleteExerciseInfoByName(String name);
+    int deleteExerciseInfoById(Long id);
+    int deleteExerciseInfoByName(String name);
 }
