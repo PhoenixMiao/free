@@ -296,3 +296,9 @@ com.phoenix.free.common.CommonException
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
 	at java.lang.Thread.run(Thread.java:748)
 
+2022-07-10 21:31:23.977 [http-nio-8082-exec-10] ERROR com.phoenix.free.aspect.AuthAspect - ------------
+2022-07-10 21:31:23.978 [http-nio-8082-exec-10] ERROR com.phoenix.free.aspect.AuthAspect - operator: 1
+2022-07-10 21:31:23.979 [http-nio-8082-exec-10] ERROR com.phoenix.free.aspect.AuthAspect - operation: uploadPortrait
+2022-07-10 21:37:49.219 [http-nio-8082-exec-1] ERROR com.phoenix.free.aspect.AuthAspect - ------------
+2022-07-10 21:37:49.220 [http-nio-8082-exec-1] ERROR com.phoenix.free.aspect.AuthAspect - operator: 1
+2022-07-10 21:37:49.220 [http-nio-8082-exec-1] ERROR com.phoenix.free.aspect.AuthAspect - operation: uploadPortrait

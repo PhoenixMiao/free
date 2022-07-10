@@ -300,3 +300,14 @@ com.phoenix.free.common.CommonException
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
 	at java.lang.Thread.run(Thread.java:748)
 
+2022-07-10 21:17:24.842 [main] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.phoenix.paper.mapper]' package. Please check your configuration.
+2022-07-10 21:17:31.093 [main] WARN  o.a.r.s.autoconfigure.RocketMQAutoConfiguration - The necessary spring property 'rocketmq.name-server' is not defined, all rockertmq beans creation are skipped!
+2022-07-10 21:31:16.961 [http-nio-8082-exec-8] WARN  o.s.w.s.m.support.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' not supported]
+2022-07-10 21:31:23.977 [http-nio-8082-exec-10] ERROR com.phoenix.free.aspect.AuthAspect - ------------
+2022-07-10 21:31:23.978 [http-nio-8082-exec-10] ERROR com.phoenix.free.aspect.AuthAspect - operator: 1
+2022-07-10 21:31:23.979 [http-nio-8082-exec-10] ERROR com.phoenix.free.aspect.AuthAspect - operation: uploadPortrait
+2022-07-10 21:37:17.510 [main] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.phoenix.paper.mapper]' package. Please check your configuration.
+2022-07-10 21:37:23.484 [main] WARN  o.a.r.s.autoconfigure.RocketMQAutoConfiguration - The necessary spring property 'rocketmq.name-server' is not defined, all rockertmq beans creation are skipped!
+2022-07-10 21:37:49.219 [http-nio-8082-exec-1] ERROR com.phoenix.free.aspect.AuthAspect - ------------
+2022-07-10 21:37:49.220 [http-nio-8082-exec-1] ERROR com.phoenix.free.aspect.AuthAspect - operator: 1
+2022-07-10 21:37:49.220 [http-nio-8082-exec-1] ERROR com.phoenix.free.aspect.AuthAspect - operation: uploadPortrait

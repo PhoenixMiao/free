@@ -24,8 +24,8 @@ public class ExerciseClockInServiceImpl implements ExerciseClockInService {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String now = simpleDateFormat.format(new Date());
 
-        double currentCalories;
-        currentCalories = exerciseMapper.getExerciseById(exerciseClockInRequest.getExerciseInfoId()).getRatio() * exerciseClockInRequest.getAmount();
+        double currentCalories = 0;
+//        currentCalories = exerciseMapper.getExerciseById(exerciseClockInRequest.getExerciseInfoId()).getRatio() * exerciseClockInRequest.getAmount();
         ExerciseClockIn exerciseClockIn = ExerciseClockIn.builder()
                 .userId(userId)
                 .recordTime(now)
