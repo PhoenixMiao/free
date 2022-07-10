@@ -1,5 +1,6 @@
 package com.phoenix.free.service.Impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.phoenix.free.controller.request.AddExerciseInfoRequest;
 import com.phoenix.free.entity.Exercise;
 import com.phoenix.free.mapper.ExerciseMapper;
@@ -13,11 +14,14 @@ public class ExerciseInfoServiceImpl implements ExerciseInfoService {
     private ExerciseMapper exerciseMapper;
 
     public Exercise getExerciseInfoById(Long id) {
-        return exerciseMapper.getExerciseById(id);
+        return exerciseMapper.selectById(id);
     }
 
     public Exercise getExerciseInfoByName(String name) {
-        return exerciseMapper.getExerciseByName(name);
+        QueryWrapper<Exercise> wrapper = new QueryWrapper<>();
+        wrapper.select("*")
+                .eq("name", name);
+        return exerciseMapper.selectOne(wrapper);
     }
 
     public int addExerciseInfo(AddExerciseInfoRequest addExerciseInfoRequest) {
@@ -26,14 +30,18 @@ public class ExerciseInfoServiceImpl implements ExerciseInfoService {
                 .category(addExerciseInfoRequest.getCategory())
                 .ratio(addExerciseInfoRequest.getRatio())
                 .build();
-        return exerciseMapper.insertExerciseInfo(exercise);
+        return exerciseMapper.insert(exercise);
     }
 
-    public void deleteExerciseInfoById(Long id) {
-        exerciseMapper.deleteExerciseById(id);
+    public int deleteExerciseInfoById(Long id) {
+        QueryWrapper<Exercise> wrapper = new QueryWrapper<>();
+        wrapper.eq("id", id);
+        return exerciseMapper.delete(wrapper);
     }
 
-    public void deleteExerciseInfoByName(String name) {
-        exerciseMapper.deleteExerciseByName(name);
+    public int deleteExerciseInfoByName(String name) {
+        QueryWrapper<Exercise> wrapper = new QueryWrapper<>();
+        wrapper.eq("name", name);
+        return exerciseMapper.delete(wrapper);
     }
 }
