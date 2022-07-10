@@ -146,7 +146,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public String uploadPortrait(Long userId, MultipartFile multipartFile) throws CommonException{
 
-        User user = userMapper.selectById(userId);
+        User user = userMapper.selectById(1l);
         String portrait = user.getPortrait();
 
         try{

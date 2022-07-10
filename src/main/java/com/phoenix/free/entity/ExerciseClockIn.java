@@ -1,7 +1,6 @@
 package com.phoenix.free.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
-import com.phoenix.free.dto.ClockIn;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;

@@ -8,10 +8,8 @@ import com.phoenix.free.service.FoodClockInService;
 import com.phoenix.free.util.SessionUtils;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -38,13 +36,13 @@ public class ClockInController {
         return "打卡成功";
     }
 
-    @Auth
+    //@Auth
     @PostMapping("/food")
     @ApiOperation(value = "饮食打卡",response = String.class)
-    public Object addFoodClockIn(@NotNull @Valid @RequestBody FoodClockInRequest foodClockInRequest){
+    public Object addFoodClockIn(@RequestPart("file") MultipartFile file, @RequestPart("request") FoodClockInRequest foodClockInRequest){
         Long id = sessionUtils.getUserId();
-
-        foodClockInService.addFoodClockIn(foodClockInRequest, id);
-        return "打卡成功";
+        foodClockInRequest.setPic(file);
+        return foodClockInService.addFoodClockIn(foodClockInRequest, id);
     }
+
 }

@@ -6,7 +6,7 @@ import com.phoenix.free.entity.FoodClockIn;
 import java.util.List;
 
 public interface FoodClockInService {
-    int addFoodClockIn(FoodClockInRequest foodClockInRequest, Long userId);
+    Long addFoodClockIn(FoodClockInRequest foodClockInRequest, Long userId);
 
     FoodClockIn getFoodClockInById(Long id);
     List<FoodClockIn> getFoodClockInByUserId(Long userId);
