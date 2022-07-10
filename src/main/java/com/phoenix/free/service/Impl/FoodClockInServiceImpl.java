@@ -24,6 +24,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import static com.phoenix.free.common.CommonConstants.COS_BUCKET_NAME;
 
@@ -42,41 +43,42 @@ public class FoodClockInServiceImpl implements FoodClockInService {
     private COSClient cosClient;
 
     public Long addFoodClockIn(FoodClockInRequest foodClockInRequest, Long userId) {
-        User user = userMapper.selectById(1l);
+        User user = userMapper.selectById(userId);
+        String url = null;
+
         AssertUtil.notNull(user, CommonErrorCode.USER_NOT_EXIST);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String now = simpleDateFormat.format(new Date());
 
-        ObjectMetadata objectMetadata = new ObjectMetadata();
-        MultipartFile file = foodClockInRequest.getPic();
-        objectMetadata.setContentLength(file.getSize());
+        // 如果需要上传图片
+        if(!Objects.isNull(foodClockInRequest.getPic())){
+            ObjectMetadata objectMetadata = new ObjectMetadata();
+            MultipartFile file = foodClockInRequest.getPic();
+            objectMetadata.setContentLength(file.getSize());
 
-        UploadResult uploadResult = null;
-        String url = null;
+            UploadResult uploadResult = null;
 
-        try {
+            try {
 
-            String name = file.getOriginalFilename();
-            AssertUtil.notNull(name, CommonErrorCode.FILENAME_CAN_NOT_BE_NULL);
-            String extension = name.substring(name.lastIndexOf("."));
-            // key = userSessionId/foodClockIn/yyyy-MM-dd_HH:mm:ss
-            String key = user.getSessionId() + "/foodClockIn/" + now.replace(" ", "_");
+                String name = file.getOriginalFilename();
+                AssertUtil.notNull(name, CommonErrorCode.FILENAME_CAN_NOT_BE_NULL);
+                String extension = name.substring(name.lastIndexOf("."));
+                // key : userSessionId/foodClockIn/yyyy-MM-dd_HH_mm_ss
+                String key = user.getSessionId() + "/foodClockIn/" + now.replace(" ", "_").replace(":", "_");
 
-            PutObjectRequest putObjectRequest = new PutObjectRequest(COS_BUCKET_NAME, key + extension, file.getInputStream(), objectMetadata);
+                PutObjectRequest putObjectRequest = new PutObjectRequest(COS_BUCKET_NAME, key + extension, file.getInputStream(), objectMetadata);
 
-            // 高级接口会返回一个异步结果Upload
-            // 可同步地调用 waitForUploadResult 方法等待上传完成，成功返回UploadResult, 失败抛出异常
-            Upload upload = transferManager.upload(putObjectRequest);
-            uploadResult = upload.waitForUploadResult();
+                // 高级接口会返回一个异步结果Upload
+                // 可同步地调用 waitForUploadResult 方法等待上传完成，成功返回UploadResult, 失败抛出异常
+                Upload upload = transferManager.upload(putObjectRequest);
+                uploadResult = upload.waitForUploadResult();
 
-//            File pic = new File("C:\\Users\\HEXD0\\Pictures\\test.jpg");
-//            PutObjectRequest putObjectRequest = new PutObjectRequest(COS_BUCKET_NAME, key + extension, pic);
-//            cosClient.putObject(putObjectRequest);
-            url =  cosClient.getObjectUrl(COS_BUCKET_NAME,key).toString() + extension;
+                url =  cosClient.getObjectUrl(COS_BUCKET_NAME,key).toString() + extension;
 
-        } catch (Exception e){
-            //e.printStackTrace();
-            throw new CommonException(CommonErrorCode.UPLOAD_FILE_FAIL);
+            } catch (Exception e){
+                //e.printStackTrace();
+                throw new CommonException(CommonErrorCode.UPLOAD_FILE_FAIL);
+            }
         }
 
         FoodClockIn foodClockIn = FoodClockIn.builder()
