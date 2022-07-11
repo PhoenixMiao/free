@@ -6,7 +6,7 @@ import com.phoenix.free.entity.ExerciseClockIn;
 import java.util.List;
 
 public interface ExerciseClockInService {
-    int addExerciseClockIn(ExerciseClockInRequest exerciseClockInRequest, Long userId);
+    Long addExerciseClockIn(ExerciseClockInRequest exerciseClockInRequest, Long userId);
 
     ExerciseClockIn getExerciseClockInById(Long id);
     List<ExerciseClockIn> getExerciseClockInByUserId(Long userId);

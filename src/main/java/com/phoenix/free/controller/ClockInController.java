@@ -30,11 +30,15 @@ public class ClockInController {
     @Auth
     @PostMapping("/exercise")
     @ApiOperation(value = "运动打卡",response = String.class)
-    public Object addExerciseClockIn(@NotNull @Valid @RequestBody ExerciseClockInRequest exerciseClockInRequest){
+    public Object addExerciseClockIn(@RequestPart("file") MultipartFile file, @RequestPart("request") ExerciseClockInRequest exerciseClockInRequest){
         Long id = sessionUtils.getUserId();
-
-        exerciseClockInService.addExerciseClockIn(exerciseClockInRequest, id);
-        return "打卡成功";
+        if(!file.getOriginalFilename().isEmpty()){
+            exerciseClockInRequest.setPic(file);
+        }
+        else{
+            exerciseClockInRequest.setPic(null);
+        }
+        return exerciseClockInService.addExerciseClockIn(exerciseClockInRequest, id);
     }
 
     @Auth
@@ -42,7 +46,7 @@ public class ClockInController {
     @ApiOperation(value = "饮食打卡",response = String.class)
     public Object addFoodClockIn(@RequestPart("file") MultipartFile file, @RequestPart("request") FoodClockInRequest foodClockInRequest){
         Long id = sessionUtils.getUserId();
-        if(StringUtils.hasText(file.getName()) && !file.getName().equals("file")){
+        if(!file.getOriginalFilename().isEmpty()){
             foodClockInRequest.setPic(file);
         }
         else{
