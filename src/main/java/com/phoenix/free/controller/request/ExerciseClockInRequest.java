@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @Builder
@@ -21,8 +22,8 @@ public class ExerciseClockInRequest {
     @ApiModelProperty("文字描述")
     private String content;
 
-    @ApiModelProperty("图片")
-    private String pic;
+    @ApiModelProperty("图片文件(上传时留空)")
+    private MultipartFile pic;
 
     @ApiModelProperty("运动时间")
     private int time;

@@ -8,10 +8,9 @@ import com.phoenix.free.service.FoodClockInService;
 import com.phoenix.free.util.SessionUtils;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -31,20 +30,29 @@ public class ClockInController {
     @Auth
     @PostMapping("/exercise")
     @ApiOperation(value = "运动打卡",response = String.class)
-    public Object addExerciseClockIn(@NotNull @Valid @RequestBody ExerciseClockInRequest exerciseClockInRequest){
+    public Object addExerciseClockIn(@RequestPart("file") MultipartFile file, @RequestPart("request") ExerciseClockInRequest exerciseClockInRequest){
         Long id = sessionUtils.getUserId();
-
-        exerciseClockInService.addExerciseClockIn(exerciseClockInRequest, id);
-        return "打卡成功";
+        if(!file.getOriginalFilename().isEmpty()){
+            exerciseClockInRequest.setPic(file);
+        }
+        else{
+            exerciseClockInRequest.setPic(null);
+        }
+        return exerciseClockInService.addExerciseClockIn(exerciseClockInRequest, id);
     }
 
     @Auth
     @PostMapping("/food")
     @ApiOperation(value = "饮食打卡",response = String.class)
-    public Object addFoodClockIn(@NotNull @Valid @RequestBody FoodClockInRequest foodClockInRequest){
+    public Object addFoodClockIn(@RequestPart("file") MultipartFile file, @RequestPart("request") FoodClockInRequest foodClockInRequest){
         Long id = sessionUtils.getUserId();
-
-        foodClockInService.addFoodClockIn(foodClockInRequest, id);
-        return "打卡成功";
+        if(!file.getOriginalFilename().isEmpty()){
+            foodClockInRequest.setPic(file);
+        }
+        else{
+            foodClockInRequest.setPic(null);
+        }
+        return foodClockInService.addFoodClockIn(foodClockInRequest, id);
     }
+
 }

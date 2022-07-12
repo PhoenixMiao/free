@@ -58,6 +58,7 @@ public enum CommonErrorCode {
     UPLOAD_FILE_FAIL(2021,"上传文件失败","请检查网络状况后稍后重试"),
     FILENAME_CAN_NOT_BE_NULL(2022,"文件名不能为空","请取一个有后缀的文件名"),
     EXECUTION_FAIL(2023,"方法执行错误","请稍后重试"),
+    DATA_NOT_EXISTS(2024, "无效的数据库信息", "数据库查询失败"),
     ;
 
     /**
