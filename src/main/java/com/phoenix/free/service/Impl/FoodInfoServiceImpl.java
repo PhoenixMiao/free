@@ -8,6 +8,8 @@ import com.phoenix.free.service.FoodInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class FoodInfoServiceImpl implements FoodInfoService {
     @Autowired
@@ -21,9 +23,17 @@ public class FoodInfoServiceImpl implements FoodInfoService {
         QueryWrapper<Food> wrapper = new QueryWrapper<>();
         wrapper.select("*")
                 .eq("name", name);
-
-        //return foodMapper.getFoodInfoByName(name);
         return foodMapper.selectOne(wrapper);
+    }
+
+    @Override
+    public List<Food> searchFoodInfo(String name, int page) {
+        QueryWrapper<Food> wrapper = new QueryWrapper<>();
+        String offset = String.valueOf(page * 15);
+        wrapper.select("*")
+                .like("name", name)
+                .last("LIMIT 15 OFFSET " + offset);
+        return foodMapper.selectList(wrapper);
     }
 
     public int addFoodInfo(AddFoodInfoRequest addFoodInfoRequest) {
