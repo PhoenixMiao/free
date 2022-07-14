@@ -29,7 +29,7 @@ public class ClockInController {
 
     @Auth
     @PostMapping("/exercise")
-    @ApiOperation(value = "运动打卡",response = String.class)
+    @ApiOperation(value = "运动打卡",response = Long.class)
     public Object addExerciseClockIn(@RequestParam("file") MultipartFile file, ExerciseClockInRequest exerciseClockInRequest){
         Long id = sessionUtils.getUserId();
         if(!file.getOriginalFilename().isEmpty()){
@@ -43,7 +43,7 @@ public class ClockInController {
 
     @Auth
     @PostMapping("/food")
-    @ApiOperation(value = "饮食打卡",response = String.class)
+    @ApiOperation(value = "饮食打卡",response = Long.class)
     public Object addFoodClockIn(@RequestParam("file") MultipartFile file, FoodClockInRequest foodClockInRequest){
         Long id = sessionUtils.getUserId();
         if(!file.getOriginalFilename().isEmpty()){
