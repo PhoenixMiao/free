@@ -1,21 +1,21 @@
 package com.phoenix.free.service.Impl;
 
-import com.phoenix.free.controller.response.DailyHealthInfoResponse;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.phoenix.free.controller.response.RecordResponse;
 import com.phoenix.free.controller.response.UserHealthInfoResponse;
-import com.phoenix.free.controller.response.WeeklyHealthInfoResponse;
 import com.phoenix.free.entity.ExerciseClockIn;
 import com.phoenix.free.entity.FoodClockIn;
-import com.phoenix.free.entity.Assess;
+import com.phoenix.free.entity.Plan;
 import com.phoenix.free.mapper.ExerciseClockInMapper;
 import com.phoenix.free.mapper.FoodClockInMapper;
 import com.phoenix.free.mapper.AssessMapper;
+import com.phoenix.free.mapper.PlanMapper;
 import com.phoenix.free.service.UserHealthInfoService;
 import com.phoenix.free.util.DatesUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,32 +29,52 @@ public class UserHealthInfoServiceImpl implements UserHealthInfoService {
     @Autowired
     private FoodClockInMapper foodClockInMapper;
 
+    @Autowired
+    private PlanMapper planMapper;
+
+    @Override
     public UserHealthInfoResponse getUserHealthInfo(Long userId) {
-        Assess assessInfo = assessMapper.getAssessByUserId(userId);
-        //TODO 查看步数
-        UserHealthInfoResponse response = UserHealthInfoResponse.builder()
-                .height(assessInfo.getHeight())
-                .weight(assessInfo.getWeight())
-                .bmi(assessInfo.getWeight() / (assessInfo.getHeight() * assessInfo.getHeight()))
-                .target(assessInfo.getTarget())
-                .calories(calculateCaloriesOfOneDay(userId))
-                .build();
-
-        return response;
+//        Assess assessInfo = assessMapper.getAssessByUserId(userId);
+//
+//        UserHealthInfoResponse response = UserHealthInfoResponse.builder()
+//                .height(assessInfo.getHeight())
+//                .weight(assessInfo.getWeight())
+//                .bmi(assessInfo.getWeight() / (assessInfo.getHeight() * assessInfo.getHeight()))
+//                .target(assessInfo.getTarget())
+//                .calories(calculateCaloriesOfOneDay(userId))
+//                .build();
+//
+//        return response;
+        return null;
     }
 
-    public WeeklyHealthInfoResponse getWeeklyHealthInfo(Long userId) {
+    @Override
+    public RecordResponse getRecord(Long userId, boolean isOneDay) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String beginDay = simpleDateFormat.format(DatesUtil.getBeginDayOfWeek());
+        String beginDay;
+        if(isOneDay){
+            beginDay = simpleDateFormat.format(DatesUtil.getDayBegin());
+        }
+        else {
+            beginDay = simpleDateFormat.format(DatesUtil.getBeginDayOfWeek());
+        }
+        String endDay = simpleDateFormat.format(DatesUtil.getBeginDayOfTomorrow());
 
-        List<ExerciseClockIn> exerciseClockInList,weeklyExerciseClockInList;
-        exerciseClockInList = exerciseClockInMapper.getExerciseClockInByUserId(userId);
-        weeklyExerciseClockInList = new ArrayList<ExerciseClockIn>();
-        List<FoodClockIn> foodClockInList,weeklyFoodClockInList;
-        foodClockInList = foodClockInMapper.getFoodClockInByUserId(userId);
-        weeklyFoodClockInList = new ArrayList<FoodClockIn>();
-        int exerciseClockInDays = 0;
-        int foodClockInDays = 0;
+        QueryWrapper<ExerciseClockIn> exerciseClockInWrapper = new QueryWrapper<>();
+        exerciseClockInWrapper.select("*")
+                .eq("user_id", userId)
+                .between("record_time", beginDay, endDay);
+        QueryWrapper<FoodClockIn> foodClockInWrapper = new QueryWrapper<>();
+        foodClockInWrapper.select("*")
+                .eq("user_id", userId)
+                .between("record_time", beginDay, endDay);
+
+        List<ExerciseClockIn> exerciseClockInList;
+        exerciseClockInList = exerciseClockInMapper.selectList(exerciseClockInWrapper);
+        List<FoodClockIn> foodClockInList;
+        foodClockInList = foodClockInMapper.selectList(foodClockInWrapper);
+        int exerciseClockInDays = exerciseClockInMapper.calculateClockInDays(userId, simpleDateFormat.format(DatesUtil.getBeginDayOfWeek()));
+        int foodClockInDays = foodClockInMapper.calculateClockInDays(userId, simpleDateFormat.format(DatesUtil.getBeginDayOfWeek()));;
         int totalTime = 0;
         double totalConsumption = 0;
         double totalEnergyIngestion = 0;
@@ -64,89 +84,25 @@ public class UserHealthInfoServiceImpl implements UserHealthInfoService {
         double totalCelluloseIngestion = 0;
 
         for(ExerciseClockIn e : exerciseClockInList) {
-            if(0 <= DatesUtil.daysBetween(beginDay, e.getRecordTime())){
-                weeklyExerciseClockInList.add(e);
-                exerciseClockInDays += 1;
-                totalTime += e.getTime();
-                totalConsumption += e.getCurrentCalories();
-            }
+            totalTime += e.getTime();
+            totalConsumption += e.getCurrentCalories();
         }
         for(FoodClockIn f : foodClockInList) {
-            if(0 <= DatesUtil.daysBetween(beginDay, f.getRecordTime())) {
-                weeklyFoodClockInList.add(f);
-                foodClockInDays += 1;
-                totalEnergyIngestion += f.getTotalEnergy();
-                totalSugarIngestion += f.getTotalSugar();
-                totalFatIngestion += f.getTotalFat();
-                totalProteinIngestion += f.getTotalProtein();
-                totalCelluloseIngestion += f.getTotalCellulose();
-            }
-        }
-
-        WeeklyHealthInfoResponse response = WeeklyHealthInfoResponse.builder()
-                .exerciseClockInList(weeklyExerciseClockInList)
-                .foodClockInList(weeklyFoodClockInList)
-                .exerciseClockInDays(exerciseClockInDays)
-                .foodClockInDays(foodClockInDays)
-                .totalTime(totalTime)
-                .totalConsumption(totalConsumption)
-                .totalEnergyIngestion(totalEnergyIngestion)
-                .totalSugarIngestion(totalSugarIngestion)
-                .totalFatIngestion(totalFatIngestion)
-                .totalProteinIngestion(totalProteinIngestion)
-                .totalCelluloseIngestion(totalCelluloseIngestion)
-                .build();
-
-        return response;
-    }
-
-    public DailyHealthInfoResponse getDailyHealthInfo(Long userId) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String today = simpleDateFormat.format(DatesUtil.getDayBegin());
-
-        List<ExerciseClockIn> exerciseClockInList,dailyExerciseClockInList;
-        exerciseClockInList = exerciseClockInMapper.getExerciseClockInByUserId(userId);
-        dailyExerciseClockInList = new ArrayList<ExerciseClockIn>();
-        List<FoodClockIn> foodClockInList,dailyFoodClockInList;
-        foodClockInList = foodClockInMapper.getFoodClockInByUserId(userId);
-        dailyFoodClockInList = new ArrayList<FoodClockIn>();
-        int exerciseClockInDays = 0;
-        int foodClockInDays = 0;
-        int totalTime = 0;
-        double totalConsumption = 0;
-        double totalEnergyIngestion = 0;
-        double totalSugarIngestion = 0;
-        double totalFatIngestion = 0;
-        double totalProteinIngestion = 0;
-        double totalCelluloseIngestion = 0;
-
-        for(ExerciseClockIn e : exerciseClockInList) {
-            exerciseClockInDays += 1;
-            if(0 == DatesUtil.daysBetween(today, e.getRecordTime())){
-                dailyExerciseClockInList.add(e);
-                totalTime += e.getTime();
-                totalConsumption += e.getCurrentCalories();
-            }
-        }
-        for(FoodClockIn f : foodClockInList) {
-            foodClockInDays += 1;
-            if(0 == DatesUtil.daysBetween(today, f.getRecordTime())) {
-                dailyFoodClockInList.add(f);
-                totalEnergyIngestion += f.getTotalEnergy();
-                totalSugarIngestion += f.getTotalSugar();
-                totalFatIngestion += f.getTotalFat();
-                totalProteinIngestion += f.getTotalProtein();
-                totalCelluloseIngestion += f.getTotalCellulose();
-            }
+            totalEnergyIngestion += f.getTotalEnergy();
+            totalSugarIngestion += f.getTotalSugar();
+            totalFatIngestion += f.getTotalFat();
+            totalProteinIngestion += f.getTotalProtein();
+            totalCelluloseIngestion += f.getTotalCellulose();
         }
 
         //TODO 统计今日步数
+        QueryWrapper<Plan> wrapper = new QueryWrapper<>();
+        wrapper.select("*")
+                .eq("user_id", userId);
 
-        DailyHealthInfoResponse response = DailyHealthInfoResponse.builder()
+        RecordResponse response = RecordResponse.builder()
                 .exerciseClockInDays(exerciseClockInDays)
                 .foodClockInDays(foodClockInDays)
-                .exerciseClockInList(dailyExerciseClockInList)
-                .foodClockInList(dailyFoodClockInList)
                 .totalTime(totalTime)
                 .totalConsumption(totalConsumption)
                 .totalEnergyIngestion(totalEnergyIngestion)
@@ -154,29 +110,31 @@ public class UserHealthInfoServiceImpl implements UserHealthInfoService {
                 .totalFatIngestion(totalFatIngestion)
                 .totalProteinIngestion(totalProteinIngestion)
                 .totalCelluloseIngestion(totalCelluloseIngestion)
+                .plan(planMapper.selectOne(wrapper))
                 .build();
 
         return response;
     }
 
     private double calculateCaloriesOfOneDay(Long userId){
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String today = simpleDateFormat.format(DatesUtil.getDayBegin());
-
-        List<ExerciseClockIn> exerciseClockInList;
-        exerciseClockInList = exerciseClockInMapper.getExerciseClockInByUserId(userId);
-        List<FoodClockIn> foodClockInList;
-        foodClockInList = foodClockInMapper.getFoodClockInByUserId(userId);
-
-        double calories = 0;
-        for(ExerciseClockIn e : exerciseClockInList) {
-            if(0 == DatesUtil.daysBetween(e.getRecordTime() , today))
-                calories -= e.getCurrentCalories();
-        }
-        for(FoodClockIn f : foodClockInList) {
-            if(0 == DatesUtil.daysBetween(f.getRecordTime() , today))
-                calories += f.getTotalEnergy();
-        }
-        return calories;
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        String today = simpleDateFormat.format(DatesUtil.getDayBegin());
+//
+//        List<ExerciseClockIn> exerciseClockInList;
+//        exerciseClockInList = exerciseClockInMapper.getExerciseClockInByUserId(userId);
+//        List<FoodClockIn> foodClockInList;
+//        foodClockInList = foodClockInMapper.getFoodClockInByUserId(userId);
+//
+//        double calories = 0;
+//        for(ExerciseClockIn e : exerciseClockInList) {
+//            if(0 == DatesUtil.daysBetween(e.getRecordTime() , today))
+//                calories -= e.getCurrentCalories();
+//        }
+//        for(FoodClockIn f : foodClockInList) {
+//            if(0 == DatesUtil.daysBetween(f.getRecordTime() , today))
+//                calories += f.getTotalEnergy();
+//        }
+//        return calories;
+        return 0;
     }
 }

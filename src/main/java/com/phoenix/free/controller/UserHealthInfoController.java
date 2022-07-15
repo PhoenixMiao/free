@@ -1,10 +1,8 @@
 package com.phoenix.free.controller;
 
 import com.phoenix.free.annotation.Auth;
-import com.phoenix.free.controller.response.DailyHealthInfoResponse;
-import com.phoenix.free.controller.response.UserAssessInfoResponse;
+import com.phoenix.free.controller.response.RecordResponse;
 import com.phoenix.free.controller.response.UserHealthInfoResponse;
-import com.phoenix.free.controller.response.WeeklyHealthInfoResponse;
 import com.phoenix.free.service.UserHealthInfoService;
 import com.phoenix.free.util.SessionUtils;
 import io.swagger.annotations.ApiOperation;
@@ -23,6 +21,7 @@ public class UserHealthInfoController {
     private SessionUtils sessionUtils;
 
     @Auth
+    @Deprecated
     @GetMapping("/info")
     @ApiOperation(value = "查看当前用户健康信息",response = UserHealthInfoResponse.class)
     public Object getUserHealthInfo(){
@@ -32,17 +31,17 @@ public class UserHealthInfoController {
 
     @Auth
     @GetMapping("/weekly")
-    @ApiOperation(value = "查看当前用户本周健康信息",response = WeeklyHealthInfoResponse.class)
+    @ApiOperation(value = "查看当前用户本周健康记录",response = RecordResponse.class)
     public Object getUserWeeklyHealthInfo(){
         Long id = sessionUtils.getUserId();
-        return userHealthInfoService.getWeeklyHealthInfo(id);
+        return userHealthInfoService.getRecord(id, false);
     }
 
     @Auth
     @GetMapping("/daily")
-    @ApiOperation(value = "查看当前用户今日健康信息",response = DailyHealthInfoResponse.class)
+    @ApiOperation(value = "查看当前用户今日健康记录",response = RecordResponse.class)
     public Object getUserDailyHealthInfo(){
         Long id = sessionUtils.getUserId();
-        return userHealthInfoService.getDailyHealthInfo(id);
+        return userHealthInfoService.getRecord(id, true);
     }
 }

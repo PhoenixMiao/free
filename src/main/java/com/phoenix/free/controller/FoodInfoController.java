@@ -50,11 +50,12 @@ public class FoodInfoController {
     }
 
     @Auth
-    @GetMapping("/get/name={name}")
+    @GetMapping("/get/name={name}/page={page}")
     @ApiOperation(value = "按名称查找食物信息",response = Food.class)
     @ApiImplicitParam(name = "name", value = "name", required = true, paramType = "path")
-    public Object getFoodInfoById(@NotBlank @PathVariable("name") String name){
-        return foodInfoService.getFoodInfoByName(name);
+    public Object getFoodInfoById(@NotBlank @PathVariable("name") String name, @PathVariable("page") int page){
+        AssertUtil.isTrue(page >= 0, CommonErrorCode.INVALID_PARAM);
+        return foodInfoService.searchFoodInfo(name, page);
     }
 
     @Admin

@@ -48,11 +48,12 @@ public class ExerciseInfoController {
     }
 
     @Auth
-    @GetMapping("/get/name={name}")
+    @GetMapping("/get/name={name}/page={page}")
     @ApiOperation(value = "按名称查找运动信息",response = Exercise.class)
     @ApiImplicitParam(name = "name", value = "name", required = true, paramType = "path")
-    public Object getExerciseInfoById(@NotBlank @PathVariable("name") String name){
-        return Result.success(exerciseInfoService.getExerciseInfoByName(name));
+    public Object getExerciseInfoById(@NotBlank @PathVariable("name") String name, @PathVariable("page") int page){
+        AssertUtil.isTrue(page >= 0, CommonErrorCode.INVALID_PARAM);
+        return Result.success(exerciseInfoService.searchExerciseInfo(name, page));
     }
 
     @Admin

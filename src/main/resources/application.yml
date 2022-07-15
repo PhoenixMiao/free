@@ -11,9 +11,9 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://1.15.30.214:3306/free?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://124.220.18.48:3306/free?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
     username: root
-    password: abc123400197
+    password: 5604YYds
 #    hikari:
 #      minimum-idle: 10
 #      maximum-pool-size: 100
@@ -28,9 +28,9 @@ spring:
 
   redis:
     database: 0
-    host: 1.15.30.214
+    host: 124.220.18.48
     port: 6379
-    password: Lishuai0923
+    password: 5604YYds
     timeout: 1000
 
 
@@ -67,3 +67,6 @@ logback:
   #日志格式
   CONSOLE_LOG_PATTERN: '%d{yyyy-MM-dd HH:mm:ss.SSS} %boldYellow([%thread]) %highlight(%-5level) %boldGreen(%logger{50}) - %msg%n'
   FILE_LOG_PATTERN: '%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n'
+
+swagger:
+  enable: true

@@ -8,6 +8,8 @@ import com.phoenix.free.service.ExerciseInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ExerciseInfoServiceImpl implements ExerciseInfoService {
     @Autowired
@@ -22,6 +24,16 @@ public class ExerciseInfoServiceImpl implements ExerciseInfoService {
         wrapper.select("*")
                 .eq("name", name);
         return exerciseMapper.selectOne(wrapper);
+    }
+
+    @Override
+    public List<Exercise> searchExerciseInfo(String name, int page) {
+        QueryWrapper<Exercise> wrapper = new QueryWrapper<>();
+        String offset = String.valueOf(page * 15);
+        wrapper.select("*")
+                .like("name", name)
+                .last("LIMIT 15 OFFSET " + offset);
+        return exerciseMapper.selectList(wrapper);
     }
 
     public int addExerciseInfo(AddExerciseInfoRequest addExerciseInfoRequest) {

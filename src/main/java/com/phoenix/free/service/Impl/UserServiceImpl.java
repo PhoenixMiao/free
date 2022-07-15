@@ -53,7 +53,8 @@ public class UserServiceImpl implements UserService {
         //shadow test
         if(CommonConstants.SHADOW_TEST.equals(code)){
             sessionUtils.setSessionId(CommonConstants.SHADOW_TEST);
-            return new SessionData();
+            User shadowTest = userMapper.selectById(1l);
+            return new SessionData(shadowTest);
         }
 
         WxSession wxSession = Optional.ofNullable(
