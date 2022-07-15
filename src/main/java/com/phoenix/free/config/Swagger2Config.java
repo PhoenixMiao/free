@@ -21,14 +21,14 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @ConditionalOnExpression("${dev.enable:true}")//当enable为true时才选择加载该配置类
 public class Swagger2Config {
 
-    private static final String BASE_PACKAGE1 = "com.phoenix.paper.controller";
+    private static final String BASE_PACKAGE1 = "com.phoenix.free.controller";
     private static final String GROUP_NAME1 = "controller";
-    private static final String BASE_PACKAGE2 = "com.phoenix.paper.entity";
+    private static final String BASE_PACKAGE2 = "com.phoenix.free.entity";
     private static final String GROUP_NAME2 = "entity";
-    private static final String BASE_PACKAGE3 = "com.phoenix.paper.dto";
+    private static final String BASE_PACKAGE3 = "com.phoenix.free.dto";
     private static final String GROUP_NAME3 = "dto";
-    private static final String TITLE = "paper API Documentation";
-    private static final String DESCRIPTION = "论文管理系统";
+    private static final String TITLE = "FREE API Documentation";
+    private static final String DESCRIPTION = "Free Api";
 
     @Bean
     public Docket createControllerApi() {
