@@ -24,7 +24,6 @@ import javax.validation.constraints.NotNull;
 @Api("用户相关操作")
 @RestController
 @RequestMapping("/user")
-@Validated
 public class UserController {
 
     @Autowired
