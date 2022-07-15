@@ -20,9 +20,9 @@ public class CommonConstants {
     public final static String SIGN_TYPE_HMAC_SHA256 = "HMAC-SHA256";
     public final static String LANG_TYPE_ZH_CN = "zh_CN";
 
-    public final static String COS_REGION = "ap-nanjing";
-    public final static String COS_APP_ID = "1305159828";
-    public final static String COS_SECRET_ID = "AKIDwgANJxKQGp78tNaVAYfW6QTFkyvb092e";
-    public final static String COS_SECRET_KEY = "MTKuDF0UgbFcYCZgW5NO8bmhLiocARRA";
-    public static final String COS_BUCKET_NAME = "free-1305159828";
+    public final static String COS_REGION = "ap-shanghai";
+    public final static String COS_APP_ID = "1310941840";
+    public final static String COS_SECRET_ID = "AKIDPghU3M3QXNxHNEo8C0XoHUSAbmhLjtoJ";
+    public final static String COS_SECRET_KEY = "NWP2QXQ4SXLtABG4btvgBRRCiyA5j6F7";
+    public static final String COS_BUCKET_NAME = "free-1310941840";
 }
