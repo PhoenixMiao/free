@@ -8,12 +8,11 @@ import com.phoenix.free.service.FoodClockInService;
 import com.phoenix.free.util.SessionUtils;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 
 @RequestMapping("/clockIn")
 @RestController
@@ -30,7 +29,7 @@ public class ClockInController {
     @Auth
     @PostMapping("/exercise")
     @ApiOperation(value = "运动打卡",response = Long.class)
-    public Object addExerciseClockIn(@RequestParam("file") MultipartFile file, ExerciseClockInRequest exerciseClockInRequest){
+    public Object addExerciseClockIn(@RequestPart("file") MultipartFile file, @RequestPart("request") ExerciseClockInRequest exerciseClockInRequest){
         Long id = sessionUtils.getUserId();
         if(!file.getOriginalFilename().isEmpty()){
             exerciseClockInRequest.setPic(file);
@@ -44,7 +43,7 @@ public class ClockInController {
     @Auth
     @PostMapping("/food")
     @ApiOperation(value = "饮食打卡",response = Long.class)
-    public Object addFoodClockIn(@RequestParam("file") MultipartFile file, FoodClockInRequest foodClockInRequest){
+    public Object addFoodClockIn(@RequestPart("file") MultipartFile file, @RequestPart("request") FoodClockInRequest foodClockInRequest){
         Long id = sessionUtils.getUserId();
         if(!file.getOriginalFilename().isEmpty()){
             foodClockInRequest.setPic(file);

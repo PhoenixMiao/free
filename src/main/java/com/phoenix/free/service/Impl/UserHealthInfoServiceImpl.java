@@ -3,12 +3,12 @@ package com.phoenix.free.service.Impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.phoenix.free.controller.response.RecordResponse;
 import com.phoenix.free.controller.response.UserHealthInfoResponse;
+import com.phoenix.free.controller.response.WeeklyGraphResponse;
 import com.phoenix.free.entity.ExerciseClockIn;
 import com.phoenix.free.entity.FoodClockIn;
 import com.phoenix.free.entity.Plan;
 import com.phoenix.free.mapper.ExerciseClockInMapper;
 import com.phoenix.free.mapper.FoodClockInMapper;
-import com.phoenix.free.mapper.AssessMapper;
 import com.phoenix.free.mapper.PlanMapper;
 import com.phoenix.free.service.UserHealthInfoService;
 import com.phoenix.free.util.DatesUtil;
@@ -16,12 +16,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class UserHealthInfoServiceImpl implements UserHealthInfoService {
-    @Autowired
-    private AssessMapper assessMapper;
+//    @Autowired
+//    private AssessMapper assessMapper;
 
     @Autowired
     private ExerciseClockInMapper exerciseClockInMapper;
@@ -32,6 +33,7 @@ public class UserHealthInfoServiceImpl implements UserHealthInfoService {
     @Autowired
     private PlanMapper planMapper;
 
+    @Deprecated
     @Override
     public UserHealthInfoResponse getUserHealthInfo(Long userId) {
 //        Assess assessInfo = assessMapper.getAssessByUserId(userId);
@@ -74,7 +76,7 @@ public class UserHealthInfoServiceImpl implements UserHealthInfoService {
         List<FoodClockIn> foodClockInList;
         foodClockInList = foodClockInMapper.selectList(foodClockInWrapper);
         int exerciseClockInDays = exerciseClockInMapper.calculateClockInDays(userId, simpleDateFormat.format(DatesUtil.getBeginDayOfWeek()));
-        int foodClockInDays = foodClockInMapper.calculateClockInDays(userId, simpleDateFormat.format(DatesUtil.getBeginDayOfWeek()));;
+        int foodClockInDays = foodClockInMapper.calculateClockInDays(userId, simpleDateFormat.format(DatesUtil.getBeginDayOfWeek()));
         int totalTime = 0;
         double totalConsumption = 0;
         double totalEnergyIngestion = 0;
@@ -95,7 +97,6 @@ public class UserHealthInfoServiceImpl implements UserHealthInfoService {
             totalCelluloseIngestion += f.getTotalCellulose();
         }
 
-        //TODO 统计今日步数
         QueryWrapper<Plan> wrapper = new QueryWrapper<>();
         wrapper.select("*")
                 .eq("user_id", userId);
@@ -116,6 +117,49 @@ public class UserHealthInfoServiceImpl implements UserHealthInfoService {
         return response;
     }
 
+    @Override
+    public WeeklyGraphResponse getSevenDaysRecord(Long userId) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String endDay, beginDay;
+        List<Double> ingestion = new ArrayList<>();
+        List<Double> consumption = new ArrayList<>();
+        List<String> date = new ArrayList<>();
+
+        for (int i = 6; i >= 0; i--){
+            beginDay = simpleDateFormat.format(DatesUtil.getFrontDay(DatesUtil.getDayBegin(), i));
+            date.add(beginDay);
+            endDay = simpleDateFormat.format(DatesUtil.getFrontDay(DatesUtil.getBeginDayOfTomorrow(), i));
+            QueryWrapper<ExerciseClockIn> exerciseClockInWrapper = new QueryWrapper<>();
+            exerciseClockInWrapper.select("*")
+                    .eq("user_id", userId)
+                    .between("record_time", beginDay, endDay);
+            QueryWrapper<FoodClockIn> foodClockInWrapper = new QueryWrapper<>();
+            foodClockInWrapper.select("*")
+                    .eq("user_id", userId)
+                    .between("record_time", beginDay, endDay);
+
+
+            List<ExerciseClockIn> exerciseClockInList;
+            exerciseClockInList = exerciseClockInMapper.selectList(exerciseClockInWrapper);
+            List<FoodClockIn> foodClockInList;
+            foodClockInList = foodClockInMapper.selectList(foodClockInWrapper);
+
+            double total = 0.0;
+            for(ExerciseClockIn e : exerciseClockInList) {
+                total += e.getCurrentCalories();
+            }
+            consumption.add(total);
+            total = 0.0;
+            for(FoodClockIn f : foodClockInList) {
+                total += f.getTotalEnergy();
+            }
+            ingestion.add(total);
+
+        }
+        return new WeeklyGraphResponse(ingestion, consumption, date);
+    }
+
+    @Deprecated
     private double calculateCaloriesOfOneDay(Long userId){
 //        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 //        String today = simpleDateFormat.format(DatesUtil.getDayBegin());

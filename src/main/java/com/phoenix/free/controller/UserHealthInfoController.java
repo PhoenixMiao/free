@@ -44,4 +44,12 @@ public class UserHealthInfoController {
         Long id = sessionUtils.getUserId();
         return userHealthInfoService.getRecord(id, true);
     }
+
+    @Auth
+    @GetMapping("/echarts")
+    @ApiOperation(value = "查看当前用户七日健康记录统计图",response = RecordResponse.class)
+    public Object getSevenDaysGraph(){
+        Long id = sessionUtils.getUserId();
+        return userHealthInfoService.getSevenDaysRecord(id);
+    }
 }
