@@ -114,6 +114,10 @@ public class UserHealthInfoServiceImpl implements UserHealthInfoService {
                 .plan(planMapper.selectOne(wrapper))
                 .build();
 
+        if(isOneDay){
+            response.setExerciseClockInList(exerciseClockInList);
+            response.setFoodClockInList(foodClockInList);
+        }
         return response;
     }
 
