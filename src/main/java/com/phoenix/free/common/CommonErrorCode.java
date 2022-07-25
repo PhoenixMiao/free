@@ -60,6 +60,7 @@ public enum CommonErrorCode {
     EXECUTION_FAIL(2023,"方法执行错误","请稍后重试"),
     DATA_NOT_EXISTS(2024, "无效的数据库信息", "数据库查询失败"),
     INVALID_PARAM(2025, "非法参数", "参数非法，请检查输入"),
+    OPERATION_TOO_FREQUENT(2026, "操作过于频繁", "操作过于频繁，请稍后再试"),
     ;
 
     /**

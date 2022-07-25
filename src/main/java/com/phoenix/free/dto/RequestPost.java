@@ -1,5 +1,6 @@
 package com.phoenix.free.dto;
 
+import com.phoenix.free.entity.Post;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -12,7 +13,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @SuperBuilder
 @ApiModel("RequestPost 请求搭档帖子")
-public class RequestPost extends Post{
+public class RequestPost extends Post {
     @ApiModelProperty("学校")
     private String school;
 

@@ -1,5 +1,6 @@
 package com.phoenix.free.dto;
 
+import com.phoenix.free.entity.Post;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -12,7 +13,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @SuperBuilder
 @ApiModel("FeedBack 反馈")
-public class FeedBack extends Post{
+public class FeedBack extends Post {
     @ApiModelProperty("标题")
     private String title;
 

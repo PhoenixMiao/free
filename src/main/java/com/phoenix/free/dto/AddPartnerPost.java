@@ -1,5 +1,6 @@
 package com.phoenix.free.dto;
 
+import com.phoenix.free.entity.Post;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
