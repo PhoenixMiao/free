@@ -8,11 +8,11 @@ import com.phoenix.free.service.FoodClockInService;
 import com.phoenix.free.util.SessionUtils;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @RequestMapping("/clockIn")
 @RestController
@@ -52,6 +52,22 @@ public class ClockInController {
             foodClockInRequest.setPic(null);
         }
         return foodClockInService.addFoodClockIn(foodClockInRequest, id);
+    }
+
+    @Auth
+    @GetMapping("/get/food/userId={id}/page={page}")
+    @ApiOperation(value = "查看用户饮食打卡",response = List.class)
+    public Object getFoodClockIn(@NotBlank @PathVariable("id") Long id, @PathVariable("page") int page){
+        //todo 权限校验
+        return foodClockInService.getFoodClockInByUserId(id, page);
+    }
+
+    @Auth
+    @GetMapping("/get/exercise/userId={id}/page={page}")
+    @ApiOperation(value = "查看用户运动打卡",response = List.class)
+    public Object getExerciseClockIn(@NotBlank @PathVariable("id") Long id, @PathVariable("page") int page){
+        //todo 权限校验
+        return exerciseClockInService.getExerciseClockInByUserId(id, page);
     }
 
 }

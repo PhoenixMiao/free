@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -42,6 +41,7 @@ public class FoodClockInServiceImpl implements FoodClockInService {
     @Autowired
     private COSClient cosClient;
 
+    @Override
     public Long addFoodClockIn(FoodClockInRequest foodClockInRequest, Long userId) {
         User user = userMapper.selectById(userId);
         String url = null;
@@ -104,14 +104,18 @@ public class FoodClockInServiceImpl implements FoodClockInService {
         else return -1l;
     }
 
+    @Override
     public FoodClockIn getFoodClockInById(Long id) {
         return foodClockInMapper.selectById(id);
     }
 
-    public List<FoodClockIn> getFoodClockInByUserId(Long userId) {
+    @Override
+    public List<FoodClockIn> getFoodClockInByUserId(Long userId, int page) {
         QueryWrapper<FoodClockIn> wrapper = new QueryWrapper<>();
+        String offset = String.valueOf(page * 15);
         wrapper.select("*")
-                .eq("user_id", userId);
+                .eq("user_id", userId)
+                .last("LIMIT 15 OFFSET " + offset);
         return foodClockInMapper.selectList(wrapper);
     }
 }

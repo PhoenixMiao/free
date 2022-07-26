@@ -1,8 +1,11 @@
 package com.phoenix.free.service.Impl;
 
 import com.phoenix.free.common.CommonErrorCode;
+import com.phoenix.free.controller.response.UserBriefInfoResponse;
 import com.phoenix.free.entity.Relationship;
+import com.phoenix.free.entity.User;
 import com.phoenix.free.mapper.RelationshipMapper;
+import com.phoenix.free.mapper.UserMapper;
 import com.phoenix.free.service.RelationshipService;
 import com.phoenix.free.util.AssertUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,9 @@ public class RelationshipServiceImpl implements RelationshipService {
     @Autowired
     private RelationshipMapper relationshipMapper;
 
+    @Autowired
+    private UserMapper userMapper;
+
     public Long addNewRelationship(Long userId1, Long userId2) {
         AssertUtil.isTrue(relationshipMapper.getExactRelationship(userId1, userId2) == null, CommonErrorCode.DUPLICATE_DATABASE_INFORMATION, "请勿重复添加搭档关系");
 
@@ -30,29 +36,30 @@ public class RelationshipServiceImpl implements RelationshipService {
                 .build();
 
         relationshipMapper.insert(relationship);
-
-//        relationshipMapper.insert(Relationship.builder()
-//                .userId1(userId1)
-//                .userId2(userId2)
-//                .recordTime(now)
-//                .build());
         return relationship.getId();
     }
 
-    public void deleteRelationship(Long userId1, Long userId2) {
+    public int deleteRelationship(Long userId1, Long userId2) {
         Long id = relationshipMapper.getExactRelationship(userId1, userId2).getId();
-        relationshipMapper.deleteRelationship(id);
+        return relationshipMapper.deleteById(id);
     }
 
     public List<Relationship> getUserRelationship(Long userId) {
         return relationshipMapper.getUserRelationship(userId);
     }
 
-    public List<Long> getUserPartner(Long userId){
+    public List<UserBriefInfoResponse> getUserPartner(Long userId){
         List<Relationship> relationshipList = getUserRelationship(userId);
-        List<Long> result = new ArrayList<>();
+        List<UserBriefInfoResponse> result = new ArrayList<>();
         for(Relationship r : relationshipList)
-            result.add((r.getUserId1().equals(userId))? r.getUserId2() : r.getUserId1());
+            if(r.getUserId1().equals(userId)){
+                User user = userMapper.selectById(r.getUserId2());
+                result.add(new UserBriefInfoResponse(r.getUserId2(), user.getPortrait(), user.getNickname()));
+            }
+            else{
+                User user = userMapper.selectById(r.getUserId1());
+                result.add(new UserBriefInfoResponse(r.getUserId1(), user.getPortrait(), user.getNickname()));
+            }
 
         return result;
     }

@@ -45,6 +45,7 @@ public class ExerciseClockInServiceImpl implements ExerciseClockInService {
     @Autowired
     private COSClient cosClient;
 
+    @Override
     public Long addExerciseClockIn(ExerciseClockInRequest exerciseClockInRequest, Long userId) {
         User user = userMapper.selectById(userId);
         String url = null;
@@ -110,14 +111,18 @@ public class ExerciseClockInServiceImpl implements ExerciseClockInService {
         else return -1l;
     }
 
+    @Override
     public ExerciseClockIn getExerciseClockInById(Long id) {
         return exerciseClockInMapper.selectById(id);
     }
 
-    public List<ExerciseClockIn> getExerciseClockInByUserId(Long userId) {
+    @Override
+    public List<ExerciseClockIn> getExerciseClockInByUserId(Long userId, int page) {
         QueryWrapper<ExerciseClockIn> wrapper = new QueryWrapper<>();
+        String offset = String.valueOf(page * 15);
         wrapper.select("*")
-                .eq("user_id", userId);
+                .eq("user_id", userId)
+                .last("LIMIT 15 OFFSET " + offset);
         return exerciseClockInMapper.selectList(wrapper);
     }
 }

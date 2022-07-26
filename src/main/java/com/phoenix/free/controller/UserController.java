@@ -1,6 +1,7 @@
 package com.phoenix.free.controller;
 
 import com.phoenix.free.annotation.Auth;
+import com.phoenix.free.common.CommonErrorCode;
 import com.phoenix.free.common.CommonException;
 import com.phoenix.free.common.Result;
 import com.phoenix.free.controller.request.UpdateUserByIdRequest;
@@ -86,6 +87,18 @@ public class UserController {
             return Result.success(userService.uploadPortrait(sessionUtils.getUserId(), file));
         }catch (CommonException e){
             return Result.result(e.getCommonErrorCode());
+        }
+
+    }
+
+    @Auth
+    @GetMapping(value = "/portrait/userId={id}")
+    @ApiOperation(value = "获取用户头像", response = String.class)
+    public Object getPortrait(@NotBlank @PathVariable("id") Long id) {
+        try{
+            return Result.success(userService.getUserById(id).getPortrait());
+        }catch (CommonException e){
+            throw new CommonException(CommonErrorCode.USER_NOT_EXIST);
         }
 
     }

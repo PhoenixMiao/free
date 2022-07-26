@@ -9,5 +9,5 @@ public interface ExerciseClockInService {
     Long addExerciseClockIn(ExerciseClockInRequest exerciseClockInRequest, Long userId);
 
     ExerciseClockIn getExerciseClockInById(Long id);
-    List<ExerciseClockIn> getExerciseClockInByUserId(Long userId);
+    List<ExerciseClockIn> getExerciseClockInByUserId(Long userId, int page);
 }

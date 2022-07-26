@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotBlank;
+import java.util.List;
+import java.util.Objects;
 
 @RequestMapping("/relationship")
 @RestController
@@ -28,19 +30,26 @@ public class RelationshipController {
     @ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
     public Object addPartner(@NotBlank @PathVariable("id") Long id){
         Long userId = sessionUtils.getUserId();
-        relationshipService.addNewRelationship(id, userId);
-
-        return "搭档添加成功";
+        return relationshipService.addNewRelationship(id, userId);
     }
 
     @Auth
     @GetMapping("/delete/id={id}")
-    @ApiOperation(value = "与指定id用户解除搭档关系",response = String.class)
+    @ApiOperation(value = "与指定id用户解除搭档关系",response = Integer.class)
     @ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
     public Object deletePartner(@NotBlank @PathVariable("id") Long id){
         Long userId = sessionUtils.getUserId();
-        relationshipService.deleteRelationship(userId, id);
+        return relationshipService.deleteRelationship(userId, id);
+    }
 
-        return "搭档删除成功";
+    @Auth
+    @GetMapping("/partner/id={id}")
+    @ApiOperation(value = "查看指定id用户搭档",response = List.class)
+    @ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
+    public Object getPartners(@NotBlank @PathVariable("id") Long id){
+        if(Objects.isNull(id)){
+            id = sessionUtils.getUserId();
+        }
+        return relationshipService.getUserPartner(id);
     }
 }

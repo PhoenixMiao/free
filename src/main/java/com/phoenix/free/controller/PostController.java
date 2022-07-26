@@ -49,7 +49,7 @@ public class PostController {
 
     @Auth
     @GetMapping("/get/userId={id}/page={page}")
-    @ApiOperation(value = "查看广场",response = List.class)
+    @ApiOperation(value = "查看某一用户发贴",response = List.class)
     public Object getPostsByUserId(@NotBlank @PathVariable("page") int page, @PathVariable("id") Long id){
         AssertUtil.isTrue(page >=0, CommonErrorCode.INVALID_PARAM);
         return postService.getPostByUserId(id, page);

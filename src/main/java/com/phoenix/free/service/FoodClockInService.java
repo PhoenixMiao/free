@@ -9,5 +9,6 @@ public interface FoodClockInService {
     Long addFoodClockIn(FoodClockInRequest foodClockInRequest, Long userId);
 
     FoodClockIn getFoodClockInById(Long id);
-    List<FoodClockIn> getFoodClockInByUserId(Long userId);
+
+    List<FoodClockIn> getFoodClockInByUserId(Long userId, int page);
 }
