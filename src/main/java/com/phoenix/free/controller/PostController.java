@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
-import java.util.List;
 
 @RequestMapping("/post")
 @RestController
@@ -41,7 +40,7 @@ public class PostController {
 
     @Auth
     @GetMapping("/get/page={page}")
-    @ApiOperation(value = "查看广场",response = List.class)
+    @ApiOperation(value = "查看广场", response = Post.class, responseContainer = "List")
     public Object getAllPosts(@NotBlank @PathVariable("page") int page){
         AssertUtil.isTrue(page >=0, CommonErrorCode.INVALID_PARAM);
         return postService.getPosts(page);
@@ -49,7 +48,7 @@ public class PostController {
 
     @Auth
     @GetMapping("/get/userId={id}/page={page}")
-    @ApiOperation(value = "查看某一用户发贴",response = List.class)
+    @ApiOperation(value = "查看某一用户发贴", response = Post.class, responseContainer = "List")
     public Object getPostsByUserId(@NotBlank @PathVariable("page") int page, @PathVariable("id") Long id){
         AssertUtil.isTrue(page >=0, CommonErrorCode.INVALID_PARAM);
         return postService.getPostByUserId(id, page);

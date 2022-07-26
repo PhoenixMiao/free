@@ -3,6 +3,8 @@ package com.phoenix.free.controller;
 import com.phoenix.free.annotation.Auth;
 import com.phoenix.free.controller.request.ExerciseClockInRequest;
 import com.phoenix.free.controller.request.FoodClockInRequest;
+import com.phoenix.free.entity.ExerciseClockIn;
+import com.phoenix.free.entity.FoodClockIn;
 import com.phoenix.free.service.ExerciseClockInService;
 import com.phoenix.free.service.FoodClockInService;
 import com.phoenix.free.util.SessionUtils;
@@ -12,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
-import java.util.List;
 
 @RequestMapping("/clockIn")
 @RestController
@@ -56,7 +57,7 @@ public class ClockInController {
 
     @Auth
     @GetMapping("/get/food/userId={id}/page={page}")
-    @ApiOperation(value = "查看用户饮食打卡",response = List.class)
+    @ApiOperation(value = "查看用户饮食打卡", response = FoodClockIn.class, responseContainer = "List")
     public Object getFoodClockIn(@NotBlank @PathVariable("id") Long id, @PathVariable("page") int page){
         //todo 权限校验
         return foodClockInService.getFoodClockInByUserId(id, page);
@@ -64,7 +65,7 @@ public class ClockInController {
 
     @Auth
     @GetMapping("/get/exercise/userId={id}/page={page}")
-    @ApiOperation(value = "查看用户运动打卡",response = List.class)
+    @ApiOperation(value = "查看用户运动打卡", response = ExerciseClockIn.class, responseContainer = "List")
     public Object getExerciseClockIn(@NotBlank @PathVariable("id") Long id, @PathVariable("page") int page){
         //todo 权限校验
         return exerciseClockInService.getExerciseClockInByUserId(id, page);

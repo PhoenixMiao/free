@@ -1,6 +1,8 @@
 package com.phoenix.free.controller;
 
 import com.phoenix.free.annotation.Auth;
+import com.phoenix.free.controller.response.UserBriefInfoResponse;
+import com.phoenix.free.entity.Post;
 import com.phoenix.free.service.RelationshipService;
 import com.phoenix.free.util.SessionUtils;
 import io.swagger.annotations.ApiImplicitParam;
@@ -44,7 +46,7 @@ public class RelationshipController {
 
     @Auth
     @GetMapping("/partner/id={id}")
-    @ApiOperation(value = "查看指定id用户搭档",response = List.class)
+    @ApiOperation(value = "查看指定id用户搭档", response = UserBriefInfoResponse.class, responseContainer = "List")
     @ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
     public Object getPartners(@NotBlank @PathVariable("id") Long id){
         if(Objects.isNull(id)){
