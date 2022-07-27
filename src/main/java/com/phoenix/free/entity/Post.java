@@ -27,11 +27,13 @@ public class Post {
     @ApiModelProperty("主标题")
     private String title;
 
+    @TableField("content")
     @ApiModelProperty("正文")
-    private String content;
+    private String desc;
 
+    @TableField("pic")
     @ApiModelProperty("图片")
-    private String pic;
+    private String image;
 
     @ApiModelProperty("发布时间")
     private String createTime;

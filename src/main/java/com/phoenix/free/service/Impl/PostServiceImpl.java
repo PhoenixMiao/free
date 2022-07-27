@@ -83,8 +83,8 @@ public class PostServiceImpl implements PostService {
 
         Post post = Post.builder()
                 .userId(userId)
-                .pic(url)
-                .content(addPostRequest.getContent())
+                .image(url)
+                .desc(addPostRequest.getContent())
                 .title(addPostRequest.getTitle())
                 .createTime(now)
                 .build();
@@ -104,14 +104,17 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post getPostById(Long id) {
-        return postMapper.selectById(id);
+        QueryWrapper<Post> wrapper = new QueryWrapper<>();
+        wrapper.select("id,user_id,title,content AS `desc`,pic AS image,create_time,version")
+                .eq("id", id);
+        return postMapper.selectOne(wrapper);
     }
 
     @Override
     public List<Post> getPosts(int page) {
         String offset = String.valueOf(page * 15);
         QueryWrapper<Post> wrapper = new QueryWrapper<>();
-        wrapper.select("*")
+        wrapper.select("id,user_id,title,content AS `desc`,pic AS image,create_time,version")
                 .last("LIMIT 15 OFFSET " + offset);
         return postMapper.selectList(wrapper);
     }
@@ -120,7 +123,7 @@ public class PostServiceImpl implements PostService {
     public List<Post> getPostByUserId(Long id, int page) {
         String offset = String.valueOf(page * 15);
         QueryWrapper<Post> wrapper = new QueryWrapper<>();
-        wrapper.select("*")
+        wrapper.select("id,user_id,title,content AS `desc`,pic AS image,create_time,version")
                 .eq("user_id", id)
                 .last("LIMIT 15 OFFSET " + offset);
         return postMapper.selectList(wrapper);
