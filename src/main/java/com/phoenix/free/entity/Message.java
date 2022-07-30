@@ -14,7 +14,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ApiModel("Message 用户私信")
+@ApiModel("Message 私信（用于好友申请）")
 public class Message {
     @Id
     @TableId(value = "id", type = IdType.AUTO)
@@ -26,12 +26,6 @@ public class Message {
 
     @ApiModelProperty("接收者id")
     private Long receiverId;
-
-    @ApiModelProperty("内容")
-    private String content;
-
-    @ApiModelProperty("图片")
-    private String pic;
 
     @ApiModelProperty("创建时间")
     private String createTime;
