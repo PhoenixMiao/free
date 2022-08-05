@@ -1,8 +1,10 @@
 package com.phoenix.free.controller;
 
+import com.phoenix.free.annotation.Admin;
 import com.phoenix.free.annotation.Auth;
 import com.phoenix.free.controller.request.ExerciseClockInRequest;
 import com.phoenix.free.controller.request.FoodClockInRequest;
+import com.phoenix.free.controller.response.ClockInGraphResponse;
 import com.phoenix.free.entity.ExerciseClockIn;
 import com.phoenix.free.entity.FoodClockIn;
 import com.phoenix.free.service.ExerciseClockInService;
@@ -71,4 +73,17 @@ public class ClockInController {
         return exerciseClockInService.getExerciseClockInByUserId(id, page);
     }
 
+    @Admin
+    @GetMapping("/graph/exercise")
+    @ApiOperation(value = "查看用户运动打卡数据统计", response = ClockInGraphResponse.class)
+    public Object getExerciseClockInGraph(){
+        return exerciseClockInService.getExerciseClockInGraph();
+    }
+
+    @Admin
+    @GetMapping("/graph/food")
+    @ApiOperation(value = "查看用户饮食打卡数据统计", response = ClockInGraphResponse.class)
+    public Object getFoodClockInGraph(){
+        return foodClockInService.getFoodClockInGraph();
+    }
 }

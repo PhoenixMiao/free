@@ -1,6 +1,7 @@
 package com.phoenix.free.service;
 
 import com.phoenix.free.controller.request.ExerciseClockInRequest;
+import com.phoenix.free.controller.response.ClockInGraphResponse;
 import com.phoenix.free.entity.ExerciseClockIn;
 
 import java.util.List;
@@ -10,4 +11,6 @@ public interface ExerciseClockInService {
 
     ExerciseClockIn getExerciseClockInById(Long id);
     List<ExerciseClockIn> getExerciseClockInByUserId(Long userId, int page);
+
+    ClockInGraphResponse getExerciseClockInGraph();
 }

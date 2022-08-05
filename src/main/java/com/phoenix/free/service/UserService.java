@@ -1,6 +1,7 @@
 package com.phoenix.free.service;
 
 import com.phoenix.free.controller.request.UpdateUserByIdRequest;
+import com.phoenix.free.controller.response.NewlyCreatedUsersGraphResponse;
 import com.phoenix.free.dto.SessionData;
 import com.phoenix.free.entity.User;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,7 +18,8 @@ public interface UserService {
 
     String uploadPortrait(Long userId, MultipartFile multipartFile);
 
-    List<User> getUserList();
+    List<User> getUserList(int page);
+    List<User> getAdminList(int page);
 
-    List<User> getAdminList();
+    NewlyCreatedUsersGraphResponse getNewlyCreatedUsers();
 }

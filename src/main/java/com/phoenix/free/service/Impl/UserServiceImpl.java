@@ -6,6 +6,7 @@ import com.phoenix.free.common.CommonErrorCode;
 import com.phoenix.free.common.CommonException;
 import com.phoenix.free.config.YmlConfig;
 import com.phoenix.free.controller.request.UpdateUserByIdRequest;
+import com.phoenix.free.controller.response.NewlyCreatedUsersGraphResponse;
 import com.phoenix.free.dto.SessionData;
 import com.phoenix.free.dto.WxSession;
 import com.phoenix.free.entity.User;
@@ -22,10 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import static com.phoenix.free.common.CommonConstants.*;
 
@@ -107,6 +106,7 @@ public class UserServiceImpl implements UserService {
         user.setPhone(updateUserByIdRequest.getPhone());
         user.setSchool(updateUserByIdRequest.getSchool());
         user.setIntroduction(updateUserByIdRequest.getIntroduction());
+        user.setIsAdmin(updateUserByIdRequest.getIsAdmin());
 
         if(userMapper.updateById(user)==0){
             throw new CommonException(CommonErrorCode.UPDATE_FAIL);
@@ -168,7 +168,7 @@ public class UserServiceImpl implements UserService {
         try {
 
             String name = multipartFile.getOriginalFilename();
-            AssertUtil.notNull(name,CommonErrorCode.FILENAME_CAN_NOT_BE_NULL);
+            AssertUtil.isNotNull(name,CommonErrorCode.FILENAME_CAN_NOT_BE_NULL);
             String extension = name.substring(name.lastIndexOf("."));
 
             PutObjectRequest putObjectRequest = new PutObjectRequest(COS_BUCKET_NAME, user.getSessionId() + extension, multipartFile.getInputStream(), objectMetadata);
@@ -197,19 +197,44 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getUserList() {
+    public List<User> getUserList(int page) {
+        String offset = String.valueOf(page * 15);
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.select("*")
-                .eq("is_admin", 0);
+                .eq("is_admin", 0)
+                .last("LIMIT 15 OFFSET " + offset);
         return userMapper.selectList(wrapper);
     }
 
     @Override
-    public List<User> getAdminList() {
+    public List<User> getAdminList(int page) {
+        String offset = String.valueOf(page * 15);
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.select("*")
-                .eq("is_admin", 1);
+                .eq("is_admin", 1)
+                .or()
+                .eq("is_admin", 2)
+                .last("LIMIT 15 OFFSET " + offset);
         return userMapper.selectList(wrapper);
     }
 
+    @Override
+    public NewlyCreatedUsersGraphResponse getNewlyCreatedUsers() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String endDay, beginDay;
+        List<Integer> stats = new ArrayList<>();
+        List<String> date = new ArrayList<>();
+
+        for (int i = 6; i >= 0; i--){
+            beginDay = simpleDateFormat.format(DatesUtil.getFrontDay(DatesUtil.getDayBegin(), i));
+            date.add(beginDay);
+            endDay = simpleDateFormat.format(DatesUtil.getFrontDay(DatesUtil.getBeginDayOfTomorrow(), i));
+
+            QueryWrapper<User> wrapper = new QueryWrapper<>();
+            wrapper.between("create_time", beginDay, endDay);
+            stats.add(userMapper.selectCount(wrapper));
+        }
+
+        return new NewlyCreatedUsersGraphResponse(stats, date);
+    }
 }

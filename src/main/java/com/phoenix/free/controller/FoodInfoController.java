@@ -6,6 +6,7 @@ import com.phoenix.free.common.CommonErrorCode;
 import com.phoenix.free.common.CommonException;
 import com.phoenix.free.common.Result;
 import com.phoenix.free.controller.request.AddFoodInfoRequest;
+import com.phoenix.free.entity.Exercise;
 import com.phoenix.free.entity.Food;
 import com.phoenix.free.service.FoodInfoService;
 import com.phoenix.free.service.UserService;
@@ -52,24 +53,36 @@ public class FoodInfoController {
     @Auth
     @GetMapping("/get/id={id}")
     @ApiOperation(value = "按编号查找食物信息",response = Food.class)
-    @ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
     public Object getFoodInfoById(@NotBlank @PathVariable("id") Long id){
         return foodInfoService.getFoodInfoById(id);
     }
 
     @Auth
     @GetMapping("/get/name={name}/page={page}")
-    @ApiOperation(value = "按名称查找食物信息",response = Food.class)
-    @ApiImplicitParam(name = "name", value = "name", required = true, paramType = "path")
+    @ApiOperation(value = "按名称查找食物信息",response = Food.class, responseContainer = "List")
     public Object getFoodInfoById(@NotBlank @PathVariable("name") String name, @PathVariable("page") int page){
         AssertUtil.isTrue(page >= 0, CommonErrorCode.INVALID_PARAM);
         return foodInfoService.searchFoodInfo(name, page);
     }
 
+    @Auth
+    @GetMapping("/list/page={page}")
+    @ApiOperation(value = "所有食物信息",response = Food.class, responseContainer = "List")
+    public Object getFoodInfoList(@NotBlank @PathVariable("page") int page){
+        AssertUtil.isTrue(page >= 0, CommonErrorCode.INVALID_PARAM);
+        return foodInfoService.searchFoodInfo("", page);
+    }
+
+    @Admin
+    @GetMapping("/list/new")
+    @ApiOperation(value = "最近添加的食物列表",response = Food.class, responseContainer = "List")
+    public Object getNewlyAddedFood(){
+        return foodInfoService.getNewlyAddedFood();
+    }
+
     @Admin
     @GetMapping("/delete/id={id}")
     @ApiOperation(value = "按编号删除食物信息",response = String.class)
-    @ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
     public Object deleteFoodInfoById(@NotBlank @PathVariable("id") Long id){
         return Result.success(foodInfoService.deleteFoodInfoById(id));
     }
@@ -77,9 +90,15 @@ public class FoodInfoController {
     @Admin
     @GetMapping("/delete/name={name}")
     @ApiOperation(value = "按名称删除食物信息",response = String.class)
-    @ApiImplicitParam(name = "name", value = "name", required = true, paramType = "path")
     public Object deleteFoodInfoByName(@NotBlank @PathVariable("name") String name){
         return Result.success(foodInfoService.deleteFoodInfoByName(name));
+    }
+
+    @Admin
+    @GetMapping("/update/id={id}")
+    @ApiOperation(value = "修改食物信息", response = Food.class)
+    public Object updateFoodInfo(@NotBlank @PathVariable("id") Long id, @RequestBody AddFoodInfoRequest request){
+        return foodInfoService.updateFoodInfo(request, id);
     }
 
 }

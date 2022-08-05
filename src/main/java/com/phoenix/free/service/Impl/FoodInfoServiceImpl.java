@@ -5,7 +5,6 @@ import com.phoenix.free.common.CommonErrorCode;
 import com.phoenix.free.controller.request.AddFoodInfoRequest;
 import com.phoenix.free.entity.Food;
 import com.phoenix.free.entity.User;
-import com.phoenix.free.mapper.ExerciseMapper;
 import com.phoenix.free.mapper.FoodMapper;
 import com.phoenix.free.mapper.UserMapper;
 import com.phoenix.free.service.FileService;
@@ -41,6 +40,25 @@ public class FoodInfoServiceImpl implements FoodInfoService {
     }
 
     @Override
+    public Food updateFoodInfo(AddFoodInfoRequest addFoodInfoRequest, Long id) {
+        Food food = foodMapper.selectById(id);
+        AssertUtil.isNotNull(food, CommonErrorCode.DATA_NOT_EXISTS);
+
+        food.setName(addFoodInfoRequest.getName());
+        food.setCategory(addFoodInfoRequest.getCategory());
+        food.setEnergy(addFoodInfoRequest.getEnergy());
+        food.setSugar(addFoodInfoRequest.getSugar());
+        food.setFat(addFoodInfoRequest.getFat());
+        food.setProtein(addFoodInfoRequest.getProtein());
+        food.setCellulose(addFoodInfoRequest.getCellulose());
+        food.setState(addFoodInfoRequest.getState());
+
+        AssertUtil.isFalse(foodMapper.updateById(food) == 0, CommonErrorCode.UPDATE_FAIL);
+
+        return food;
+    }
+
+    @Override
     public List<Food> searchFoodInfo(String name, int page) {
         QueryWrapper<Food> wrapper = new QueryWrapper<>();
         String offset = String.valueOf(page * 15);
@@ -50,14 +68,24 @@ public class FoodInfoServiceImpl implements FoodInfoService {
         return foodMapper.selectList(wrapper);
     }
 
-    public int addFoodInfo(AddFoodInfoRequest addFoodInfoRequest, Long id) {
+    @Override
+    public List<Food> getNewlyAddedFood() {
+        QueryWrapper<Food> wrapper = new QueryWrapper<>();
+        wrapper.select("*")
+                .orderByDesc("id")
+                .last("LIMIT 5");
+        return foodMapper.selectList(wrapper);
+    }
+
+    @Override
+    public int addFoodInfo(AddFoodInfoRequest addFoodInfoRequest, Long userId) {
         String url = null;
-        User user = userMapper.selectById(id);
-        AssertUtil.notNull(user, CommonErrorCode.USER_NOT_EXIST);
+        User user = userMapper.selectById(userId);
+        AssertUtil.isNotNull(user, CommonErrorCode.USER_NOT_EXIST);
         if(!Objects.isNull(addFoodInfoRequest.getPic())){
             String type = "/" + addFoodInfoRequest.getName();
             MultipartFile file = addFoodInfoRequest.getPic();
-            url = fileService.uploadPicture(file, id, type);
+            url = fileService.uploadPicture(file, userId, type);
         }
         Food food = Food.builder()
                 .name(addFoodInfoRequest.getName())
@@ -73,15 +101,19 @@ public class FoodInfoServiceImpl implements FoodInfoService {
         return foodMapper.insert(food);
     }
 
+    @Override
     public int deleteFoodInfoById(Long id) {
         QueryWrapper<Food> wrapper = new QueryWrapper<>();
         wrapper.eq("id", id);
         return foodMapper.delete(wrapper);
     }
 
+    @Override
     public int deleteFoodInfoByName(String name) {
         QueryWrapper<Food> wrapper = new QueryWrapper<>();
         wrapper.eq("name", name);
         return foodMapper.delete(wrapper);
     }
+
+
 }

@@ -57,11 +57,11 @@ public class SessionData implements Serializable {
     private String introduction;
 
     @ApiModelProperty("用户类型")
-    private Integer type;
+    private Integer isAdmin;
 
 
     public SessionData(User user){
-        AssertUtil.notNull(user, CommonErrorCode.USER_NOT_EXIST);
+        AssertUtil.isNotNull(user, CommonErrorCode.USER_NOT_EXIST);
         id = user.getId();
         createTime = user.getCreateTime();
         nickname = user.getNickname();
@@ -72,6 +72,6 @@ public class SessionData implements Serializable {
         school = user.getSchool();
         introduction = user.getIntroduction();
         sessionId = user.getSessionId();
-        type = user.getIsAdmin();
+        isAdmin = user.getIsAdmin();
     }
 }

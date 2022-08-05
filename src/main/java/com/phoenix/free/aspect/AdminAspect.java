@@ -28,9 +28,9 @@ public class AdminAspect {
 
         SessionData sessionData = sessionUtil.getSessionData();
 
-        AssertUtil.notNull(sessionData, CommonErrorCode.INVALID_SESSION);
+        AssertUtil.isNotNull(sessionData, CommonErrorCode.INVALID_SESSION);
 
-        AssertUtil.isTrue(sessionData.getType()==1,CommonErrorCode.USER_NOT_ADMIN);
+        AssertUtil.isTrue(sessionData.getIsAdmin() == 1 || sessionData.getIsAdmin() == 2,CommonErrorCode.USER_NOT_ADMIN);
 
         Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
 

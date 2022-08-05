@@ -2,8 +2,8 @@ package com.phoenix.free.service.Impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.phoenix.free.common.CommonErrorCode;
-import com.phoenix.free.common.CommonException;
 import com.phoenix.free.controller.request.FoodClockInRequest;
+import com.phoenix.free.controller.response.ClockInGraphResponse;
 import com.phoenix.free.entity.FoodClockIn;
 import com.phoenix.free.entity.User;
 import com.phoenix.free.mapper.FoodClockInMapper;
@@ -11,22 +11,16 @@ import com.phoenix.free.mapper.UserMapper;
 import com.phoenix.free.service.FileService;
 import com.phoenix.free.service.FoodClockInService;
 import com.phoenix.free.util.AssertUtil;
-import com.qcloud.cos.COSClient;
-import com.qcloud.cos.model.ObjectMetadata;
-import com.qcloud.cos.model.PutObjectRequest;
-import com.qcloud.cos.model.UploadResult;
-import com.qcloud.cos.transfer.TransferManager;
-import com.qcloud.cos.transfer.Upload;
+import com.phoenix.free.util.DatesUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-
-import static com.phoenix.free.common.CommonConstants.COS_BUCKET_NAME;
 
 @Service
 public class FoodClockInServiceImpl implements FoodClockInService {
@@ -43,7 +37,7 @@ public class FoodClockInServiceImpl implements FoodClockInService {
     public Long addFoodClockIn(FoodClockInRequest foodClockInRequest, Long userId) {
         User user = userMapper.selectById(userId);
         String url = null;
-        AssertUtil.notNull(user, CommonErrorCode.USER_NOT_EXIST);
+        AssertUtil.isNotNull(user, CommonErrorCode.USER_NOT_EXIST);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String now = simpleDateFormat.format(new Date());
 
@@ -90,5 +84,27 @@ public class FoodClockInServiceImpl implements FoodClockInService {
                 .eq("user_id", userId)
                 .last("LIMIT 15 OFFSET " + offset);
         return foodClockInMapper.selectList(wrapper);
+    }
+
+    @Override
+    public ClockInGraphResponse getFoodClockInGraph() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String endDay, beginDay;
+        List<Integer> clockInTimes = new ArrayList<>();
+        List<Integer> clockInUsers = new ArrayList<>();
+        List<String> date = new ArrayList<>();
+
+        for (int i = 6; i >= 0; i--){
+            beginDay = simpleDateFormat.format(DatesUtil.getFrontDay(DatesUtil.getDayBegin(), i));
+            date.add(beginDay);
+            endDay = simpleDateFormat.format(DatesUtil.getFrontDay(DatesUtil.getBeginDayOfTomorrow(), i));
+
+            QueryWrapper<FoodClockIn> wrapper = new QueryWrapper<>();
+            wrapper.between("record_time", beginDay, endDay);
+            clockInTimes.add(foodClockInMapper.selectCount(wrapper));
+            clockInUsers.add(foodClockInMapper.calculateClockInUsers(beginDay, endDay));
+        }
+
+        return new ClockInGraphResponse(clockInTimes, clockInUsers, date);
     }
 }

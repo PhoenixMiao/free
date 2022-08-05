@@ -1,6 +1,7 @@
 package com.phoenix.free.service;
 
 import com.phoenix.free.controller.request.FoodClockInRequest;
+import com.phoenix.free.controller.response.ClockInGraphResponse;
 import com.phoenix.free.entity.FoodClockIn;
 
 import java.util.List;
@@ -11,4 +12,5 @@ public interface FoodClockInService {
     FoodClockIn getFoodClockInById(Long id);
 
     List<FoodClockIn> getFoodClockInByUserId(Long userId, int page);
+    ClockInGraphResponse getFoodClockInGraph();
 }

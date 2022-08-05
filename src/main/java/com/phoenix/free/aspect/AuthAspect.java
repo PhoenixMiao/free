@@ -33,7 +33,7 @@ public class AuthAspect {
 
         SessionData sessionData = sessionUtil.getSessionData();
 
-        AssertUtil.notNull(sessionData, CommonErrorCode.INVALID_SESSION);
+        AssertUtil.isNotNull(sessionData, CommonErrorCode.INVALID_SESSION);
 
         Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
 

@@ -40,6 +40,21 @@ public class ExerciseInfoServiceImpl implements ExerciseInfoService {
     }
 
     @Override
+    public Exercise updateExerciseInfo(AddExerciseInfoRequest addExerciseInfoRequest, Long id) {
+        Exercise exercise = exerciseMapper.selectById(id);
+        AssertUtil.isNotNull(exercise, CommonErrorCode.DATA_NOT_EXISTS);
+
+        exercise.setName(addExerciseInfoRequest.getName());
+        exercise.setCategory(addExerciseInfoRequest.getCategory());
+        exercise.setRatio(addExerciseInfoRequest.getRatio());
+        exercise.setState(addExerciseInfoRequest.getState());
+
+        AssertUtil.isFalse(exerciseMapper.updateById(exercise) == 0, CommonErrorCode.UPDATE_FAIL);
+
+        return exercise;
+    }
+
+    @Override
     public List<Exercise> searchExerciseInfo(String name, int page) {
         QueryWrapper<Exercise> wrapper = new QueryWrapper<>();
         String offset = String.valueOf(page * 15);
@@ -49,14 +64,24 @@ public class ExerciseInfoServiceImpl implements ExerciseInfoService {
         return exerciseMapper.selectList(wrapper);
     }
 
-    public int addExerciseInfo(AddExerciseInfoRequest addExerciseInfoRequest, Long id) {
+    @Override
+    public List<Exercise> getNewlyAddedExercise() {
+        QueryWrapper<Exercise> wrapper = new QueryWrapper<>();
+        wrapper.select("*")
+                .orderByDesc("id")
+                .last("LIMIT 5");
+        return exerciseMapper.selectList(wrapper);
+    }
+
+    @Override
+    public int addExerciseInfo(AddExerciseInfoRequest addExerciseInfoRequest, Long userId) {
         String url = null;
-        User user = userMapper.selectById(id);
-        AssertUtil.notNull(user, CommonErrorCode.USER_NOT_EXIST);
+        User user = userMapper.selectById(userId);
+        AssertUtil.isNotNull(user, CommonErrorCode.USER_NOT_EXIST);
         if(!Objects.isNull(addExerciseInfoRequest.getPic())){
             String type = "/" + addExerciseInfoRequest.getName();
             MultipartFile file = addExerciseInfoRequest.getPic();
-            url = fileService.uploadPicture(file, id, type);
+            url = fileService.uploadPicture(file, userId, type);
         }
         Exercise exercise = Exercise.builder()
                 .name(addExerciseInfoRequest.getName())
@@ -68,12 +93,14 @@ public class ExerciseInfoServiceImpl implements ExerciseInfoService {
         return exerciseMapper.insert(exercise);
     }
 
+    @Override
     public int deleteExerciseInfoById(Long id) {
         QueryWrapper<Exercise> wrapper = new QueryWrapper<>();
         wrapper.eq("id", id);
         return exerciseMapper.delete(wrapper);
     }
 
+    @Override
     public int deleteExerciseInfoByName(String name) {
         QueryWrapper<Exercise> wrapper = new QueryWrapper<>();
         wrapper.eq("name", name);

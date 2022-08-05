@@ -6,6 +6,7 @@ import com.phoenix.free.common.CommonErrorCode;
 import com.phoenix.free.common.CommonException;
 import com.phoenix.free.common.Result;
 import com.phoenix.free.controller.request.UpdateUserByIdRequest;
+import com.phoenix.free.controller.response.NewlyCreatedUsersGraphResponse;
 import com.phoenix.free.dto.SessionData;
 import com.phoenix.free.entity.User;
 import com.phoenix.free.service.Impl.UserServiceImpl;
@@ -62,14 +63,14 @@ public class UserController {
     @GetMapping("/list/users/page={page}")
     @ApiOperation(value = "查看用户列表（不包括管理员）", response = User.class, responseContainer = "List")
     public Object getUserList(@NotBlank @PathVariable("page") int page){
-        return userService.getUserList();
+        return userService.getUserList(page);
     }
 
     @Admin
     @GetMapping("/list/admins/page={page}")
     @ApiOperation(value = "查看管理员列表",response = User.class, responseContainer = "List")
     public Object getAdminList(@NotBlank @PathVariable("page") int page){
-        return userService.getAdminList();
+        return userService.getAdminList(page);
     }
 
     @Auth
@@ -116,5 +117,12 @@ public class UserController {
             throw new CommonException(CommonErrorCode.USER_NOT_EXIST);
         }
 
+    }
+
+    @Admin
+    @GetMapping("/graph/newUsers")
+    @ApiOperation(value = "获取新近注册用户图表数据", response = NewlyCreatedUsersGraphResponse.class)
+    public Object getNewlyCreatedUsers(){
+        return userService.getNewlyCreatedUsers();
     }
 }

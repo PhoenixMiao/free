@@ -16,10 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Objects;
-
 import static com.phoenix.free.common.CommonConstants.COS_BUCKET_NAME;
 
 @Service
@@ -38,7 +34,7 @@ public class FileServiceImpl implements FileService {
         User user = userMapper.selectById(userId);
         String url = null;
 
-        AssertUtil.notNull(user, CommonErrorCode.USER_NOT_EXIST);
+        AssertUtil.isNotNull(user, CommonErrorCode.USER_NOT_EXIST);
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentLength(file.getSize());
 
@@ -47,7 +43,7 @@ public class FileServiceImpl implements FileService {
         try {
 
             String name = file.getOriginalFilename();
-            AssertUtil.notNull(name, CommonErrorCode.FILENAME_CAN_NOT_BE_NULL);
+            AssertUtil.isNotNull(name, CommonErrorCode.FILENAME_CAN_NOT_BE_NULL);
             String extension = name.substring(name.lastIndexOf("."));
             // example key : userSessionId/foodClockIn/yyyy-MM-dd_HH_mm_ss
             String key = user.getSessionId() + type;

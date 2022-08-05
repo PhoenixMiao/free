@@ -2,7 +2,6 @@ package com.phoenix.free.util;
 
 import com.phoenix.free.common.CommonErrorCode;
 import com.phoenix.free.common.CommonException;
-import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Collection;
@@ -56,7 +55,7 @@ public class AssertUtil {
     }
 
     public static void in(Object base, Object[] collection, CommonErrorCode resultCode, Object obj) {
-        notNull(collection, resultCode, obj);
+        isNotNull(collection, resultCode, obj);
         boolean hasEqual = false;
         Object[] var5 = collection;
         int var6 = collection.length;
@@ -97,11 +96,11 @@ public class AssertUtil {
         isTrue(object == null, resultCode, obj);
     }
 
-    public static void notNull(Object object, CommonErrorCode resultCode, Object obj) {
+    public static void isNotNull(Object object, CommonErrorCode resultCode, Object obj) {
         isTrue(object != null, resultCode, obj);
     }
 
-    public static void notNull(Object object, CommonErrorCode resultCode) {
+    public static void isNotNull(Object object, CommonErrorCode resultCode) {
         isTrue(object != null, resultCode, null);
     }
 

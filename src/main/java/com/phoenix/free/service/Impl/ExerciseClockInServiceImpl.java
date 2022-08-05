@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.phoenix.free.common.CommonErrorCode;
 import com.phoenix.free.common.CommonException;
 import com.phoenix.free.controller.request.ExerciseClockInRequest;
+import com.phoenix.free.controller.response.ClockInGraphResponse;
 import com.phoenix.free.entity.ExerciseClockIn;
 import com.phoenix.free.entity.User;
 import com.phoenix.free.mapper.ExerciseClockInMapper;
@@ -12,22 +13,16 @@ import com.phoenix.free.mapper.UserMapper;
 import com.phoenix.free.service.ExerciseClockInService;
 import com.phoenix.free.service.FileService;
 import com.phoenix.free.util.AssertUtil;
-import com.qcloud.cos.COSClient;
-import com.qcloud.cos.model.ObjectMetadata;
-import com.qcloud.cos.model.PutObjectRequest;
-import com.qcloud.cos.model.UploadResult;
-import com.qcloud.cos.transfer.TransferManager;
-import com.qcloud.cos.transfer.Upload;
+import com.phoenix.free.util.DatesUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-
-import static com.phoenix.free.common.CommonConstants.COS_BUCKET_NAME;
 
 @Service
 public class ExerciseClockInServiceImpl implements ExerciseClockInService {
@@ -47,7 +42,7 @@ public class ExerciseClockInServiceImpl implements ExerciseClockInService {
     public Long addExerciseClockIn(ExerciseClockInRequest exerciseClockInRequest, Long userId) {
         User user = userMapper.selectById(userId);
         String url = null;
-        AssertUtil.notNull(user, CommonErrorCode.USER_NOT_EXIST);
+        AssertUtil.isNotNull(user, CommonErrorCode.USER_NOT_EXIST);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String now = simpleDateFormat.format(new Date());
 
@@ -97,5 +92,27 @@ public class ExerciseClockInServiceImpl implements ExerciseClockInService {
                 .eq("user_id", userId)
                 .last("LIMIT 15 OFFSET " + offset);
         return exerciseClockInMapper.selectList(wrapper);
+    }
+
+    @Override
+    public ClockInGraphResponse getExerciseClockInGraph() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String endDay, beginDay;
+        List<Integer> clockInTimes = new ArrayList<>();
+        List<Integer> clockInUsers = new ArrayList<>();
+        List<String> date = new ArrayList<>();
+
+        for (int i = 6; i >= 0; i--){
+            beginDay = simpleDateFormat.format(DatesUtil.getFrontDay(DatesUtil.getDayBegin(), i));
+            date.add(beginDay);
+            endDay = simpleDateFormat.format(DatesUtil.getFrontDay(DatesUtil.getBeginDayOfTomorrow(), i));
+
+            QueryWrapper<ExerciseClockIn> wrapper = new QueryWrapper<>();
+            wrapper.between("record_time", beginDay, endDay);
+            clockInTimes.add(exerciseClockInMapper.selectCount(wrapper));
+            clockInUsers.add(exerciseClockInMapper.calculateClockInUsers(beginDay, endDay));
+        }
+
+        return new ClockInGraphResponse(clockInTimes, clockInUsers, date);
     }
 }

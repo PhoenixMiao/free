@@ -9,9 +9,11 @@ public interface FoodInfoService {
 
     Food getFoodInfoById(Long id);
     Food getFoodInfoByName(String name);
+    Food updateFoodInfo(AddFoodInfoRequest addFoodInfoRequest, Long id);
     List<Food> searchFoodInfo(String name, int page);
+    List<Food> getNewlyAddedFood();
 
-    int addFoodInfo(AddFoodInfoRequest addFoodInfoRequest, Long id);
+    int addFoodInfo(AddFoodInfoRequest addFoodInfoRequest, Long userId);
     int deleteFoodInfoById(Long id);
     int deleteFoodInfoByName(String name);
 

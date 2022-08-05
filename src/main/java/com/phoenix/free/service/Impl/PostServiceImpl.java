@@ -46,7 +46,7 @@ public class PostServiceImpl implements PostService {
         User user = userMapper.selectById(userId);
         String url = null;
 
-        AssertUtil.notNull(user, CommonErrorCode.USER_NOT_EXIST);
+        AssertUtil.isNotNull(user, CommonErrorCode.USER_NOT_EXIST);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String now = simpleDateFormat.format(new Date());
 
@@ -61,7 +61,7 @@ public class PostServiceImpl implements PostService {
             try {
 
                 String name = file.getOriginalFilename();
-                AssertUtil.notNull(name, CommonErrorCode.FILENAME_CAN_NOT_BE_NULL);
+                AssertUtil.isNotNull(name, CommonErrorCode.FILENAME_CAN_NOT_BE_NULL);
                 String extension = name.substring(name.lastIndexOf("."));
                 // key : userSessionId/foodClockIn/yyyy-MM-dd_HH_mm_ss
                 String key = user.getSessionId() + "/post/" + now.replace(" ", "_").replace(":", "_");

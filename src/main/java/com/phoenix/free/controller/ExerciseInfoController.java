@@ -5,7 +5,9 @@ import com.phoenix.free.annotation.Auth;
 import com.phoenix.free.common.CommonErrorCode;
 import com.phoenix.free.common.Result;
 import com.phoenix.free.controller.request.AddExerciseInfoRequest;
+import com.phoenix.free.controller.request.AddFoodInfoRequest;
 import com.phoenix.free.entity.Exercise;
+import com.phoenix.free.entity.Food;
 import com.phoenix.free.service.ExerciseInfoService;
 import com.phoenix.free.service.UserService;
 import com.phoenix.free.util.AssertUtil;
@@ -50,24 +52,36 @@ public class ExerciseInfoController {
     @Auth
     @GetMapping("/get/id={id}")
     @ApiOperation(value = "按编号查找运动信息",response = Exercise.class)
-    @ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
     public Object getExerciseInfoById(@NotBlank @PathVariable("id") Long id){
         return Result.success(exerciseInfoService.getExerciseInfoById(id));
     }
 
     @Auth
     @GetMapping("/get/name={name}/page={page}")
-    @ApiOperation(value = "按名称查找运动信息",response = Exercise.class)
-    @ApiImplicitParam(name = "name", value = "name", required = true, paramType = "path")
+    @ApiOperation(value = "按名称查找运动信息",response = Exercise.class, responseContainer = "List")
     public Object getExerciseInfoById(@NotBlank @PathVariable("name") String name, @PathVariable("page") int page){
         AssertUtil.isTrue(page >= 0, CommonErrorCode.INVALID_PARAM);
         return Result.success(exerciseInfoService.searchExerciseInfo(name, page));
     }
 
+    @Auth
+    @GetMapping("/list/page={page}")
+    @ApiOperation(value = "所有运动列表",response = Exercise.class, responseContainer = "List")
+    public Object getExerciseInfoList(@NotBlank @PathVariable("page") int page){
+        AssertUtil.isTrue(page >= 0, CommonErrorCode.INVALID_PARAM);
+        return Result.success(exerciseInfoService.searchExerciseInfo("", page));
+    }
+
+    @Admin
+    @GetMapping("/list/new")
+    @ApiOperation(value = "最近添加的运动列表",response = Exercise.class, responseContainer = "List")
+    public Object getNewlyAddedExercise(){
+        return exerciseInfoService.getNewlyAddedExercise();
+    }
+
     @Admin
     @GetMapping("/delete/id={id}")
     @ApiOperation(value = "按编号删除运动信息",response = String.class)
-    @ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
     public Object deleteExerciseInfoById(@NotBlank @PathVariable("id") Long id){
         return Result.success(exerciseInfoService.deleteExerciseInfoById(id));
     }
@@ -75,8 +89,14 @@ public class ExerciseInfoController {
     @Admin
     @GetMapping("/delete/name={name}")
     @ApiOperation(value = "按名称删除运动信息",response = String.class)
-    @ApiImplicitParam(name = "name", value = "name", required = true, paramType = "path")
     public Object deleteExerciseInfoByName(@NotBlank @PathVariable("name") String name){
         return Result.success(exerciseInfoService.deleteExerciseInfoByName(name));
+    }
+
+    @Admin
+    @GetMapping("/update/id={id}")
+    @ApiOperation(value = "修改运动信息", response = Exercise.class)
+    public Object updateExerciseInfo(@NotBlank @PathVariable("id") Long id, @RequestBody AddExerciseInfoRequest request){
+        return exerciseInfoService.updateExerciseInfo(request, id);
     }
 }

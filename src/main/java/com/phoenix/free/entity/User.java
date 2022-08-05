@@ -57,7 +57,7 @@ public class User implements Serializable {
     @ApiModelProperty("个人简介")
     private String introduction;
 
-    @ApiModelProperty("用户类型（0为普通用户，1为管理员）")
+    @ApiModelProperty("用户类型（0为普通用户，1为管理员，2为超级管理员）")
     private Integer isAdmin;
 
     @Version
