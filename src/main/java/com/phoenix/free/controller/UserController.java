@@ -1,5 +1,6 @@
 package com.phoenix.free.controller;
 
+import com.phoenix.free.annotation.Admin;
 import com.phoenix.free.annotation.Auth;
 import com.phoenix.free.common.CommonErrorCode;
 import com.phoenix.free.common.CommonException;
@@ -55,6 +56,20 @@ public class UserController {
         }catch (CommonException e){
             throw new CommonException(e.getCommonErrorCode());
         }
+    }
+
+    @Admin
+    @GetMapping("/list/users/page={page}")
+    @ApiOperation(value = "查看用户列表（不包括管理员）", response = User.class, responseContainer = "List")
+    public Object getUserList(@NotBlank @PathVariable("page") int page){
+        return userService.getUserList();
+    }
+
+    @Admin
+    @GetMapping("/list/admins/page={page}")
+    @ApiOperation(value = "查看管理员列表",response = User.class, responseContainer = "List")
+    public Object getAdminList(@NotBlank @PathVariable("page") int page){
+        return userService.getAdminList();
     }
 
     @Auth

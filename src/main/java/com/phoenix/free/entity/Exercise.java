@@ -21,6 +21,9 @@ public class Exercise {
     @ApiModelProperty("id")
     private Long id;
 
+    @ApiModelProperty("图片")
+    private String pic;
+
     @ApiModelProperty("名称")
     private String name;
 
@@ -29,6 +32,9 @@ public class Exercise {
 
     @ApiModelProperty("消耗比")
     private double ratio;
+
+    @ApiModelProperty("状态")
+    private String state;
 
     @Version
     @TableField(fill = FieldFill.INSERT)

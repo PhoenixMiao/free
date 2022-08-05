@@ -11,7 +11,7 @@ public interface FoodInfoService {
     Food getFoodInfoByName(String name);
     List<Food> searchFoodInfo(String name, int page);
 
-    int addFoodInfo(AddFoodInfoRequest addFoodInfoRequest);
+    int addFoodInfo(AddFoodInfoRequest addFoodInfoRequest, Long id);
     int deleteFoodInfoById(Long id);
     int deleteFoodInfoByName(String name);
 

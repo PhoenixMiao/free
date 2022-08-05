@@ -15,6 +15,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -36,9 +37,16 @@ public class FoodInfoController {
     @Admin
     @PostMapping("/add")
     @ApiOperation(value = "添加新食物信息",response = String.class)
-    public Object addFoodInfo(@NotNull @Valid @RequestBody AddFoodInfoRequest addFoodInfoRequest){
-        AssertUtil.isNull(foodInfoService.getFoodInfoByName(addFoodInfoRequest.getName()), CommonErrorCode.DUPLICATE_DATABASE_INFORMATION,"请勿重复添加食物信息");
-        return Result.success(foodInfoService.addFoodInfo(addFoodInfoRequest));
+    public Object addFoodInfo(@RequestPart("file") MultipartFile file, @RequestPart("request") AddFoodInfoRequest request){
+        Long id = sessionUtils.getUserId();
+        AssertUtil.isNull(foodInfoService.getFoodInfoByName(request.getName()), CommonErrorCode.DUPLICATE_DATABASE_INFORMATION,"请勿重复添加食物信息");
+        if(!file.getOriginalFilename().isEmpty()){
+            request.setPic(file);
+        }
+        else{
+            request.setPic(null);
+        }
+        return Result.success(foodInfoService.addFoodInfo(request, id));
     }
 
     @Auth

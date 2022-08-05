@@ -72,6 +72,6 @@ public class SessionData implements Serializable {
         school = user.getSchool();
         introduction = user.getIntroduction();
         sessionId = user.getSessionId();
-        type = user.getType();
+        type = user.getIsAdmin();
     }
 }

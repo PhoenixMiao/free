@@ -58,7 +58,7 @@ public class User implements Serializable {
     private String introduction;
 
     @ApiModelProperty("用户类型（0为普通用户，1为管理员）")
-    private Integer type;
+    private Integer isAdmin;
 
     @Version
     @TableField(fill = FieldFill.INSERT)

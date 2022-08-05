@@ -14,6 +14,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -34,9 +35,16 @@ public class ExerciseInfoController {
     @Admin
     @PostMapping("/add")
     @ApiOperation(value = "添加新运动信息",response = String.class)
-    public Object addExerciseInfo(@NotNull @Valid @RequestBody AddExerciseInfoRequest addExerciseInfoRequest){
-        AssertUtil.isNull(exerciseInfoService.getExerciseInfoByName(addExerciseInfoRequest.getName()), CommonErrorCode.DUPLICATE_DATABASE_INFORMATION,"请勿重复添加运动信息");
-        return Result.success(exerciseInfoService.addExerciseInfo(addExerciseInfoRequest));
+    public Object addExerciseInfo(@RequestPart("file") MultipartFile file, @RequestPart("request") AddExerciseInfoRequest request){
+        Long id = sessionUtils.getUserId();
+        AssertUtil.isNull(exerciseInfoService.getExerciseInfoByName(request.getName()), CommonErrorCode.DUPLICATE_DATABASE_INFORMATION,"请勿重复添加运动信息");
+        if(!file.getOriginalFilename().isEmpty()){
+            request.setPic(file);
+        }
+        else{
+            request.setPic(null);
+        }
+        return Result.success(exerciseInfoService.addExerciseInfo(request, id));
     }
 
     @Auth

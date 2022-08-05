@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -83,7 +84,7 @@ public class UserServiceImpl implements UserService {
                 .sessionId(sessionId)
                 .version(1)
                 .introduction("该用户很懒，什么东西都没有写~")
-                .type(0)
+                .isAdmin(0)
                 .gender(0)
                 .build();
 
@@ -193,6 +194,22 @@ public class UserServiceImpl implements UserService {
         transferManager.shutdownNow(true);
 
         return res;
+    }
+
+    @Override
+    public List<User> getUserList() {
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.select("*")
+                .eq("is_admin", 0);
+        return userMapper.selectList(wrapper);
+    }
+
+    @Override
+    public List<User> getAdminList() {
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.select("*")
+                .eq("is_admin", 1);
+        return userMapper.selectList(wrapper);
     }
 
 }

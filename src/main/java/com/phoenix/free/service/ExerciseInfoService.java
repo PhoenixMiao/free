@@ -11,7 +11,7 @@ public interface ExerciseInfoService {
     Exercise getExerciseInfoByName(String name);
     List<Exercise> searchExerciseInfo(String name, int page);
 
-    int addExerciseInfo(AddExerciseInfoRequest addExerciseInfoRequest);
+    int addExerciseInfo(AddExerciseInfoRequest addExerciseInfoRequest, Long id);
     int deleteExerciseInfoById(Long id);
     int deleteExerciseInfoByName(String name);
 }

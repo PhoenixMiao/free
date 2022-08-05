@@ -1,19 +1,33 @@
 package com.phoenix.free.service.Impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.phoenix.free.common.CommonErrorCode;
 import com.phoenix.free.controller.request.AddFoodInfoRequest;
 import com.phoenix.free.entity.Food;
+import com.phoenix.free.entity.User;
+import com.phoenix.free.mapper.ExerciseMapper;
 import com.phoenix.free.mapper.FoodMapper;
+import com.phoenix.free.mapper.UserMapper;
+import com.phoenix.free.service.FileService;
 import com.phoenix.free.service.FoodInfoService;
+import com.phoenix.free.util.AssertUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class FoodInfoServiceImpl implements FoodInfoService {
     @Autowired
     private FoodMapper foodMapper;
+
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private FileService fileService;
 
     public Food getFoodInfoById(Long id) {
         return foodMapper.selectById(id);
@@ -36,11 +50,19 @@ public class FoodInfoServiceImpl implements FoodInfoService {
         return foodMapper.selectList(wrapper);
     }
 
-    public int addFoodInfo(AddFoodInfoRequest addFoodInfoRequest) {
+    public int addFoodInfo(AddFoodInfoRequest addFoodInfoRequest, Long id) {
+        String url = null;
+        User user = userMapper.selectById(id);
+        AssertUtil.notNull(user, CommonErrorCode.USER_NOT_EXIST);
+        if(!Objects.isNull(addFoodInfoRequest.getPic())){
+            String type = "/" + addFoodInfoRequest.getName();
+            MultipartFile file = addFoodInfoRequest.getPic();
+            url = fileService.uploadPicture(file, id, type);
+        }
         Food food = Food.builder()
                 .name(addFoodInfoRequest.getName())
                 .category(addFoodInfoRequest.getCategory())
-                .pic(addFoodInfoRequest.getPic())
+                .pic(url)
                 .energy(addFoodInfoRequest.getEnergy())
                 .fat(addFoodInfoRequest.getFat())
                 .sugar(addFoodInfoRequest.getSugar())

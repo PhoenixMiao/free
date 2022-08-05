@@ -10,6 +10,7 @@ import com.phoenix.free.mapper.ExerciseClockInMapper;
 import com.phoenix.free.mapper.ExerciseMapper;
 import com.phoenix.free.mapper.UserMapper;
 import com.phoenix.free.service.ExerciseClockInService;
+import com.phoenix.free.service.FileService;
 import com.phoenix.free.util.AssertUtil;
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.model.ObjectMetadata;
@@ -40,49 +41,21 @@ public class ExerciseClockInServiceImpl implements ExerciseClockInService {
     private ExerciseMapper exerciseMapper;
 
     @Autowired
-    private TransferManager transferManager;
-
-    @Autowired
-    private COSClient cosClient;
+    private FileService fileService;
 
     @Override
     public Long addExerciseClockIn(ExerciseClockInRequest exerciseClockInRequest, Long userId) {
         User user = userMapper.selectById(userId);
         String url = null;
-
         AssertUtil.notNull(user, CommonErrorCode.USER_NOT_EXIST);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String now = simpleDateFormat.format(new Date());
 
         // 如果需要上传图片
         if(!Objects.isNull(exerciseClockInRequest.getPic())){
-            ObjectMetadata objectMetadata = new ObjectMetadata();
+            String type = "/exerciseClockIn/" + now.replace(" ", "_").replace(":", "_");
             MultipartFile file = exerciseClockInRequest.getPic();
-            objectMetadata.setContentLength(file.getSize());
-
-            UploadResult uploadResult = null;
-
-            try {
-
-                String name = file.getOriginalFilename();
-                AssertUtil.notNull(name, CommonErrorCode.FILENAME_CAN_NOT_BE_NULL);
-                String extension = name.substring(name.lastIndexOf("."));
-                // key : userSessionId/foodClockIn/yyyy-MM-dd_HH_mm_ss
-                String key = user.getSessionId() + "/exerciseClockIn/" + now.replace(" ", "_").replace(":", "_");
-
-                PutObjectRequest putObjectRequest = new PutObjectRequest(COS_BUCKET_NAME, key + extension, file.getInputStream(), objectMetadata);
-
-                // 高级接口会返回一个异步结果Upload
-                // 可同步地调用 waitForUploadResult 方法等待上传完成，成功返回UploadResult, 失败抛出异常
-                Upload upload = transferManager.upload(putObjectRequest);
-                uploadResult = upload.waitForUploadResult();
-
-                url =  cosClient.getObjectUrl(COS_BUCKET_NAME,key).toString() + extension;
-
-            } catch (Exception e){
-                //e.printStackTrace();
-                throw new CommonException(CommonErrorCode.UPLOAD_FILE_FAIL);
-            }
+            url = fileService.uploadPicture(file, userId, type);
         }
 
         double currentCalories;

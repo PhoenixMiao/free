@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @Builder
@@ -21,10 +22,15 @@ public class AddExerciseInfoRequest {
     @ApiModelProperty("名称")
     private String name;
 
+    @ApiModelProperty("图片文件(上传时留空)")
+    private MultipartFile pic;
+
     @ApiModelProperty("分类")
     private int category;
 
     @ApiModelProperty("消耗比")
     private double ratio;
 
+    @ApiModelProperty("状态")
+    private String state;
 }
