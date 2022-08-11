@@ -2,6 +2,7 @@ package com.phoenix.free.controller;
 
 import com.phoenix.free.annotation.Admin;
 import com.phoenix.free.annotation.Auth;
+import com.phoenix.free.common.CommonErrorCode;
 import com.phoenix.free.controller.request.ExerciseClockInRequest;
 import com.phoenix.free.controller.request.FoodClockInRequest;
 import com.phoenix.free.controller.response.ClockInGraphResponse;
@@ -9,6 +10,7 @@ import com.phoenix.free.entity.ExerciseClockIn;
 import com.phoenix.free.entity.FoodClockIn;
 import com.phoenix.free.service.ExerciseClockInService;
 import com.phoenix.free.service.FoodClockInService;
+import com.phoenix.free.util.AssertUtil;
 import com.phoenix.free.util.SessionUtils;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,29 +34,41 @@ public class ClockInController {
     @Auth
     @PostMapping("/exercise")
     @ApiOperation(value = "运动打卡",response = Long.class)
-    public Object addExerciseClockIn(@RequestPart("file") MultipartFile file, @RequestPart("request") ExerciseClockInRequest exerciseClockInRequest){
+    public Object addExerciseClockIn(@RequestBody ExerciseClockInRequest exerciseClockInRequest){
         Long id = sessionUtils.getUserId();
-        if(!file.getOriginalFilename().isEmpty()){
-            exerciseClockInRequest.setPic(file);
-        }
-        else{
-            exerciseClockInRequest.setPic(null);
-        }
+        exerciseClockInRequest.setPic(null);
         return exerciseClockInService.addExerciseClockIn(exerciseClockInRequest, id);
     }
 
     @Auth
     @PostMapping("/food")
     @ApiOperation(value = "饮食打卡",response = Long.class)
-    public Object addFoodClockIn(@RequestPart("file") MultipartFile file, @RequestPart("request") FoodClockInRequest foodClockInRequest){
+    public Object addFoodClockIn(@RequestBody FoodClockInRequest foodClockInRequest){
         Long id = sessionUtils.getUserId();
-        if(!file.getOriginalFilename().isEmpty()){
-            foodClockInRequest.setPic(file);
-        }
-        else{
-            foodClockInRequest.setPic(null);
-        }
+        foodClockInRequest.setPic(null);
         return foodClockInService.addFoodClockIn(foodClockInRequest, id);
+    }
+
+    @Auth
+    @GetMapping("/exercise/pic/id={id}/sequence={sequence}")
+    @ApiOperation(value = "为运动打卡添加图片")
+    public Object addPicForExerciseClockIn(@RequestPart("file") MultipartFile file, @PathVariable("id") Long id, @PathVariable("sequence") int sequence){
+        AssertUtil.isTrue(sequence > 0 && sequence < 10, CommonErrorCode.PARAMS_INVALID);
+        AssertUtil.isNotNull(file, CommonErrorCode.FILENAME_CAN_NOT_BE_NULL);
+        Long userId = sessionUtils.getUserId();
+        exerciseClockInService.addPic(userId, id, file, sequence);
+        return null;
+    }
+
+    @Auth
+    @GetMapping("/food/pic/id={id}/sequence={sequence}")
+    @ApiOperation(value = "为饮食打卡添加图片")
+    public Object addPicForFoodClockIn(@RequestPart("file") MultipartFile file, @PathVariable("id") Long id, @PathVariable("sequence") int sequence){
+        AssertUtil.isTrue(sequence > 0 && sequence < 10, CommonErrorCode.PARAMS_INVALID);
+        AssertUtil.isNotNull(file, CommonErrorCode.FILENAME_CAN_NOT_BE_NULL);
+        Long userId = sessionUtils.getUserId();
+        foodClockInService.addPic(userId, id, file, sequence);
+        return null;
     }
 
     @Auth

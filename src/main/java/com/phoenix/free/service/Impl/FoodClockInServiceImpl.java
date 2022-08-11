@@ -2,8 +2,10 @@ package com.phoenix.free.service.Impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.phoenix.free.common.CommonErrorCode;
+import com.phoenix.free.common.CommonException;
 import com.phoenix.free.controller.request.FoodClockInRequest;
 import com.phoenix.free.controller.response.ClockInGraphResponse;
+import com.phoenix.free.entity.ExerciseClockIn;
 import com.phoenix.free.entity.FoodClockIn;
 import com.phoenix.free.entity.User;
 import com.phoenix.free.mapper.FoodClockInMapper;
@@ -14,6 +16,7 @@ import com.phoenix.free.util.AssertUtil;
 import com.phoenix.free.util.DatesUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.text.SimpleDateFormat;
@@ -45,7 +48,11 @@ public class FoodClockInServiceImpl implements FoodClockInService {
         if(!Objects.isNull(foodClockInRequest.getPic())){
             String type = "/foodClockIn/" + now.replace(" ", "_").replace(":", "_");
             MultipartFile file = foodClockInRequest.getPic();
-            url = fileService.uploadPicture(file, userId, type);
+            try {
+                url = fileService.uploadPicture(file, userId, type);
+            } catch (Exception e) {
+                throw new CommonException(CommonErrorCode.UPLOAD_FILE_FAIL);
+            }
         }
 
         FoodClockIn foodClockIn = FoodClockIn.builder()
@@ -69,6 +76,23 @@ public class FoodClockInServiceImpl implements FoodClockInService {
             return foodClockInMapper.selectOne(wrapper).getId();
         }
         else return -1l;
+    }
+
+    @Override
+    public void addPic(Long userId, Long clockInId, MultipartFile file, int sequence) {
+        FoodClockIn clockIn = foodClockInMapper.selectById(clockInId);
+        AssertUtil.isNotNull(clockIn, CommonErrorCode.DATA_NOT_EXISTS);
+        AssertUtil.isEqual(userId, clockIn.getUserId(), CommonErrorCode.DATA_NOT_EXISTS, null);
+
+        String type = "/foodClockIn/" + clockInId + "/" + sequence;
+        String url = StringUtils.hasText(clockIn.getPic()) ? "," : "";
+        try{
+            url += fileService.uploadPicture(file, userId, type);
+        } catch (Exception e) {
+            throw new CommonException(CommonErrorCode.UPLOAD_FILE_FAIL);
+        }
+        clockIn.setPic(clockIn.getPic() + url);
+        AssertUtil.isTrue(1 == foodClockInMapper.updateById(clockIn), CommonErrorCode.UPLOAD_FILE_FAIL);
     }
 
     @Override

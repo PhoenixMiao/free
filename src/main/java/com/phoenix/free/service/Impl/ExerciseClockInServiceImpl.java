@@ -16,6 +16,7 @@ import com.phoenix.free.util.AssertUtil;
 import com.phoenix.free.util.DatesUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.text.SimpleDateFormat;
@@ -50,7 +51,12 @@ public class ExerciseClockInServiceImpl implements ExerciseClockInService {
         if(!Objects.isNull(exerciseClockInRequest.getPic())){
             String type = "/exerciseClockIn/" + now.replace(" ", "_").replace(":", "_");
             MultipartFile file = exerciseClockInRequest.getPic();
-            url = fileService.uploadPicture(file, userId, type);
+            try {
+                url = fileService.uploadPicture(file, userId, type);
+            } catch (Exception e) {
+                throw new CommonException(CommonErrorCode.UPLOAD_FILE_FAIL);
+            }
+
         }
 
         double currentCalories;
@@ -77,6 +83,23 @@ public class ExerciseClockInServiceImpl implements ExerciseClockInService {
             return exerciseClockInMapper.selectOne(wrapper).getId();
         }
         else return -1l;
+    }
+
+    @Override
+    public void addPic(Long userId, Long clockInId, MultipartFile file, int sequence) {
+        ExerciseClockIn clockIn = exerciseClockInMapper.selectById(clockInId);
+        AssertUtil.isNotNull(clockIn, CommonErrorCode.DATA_NOT_EXISTS);
+        AssertUtil.isEqual(userId, clockIn.getUserId(), CommonErrorCode.DATA_NOT_EXISTS, null);
+
+        String type = "/exerciseClockIn/" + clockInId + "/" + sequence;
+        String url = StringUtils.hasText(clockIn.getPic()) ? "," : "";
+        try{
+            url += fileService.uploadPicture(file, userId, type);
+        } catch (Exception e) {
+            throw new CommonException(CommonErrorCode.UPLOAD_FILE_FAIL);
+        }
+        clockIn.setPic(clockIn.getPic() + url);
+        AssertUtil.isTrue(1 == exerciseClockInMapper.updateById(clockIn), CommonErrorCode.UPLOAD_FILE_FAIL);
     }
 
     @Override

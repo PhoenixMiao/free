@@ -36,7 +36,7 @@ public class AssertUtil {
         isTrue(!expValue, resultCode);
     }
 
-    public static void equals(Object obj1, Object obj2, CommonErrorCode resultCode, Object obj) {
+    public static void isEqual(Object obj1, Object obj2, CommonErrorCode resultCode, Object obj) {
         isTrue(obj1 == null ? obj2 == null : obj1.equals(obj2), resultCode, obj);
     }
 
