@@ -94,7 +94,7 @@ public class ExerciseInfoController {
     }
 
     @Admin
-    @GetMapping("/update/id={id}")
+    @PostMapping("/update/id={id}")
     @ApiOperation(value = "修改运动信息", response = Exercise.class)
     public Object updateExerciseInfo(@NotBlank @PathVariable("id") Long id, @RequestBody AddExerciseInfoRequest request){
         return exerciseInfoService.updateExerciseInfo(request, id);

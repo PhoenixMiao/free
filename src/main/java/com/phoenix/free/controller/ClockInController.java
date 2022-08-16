@@ -50,7 +50,7 @@ public class ClockInController {
     }
 
     @Auth
-    @GetMapping("/exercise/pic/id={id}/sequence={sequence}")
+    @PostMapping("/exercise/pic/id={id}/sequence={sequence}")
     @ApiOperation(value = "为运动打卡添加图片")
     public Object addPicForExerciseClockIn(@RequestPart("file") MultipartFile file, @PathVariable("id") Long id, @PathVariable("sequence") int sequence){
         AssertUtil.isTrue(sequence > 0 && sequence < 10, CommonErrorCode.PARAMS_INVALID);
@@ -61,7 +61,7 @@ public class ClockInController {
     }
 
     @Auth
-    @GetMapping("/food/pic/id={id}/sequence={sequence}")
+    @PostMapping("/food/pic/id={id}/sequence={sequence}")
     @ApiOperation(value = "为饮食打卡添加图片")
     public Object addPicForFoodClockIn(@RequestPart("file") MultipartFile file, @PathVariable("id") Long id, @PathVariable("sequence") int sequence){
         AssertUtil.isTrue(sequence > 0 && sequence < 10, CommonErrorCode.PARAMS_INVALID);

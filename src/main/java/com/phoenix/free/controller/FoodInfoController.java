@@ -95,7 +95,7 @@ public class FoodInfoController {
     }
 
     @Admin
-    @GetMapping("/update/id={id}")
+    @PostMapping("/update/id={id}")
     @ApiOperation(value = "修改食物信息", response = Food.class)
     public Object updateFoodInfo(@NotBlank @PathVariable("id") Long id, @RequestBody AddFoodInfoRequest request){
         return foodInfoService.updateFoodInfo(request, id);
