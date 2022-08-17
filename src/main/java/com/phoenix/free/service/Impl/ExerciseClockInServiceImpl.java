@@ -98,7 +98,7 @@ public class ExerciseClockInServiceImpl implements ExerciseClockInService {
         } catch (Exception e) {
             throw new CommonException(CommonErrorCode.UPLOAD_FILE_FAIL);
         }
-        clockIn.setPic(clockIn.getPic() + url);
+        clockIn.setPic((StringUtils.hasText(clockIn.getPic()) ? clockIn.getPic() : "" ) + url);
         AssertUtil.isTrue(1 == exerciseClockInMapper.updateById(clockIn), CommonErrorCode.UPLOAD_FILE_FAIL);
     }
 
