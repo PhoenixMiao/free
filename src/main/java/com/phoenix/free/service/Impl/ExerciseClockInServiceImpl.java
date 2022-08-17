@@ -63,7 +63,7 @@ public class ExerciseClockInServiceImpl implements ExerciseClockInService {
         try{
             currentCalories = exerciseMapper.selectById(exerciseClockInRequest.getExerciseInfoId()).getRatio() * exerciseClockInRequest.getAmount();
         } catch (Exception e) {
-            throw new CommonException(CommonErrorCode.DATA_NOT_EXISTS);
+            throw new CommonException(CommonErrorCode.DATA_NOT_EXISTS, "请重新选择运动");
         }
         ExerciseClockIn exerciseClockIn = ExerciseClockIn.builder()
                 .userId(userId)
