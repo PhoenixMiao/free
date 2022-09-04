@@ -14,7 +14,7 @@ import java.util.Map;
 public enum CommonErrorCode {
 
     //1打头是微信错误，其他是程序错误
-    WX_LOGIN_BUSY(1002,"系统繁忙，此时请开发者稍候再试","微信小程序繁忙，请稍候再试"),
+    WX_SYS_BUSY(1002,"系统繁忙，此时请开发者稍候再试","微信小程序繁忙，请稍候再试"),
     WX_LOGIN_INVALID_CODE(1003,"无效的code","授权失败，请检查微信账号是否正常"),
     WX_LOGIN_FREQUENCY_REFUSED(1004,"请求太频繁，一分钟不能超过100次","请勿多次重复授权"),
     WX_LOGIN_UNKNOWN_ERROR(1005,"微信授权未知错误","微信异常，请稍后再试"),
@@ -37,6 +37,9 @@ public enum CommonErrorCode {
     WX_SUBSCRIBE_SEND_41030(141030,"page路径不正确，需要保证在现网版本小程序中存在，与app.json保持一致","系统异常，请稍后再试"),
     //微信退款
 
+    //微信二维码
+    WX_QRCODE_UNAUTHORIZED(1012,"暂无生成权限","系统异常，请稍后再试"),
+    WX_QRCODE_TOO_FREQUENT(1013,"调用分钟频率受限(目前5000次/分钟，会调整)，如需大量小程序码，建议预生成","系统繁忙，请稍后重试"),
 
     USER_NOT_EXIST(2001,"用户不存在","用户不存在"),
     SYSTEM_ERROR(2002,"系统错误","系统错误，请重试"),

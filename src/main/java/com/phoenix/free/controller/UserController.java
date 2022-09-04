@@ -15,7 +15,10 @@ import com.phoenix.free.util.SessionUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.apache.http.HttpEntity;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
 
 @Api("用户相关操作")
 @RestController
@@ -111,11 +115,7 @@ public class UserController {
     @GetMapping(value = "/portrait/userId={id}")
     @ApiOperation(value = "获取用户头像", response = String.class)
     public Object getPortrait(@NotBlank @PathVariable("id") Long id) {
-        try{
-            return Result.success(userService.getUserById(id).getPortrait());
-        }catch (CommonException e){
-            throw new CommonException(CommonErrorCode.USER_NOT_EXIST);
-        }
+        return Result.success(userService.getUserById(id).getPortrait());
 
     }
 
@@ -124,5 +124,25 @@ public class UserController {
     @ApiOperation(value = "获取新近注册用户图表数据", response = NewlyCreatedUsersGraphResponse.class)
     public Object getNewlyCreatedUsers(){
         return userService.getNewlyCreatedUsers();
+    }
+    
+    @GetMapping("/qrcode")
+    @ApiOperation(value = "web端获取登录二维码",response = HttpEntity.class)
+    public Object getQRCode() {
+        try{
+            return userService.getQRCode();
+        }catch (IOException e){
+            e.printStackTrace();
+            throw new CommonException(CommonErrorCode.SYSTEM_ERROR);
+        }
+    }
+
+    @Admin
+    @PostMapping("/verify")
+    @ApiOperation(value = "设置用户token",response = String.class)
+    @ApiImplicitParam(name = "token",value = "管理员令牌",required = true,paramType = "query")
+    public Object addAdminToken(@NotNull @RequestParam("token") String token) {
+        userService.sendOutMes(token,sessionUtils.getUserId());
+        return token;
     }
 }
