@@ -5,6 +5,7 @@ import com.phoenix.free.controller.request.UpdateUserAssessInfoRequest;
 import com.phoenix.free.controller.response.UserAssessInfoResponse;
 import com.phoenix.free.service.UserAssessInfoService;
 import com.phoenix.free.util.SessionUtils;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
