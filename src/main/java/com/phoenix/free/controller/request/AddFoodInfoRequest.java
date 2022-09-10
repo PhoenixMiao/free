@@ -44,5 +44,5 @@ public class AddFoodInfoRequest {
     private double cellulose;
 
     @ApiModelProperty("状态")
-    private String state;
+    private int state;
 }

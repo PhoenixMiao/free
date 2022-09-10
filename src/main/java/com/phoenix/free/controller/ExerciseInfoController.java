@@ -92,6 +92,7 @@ public class ExerciseInfoController {
     }
 
     @Admin
+    @Deprecated
     @GetMapping("/delete/name={name}")
     @ApiOperation(value = "按名称删除运动信息",response = String.class)
     public Object deleteExerciseInfoByName(@NotBlank @PathVariable("name") String name){

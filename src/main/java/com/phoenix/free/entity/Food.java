@@ -46,7 +46,7 @@ public class Food {
     private double  cellulose;
 
     @ApiModelProperty("状态")
-    private String state;
+    private int state;
 
     @Version
     @TableField(fill = FieldFill.INSERT)

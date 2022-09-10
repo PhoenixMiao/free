@@ -92,6 +92,7 @@ public class FoodInfoController {
     }
 
     @Admin
+    @Deprecated
     @GetMapping("/delete/name={name}")
     @ApiOperation(value = "按名称删除食物信息",response = String.class)
     public Object deleteFoodInfoByName(@NotBlank @PathVariable("name") String name){

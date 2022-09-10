@@ -120,9 +120,10 @@ public class FoodInfoServiceImpl implements FoodInfoService {
 
     @Override
     public int deleteFoodInfoById(Long id) {
-        QueryWrapper<Food> wrapper = new QueryWrapper<>();
-        wrapper.eq("id", id);
-        return foodMapper.delete(wrapper);
+        Food food = foodMapper.selectById(id);
+        AssertUtil.isNotNull(food, CommonErrorCode.DATA_NOT_EXISTS, "食物信息不存在");
+        food.setState(0);
+        return foodMapper.updateById(food);
     }
 
     @Override

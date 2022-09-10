@@ -112,9 +112,10 @@ public class ExerciseInfoServiceImpl implements ExerciseInfoService {
 
     @Override
     public int deleteExerciseInfoById(Long id) {
-        QueryWrapper<Exercise> wrapper = new QueryWrapper<>();
-        wrapper.eq("id", id);
-        return exerciseMapper.delete(wrapper);
+        Exercise exercise = exerciseMapper.selectById(id);
+        AssertUtil.isNotNull(exercise, CommonErrorCode.DATA_NOT_EXISTS, "运动信息不存在");
+        exercise.setState(0);
+        return exerciseMapper.updateById(exercise);
     }
 
     @Override

@@ -34,7 +34,7 @@ public class Exercise {
     private double ratio;
 
     @ApiModelProperty("状态")
-    private String state;
+    private int state;
 
     @Version
     @TableField(fill = FieldFill.INSERT)
