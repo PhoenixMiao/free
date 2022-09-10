@@ -38,16 +38,20 @@ public class FoodInfoController {
     @Admin
     @PostMapping("/add")
     @ApiOperation(value = "添加新食物信息",response = String.class)
-    public Object addFoodInfo(@RequestPart("file") MultipartFile file, @RequestPart("request") AddFoodInfoRequest request){
+    public Object addFoodInfo(@RequestBody AddFoodInfoRequest request){
         Long id = sessionUtils.getUserId();
         AssertUtil.isNull(foodInfoService.getFoodInfoByName(request.getName()), CommonErrorCode.DUPLICATE_DATABASE_INFORMATION,"请勿重复添加食物信息");
-        if(!file.getOriginalFilename().isEmpty()){
-            request.setPic(file);
-        }
-        else{
-            request.setPic(null);
-        }
+        request.setPic(null);
         return Result.success(foodInfoService.addFoodInfo(request, id));
+    }
+
+    @Admin
+    @PostMapping("/addPic/id={id}")
+    @ApiOperation(value = "添加新食物信息图片")
+    public Object addExerciseInfoPicture(@RequestPart("file") MultipartFile pic, @PathVariable("id") Long id){
+        Long userId = sessionUtils.getUserId();
+        foodInfoService.addPic(userId, id, pic);
+        return Result.success(null);
     }
 
     @Auth

@@ -12,6 +12,7 @@ import com.phoenix.free.service.ExerciseInfoService;
 import com.phoenix.free.service.UserService;
 import com.phoenix.free.util.AssertUtil;
 import com.phoenix.free.util.SessionUtils;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,17 +37,21 @@ public class ExerciseInfoController {
 
     @Admin
     @PostMapping("/add")
-    @ApiOperation(value = "添加新运动信息",response = String.class)
-    public Object addExerciseInfo(@RequestPart("file") MultipartFile file, @RequestPart("request") AddExerciseInfoRequest request){
+    @ApiOperation(value = "添加新运动信息", response = Long.class)
+    public Object addExerciseInfo(@RequestBody AddExerciseInfoRequest request){
         Long id = sessionUtils.getUserId();
         AssertUtil.isNull(exerciseInfoService.getExerciseInfoByName(request.getName()), CommonErrorCode.DUPLICATE_DATABASE_INFORMATION,"请勿重复添加运动信息");
-        if(!file.getOriginalFilename().isEmpty()){
-            request.setPic(file);
-        }
-        else{
-            request.setPic(null);
-        }
+        request.setPic(null);
         return Result.success(exerciseInfoService.addExerciseInfo(request, id));
+    }
+
+    @Admin
+    @PostMapping("/addPic/id={id}")
+    @ApiOperation(value = "添加新运动信息图片")
+    public Object addExerciseInfoPicture(@RequestPart("file") MultipartFile pic, @PathVariable("id") Long id){
+        Long userId = sessionUtils.getUserId();
+        exerciseInfoService.addPic(userId, id, pic);
+        return Result.success(null);
     }
 
     @Auth

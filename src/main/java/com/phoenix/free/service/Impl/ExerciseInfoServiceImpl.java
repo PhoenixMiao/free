@@ -74,7 +74,21 @@ public class ExerciseInfoServiceImpl implements ExerciseInfoService {
     }
 
     @Override
-    public int addExerciseInfo(AddExerciseInfoRequest addExerciseInfoRequest, Long userId) {
+    public void addPic(Long userId, Long id, MultipartFile file) {
+        Exercise exercise = exerciseMapper.selectById(id);
+        AssertUtil.isNotNull(exercise, CommonErrorCode.DATA_NOT_EXISTS);
+        String url = null;
+        if(!Objects.isNull(file)){
+            String type = "/" + exercise.getName();
+            url = fileService.uploadPicture(file, userId, type);
+        }
+        exercise.setPic(url);
+        AssertUtil.isFalse(exerciseMapper.updateById(exercise) == 0, CommonErrorCode.UPDATE_FAIL);
+        return ;
+    }
+
+    @Override
+    public Long addExerciseInfo(AddExerciseInfoRequest addExerciseInfoRequest, Long userId) {
         String url = null;
         User user = userMapper.selectById(userId);
         AssertUtil.isNotNull(user, CommonErrorCode.USER_NOT_EXIST);
@@ -90,7 +104,10 @@ public class ExerciseInfoServiceImpl implements ExerciseInfoService {
                 .ratio(addExerciseInfoRequest.getRatio())
                 .state(addExerciseInfoRequest.getState())
                 .build();
-        return exerciseMapper.insert(exercise);
+        if(exerciseMapper.insert(exercise) == 1){
+            return exercise.getId();
+        }
+        else return -1l;
     }
 
     @Override

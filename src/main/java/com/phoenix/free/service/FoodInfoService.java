@@ -2,6 +2,7 @@ package com.phoenix.free.service;
 
 import com.phoenix.free.controller.request.AddFoodInfoRequest;
 import com.phoenix.free.entity.Food;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -13,7 +14,9 @@ public interface FoodInfoService {
     List<Food> searchFoodInfo(String name, int page);
     List<Food> getNewlyAddedFood();
 
-    int addFoodInfo(AddFoodInfoRequest addFoodInfoRequest, Long userId);
+    void addPic(Long userId, Long id, MultipartFile file);
+
+    Long addFoodInfo(AddFoodInfoRequest addFoodInfoRequest, Long userId);
     int deleteFoodInfoById(Long id);
     int deleteFoodInfoByName(String name);
 

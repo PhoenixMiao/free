@@ -78,7 +78,21 @@ public class FoodInfoServiceImpl implements FoodInfoService {
     }
 
     @Override
-    public int addFoodInfo(AddFoodInfoRequest addFoodInfoRequest, Long userId) {
+    public void addPic(Long userId, Long id, MultipartFile file) {
+        Food food = foodMapper.selectById(id);
+        AssertUtil.isNotNull(food, CommonErrorCode.DATA_NOT_EXISTS);
+        String url = null;
+        if(!Objects.isNull(file)){
+            String type = "/" + food.getName();
+            url = fileService.uploadPicture(file, userId, type);
+        }
+        food.setPic(url);
+        AssertUtil.isFalse(foodMapper.updateById(food) == 0, CommonErrorCode.UPDATE_FAIL);
+        return ;
+    }
+
+    @Override
+    public Long addFoodInfo(AddFoodInfoRequest addFoodInfoRequest, Long userId) {
         String url = null;
         User user = userMapper.selectById(userId);
         AssertUtil.isNotNull(user, CommonErrorCode.USER_NOT_EXIST);
@@ -98,7 +112,10 @@ public class FoodInfoServiceImpl implements FoodInfoService {
                 .cellulose(addFoodInfoRequest.getCellulose())
                 .state(addFoodInfoRequest.getState())
                 .build();
-        return foodMapper.insert(food);
+        if(foodMapper.insert(food) == 1){
+            return food.getId();
+        }
+        else return -1l;
     }
 
     @Override
