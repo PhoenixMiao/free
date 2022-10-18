@@ -2,6 +2,8 @@ package com.phoenix.free.controller;
 
 import com.phoenix.free.annotation.Auth;
 import com.phoenix.free.controller.request.AddOrUpdatePlanRequest;
+import com.phoenix.free.controller.request.GeneratePlanRequest;
+import com.phoenix.free.entity.Plan;
 import com.phoenix.free.service.PlanService;
 import com.phoenix.free.util.SessionUtils;
 import io.swagger.annotations.ApiOperation;
@@ -34,5 +36,12 @@ public class PlanController {
     public Object updatePlan(@RequestBody AddOrUpdatePlanRequest request){
         Long id = sessionUtils.getUserId();
         return planService.updatePlan(request, id);
+    }
+
+    @Auth
+    @PostMapping("/generate")
+    @ApiOperation(value = "生成计划",response = Plan.class)
+    public Object generatePlan(@RequestBody GeneratePlanRequest request){
+        return planService.generatePlan(request);
     }
 }
