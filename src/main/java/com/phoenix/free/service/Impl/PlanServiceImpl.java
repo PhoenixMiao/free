@@ -59,7 +59,10 @@ public class PlanServiceImpl implements PlanService {
         wrapper.select("*")
                 .eq("user_id", id);
         Plan plan = planMapper.selectOne(wrapper);
-        AssertUtil.isFalse(Objects.isNull(plan), CommonErrorCode.DATA_NOT_EXISTS);
+        if(Objects.isNull(plan)){
+            Long planId = this.addPlan(request, id);
+            return planMapper.selectById(planId);
+        }
 
         plan.setStatus(request.getStatus());
         plan.setCalories(request.getCalories());

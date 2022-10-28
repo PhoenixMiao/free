@@ -13,34 +13,34 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @ApiModel("GeneratePlanRequest 提交调查问卷生成计划")
 public class GeneratePlanRequest {
-    @ApiModelProperty("性别")
+    @ApiModelProperty("1.性别")
     private int gender;
 
-    @ApiModelProperty("年龄")
+    @ApiModelProperty("2.年龄")
     private int age;
 
-    @ApiModelProperty("体重")
+    @ApiModelProperty("3.体重")
     private double weight;
 
-    @ApiModelProperty("身高")
+    @ApiModelProperty("4.身高")
     private double height;
 
-    @ApiModelProperty("目标")
+    @ApiModelProperty("5.目标")
     private int target;
 
-    @ApiModelProperty("运动强度")
+    @ApiModelProperty("6.运动强度")
     private int intensity;
 
-    @ApiModelProperty("饮食结构")
+    @ApiModelProperty("7.饮食结构")
     private int diet;
 
-    @ApiModelProperty("蛋奶类摄入情况")
+    @ApiModelProperty("8.蛋奶类摄入情况")
     private int protein;
 
-    @ApiModelProperty("对现在身体状况满意度")
+    @ApiModelProperty("9.对现在身体状况满意度")
     private int satisfaction;
 
-    @ApiModelProperty("偏好方式")
+    @ApiModelProperty("10.偏好方式")
     private int preference;
 
 }

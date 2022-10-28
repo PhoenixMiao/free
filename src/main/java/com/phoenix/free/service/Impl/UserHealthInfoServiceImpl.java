@@ -10,6 +10,7 @@ import com.phoenix.free.entity.Plan;
 import com.phoenix.free.mapper.ExerciseClockInMapper;
 import com.phoenix.free.mapper.FoodClockInMapper;
 import com.phoenix.free.mapper.PlanMapper;
+import com.phoenix.free.service.PlanService;
 import com.phoenix.free.service.UserHealthInfoService;
 import com.phoenix.free.util.DatesUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +19,10 @@ import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class UserHealthInfoServiceImpl implements UserHealthInfoService {
-//    @Autowired
-//    private AssessMapper assessMapper;
 
     @Autowired
     private ExerciseClockInMapper exerciseClockInMapper;
@@ -101,6 +101,23 @@ public class UserHealthInfoServiceImpl implements UserHealthInfoService {
         wrapper.select("*")
                 .eq("user_id", userId);
 
+        Plan plan = planMapper.selectOne(wrapper);
+        if(Objects.isNull(plan)){
+            plan = Plan.builder()
+                    .path(0)
+                    .cellulose(0)
+                    .fat(0)
+                    .sugar(0)
+                    .protein(0)
+                    .energy(0)
+                    .calories(0)
+                    .status(0)
+                    .userId(userId)
+                    .build();
+            planMapper.insert(plan);
+            plan = planMapper.selectOne(wrapper);
+        }
+
         RecordResponse response = RecordResponse.builder()
                 .exerciseClockInDays(exerciseClockInDays)
                 .foodClockInDays(foodClockInDays)
@@ -111,7 +128,7 @@ public class UserHealthInfoServiceImpl implements UserHealthInfoService {
                 .totalFatIngestion(totalFatIngestion)
                 .totalProteinIngestion(totalProteinIngestion)
                 .totalCelluloseIngestion(totalCelluloseIngestion)
-                .plan(planMapper.selectOne(wrapper))
+                .plan(plan)
                 .build();
 
         if(isOneDay){
